@@ -1415,6 +1415,7 @@
                 // No user logged in, show login modal
                 showLoginModal();
             } else {
+                // User is already logged in - sync FIRST, then display
                 // Show user info and buttons
                 const currentUserDisplay = document.getElementById('currentUserDisplay');
                 const currentUserEmailSpan = document.getElementById('currentUserEmail');
@@ -1425,17 +1426,24 @@
                 if (currentUserEmailSpan) currentUserEmailSpan.textContent = currentEmail;
                 if (switchBtn) switchBtn.style.display = 'inline-flex';
                 if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+                
+                // IMPORTANT: Sync with Google Sheets FIRST before displaying data
+                console.log('🔄 Page load - Syncing with Google Sheets for existing user:', currentEmail);
+                syncReferralDataFromSheets().then(() => {
+                    // After sync completes, load and display the synced data
+                    loadUserData();
+                    updateStats();
+                    generatePersonalizedLink();
+                    fetchReferralClicks();
+                }).catch(err => {
+                    // If sync fails, still load local data
+                    console.warn('Sync failed, using local data:', err);
+                    loadUserData();
+                    updateStats();
+                    generatePersonalizedLink();
+                    fetchReferralClicks();
+                });
             }
-            
-            loadUserData();
-            updateStats();
-            generatePersonalizedLink(); // Generate referral link on page load
-            
-            // Fetch latest referral data from Google Sheets
-            syncReferralDataFromSheets();
-            
-            // Fetch and display referral clicks (who registered via your link)
-            fetchReferralClicks();
         });
         
         // ========== SYNC WITH GOOGLE SHEETS ==========
@@ -1464,42 +1472,90 @@
                     console.log('Google Sheets response:', data);
                     
                     if (data.success && data.records && data.records.length > 0) {
-                        // Get the user's record (should be first one since we filtered by email)
-                        const userRecord = data.records[0];
+                        // IMPORTANT: User may have MULTIPLE rows (one per share action)
+                        // We need to aggregate all rows for accurate counts
+                        const allRecords = data.records;
+                        const firstRecord = allRecords[0];
+                        
+                        console.log('📊 Found', allRecords.length, 'record(s) for user');
+                        
+                        // Count total shares (each row is a share action)
+                        const totalSharesFromSheets = allRecords.length;
+                        
+                        // Count shares by platform
+                        const platformCounts = {};
+                        allRecords.forEach(record => {
+                            const platform = record.platform || 'unknown';
+                            platformCounts[platform] = (platformCounts[platform] || 0) + 1;
+                        });
+                        
+                        // Get referral count and total coins from first record (should be same across all rows)
+                        const referralCount = firstRecord.referralCount || 0;
+                        const totalCoins = firstRecord.totalCoins || 0;
                         
                         // Update local referral data with Google Sheets data
                         const referralData = getReferralData();
                         
-                        // Update referral count from Google Sheets (this is the accurate count)
-                        referralData.totalReferrals = userRecord.referralCount || 0;
-                        referralData.totalCoinsEarned = userRecord.totalCoins || 0;
+                        // Update with aggregated data from ALL records
+                        referralData.totalShares = totalSharesFromSheets;
+                        referralData.totalReferrals = referralCount;
+                        referralData.totalCoinsEarned = totalCoins;
+                        referralData.whatsappShares = platformCounts['whatsapp'] || 0;
+                        referralData.linkedinShares = platformCounts['linkedin'] || 0;
+                        referralData.emailShares = platformCounts['email'] || 0;
+                        referralData.telegramShares = platformCounts['telegram'] || 0;
+                        referralData.twitterShares = platformCounts['twitter'] || 0;
+                        referralData.facebookShares = platformCounts['facebook'] || 0;
                         
                         // Save updated data
                         saveReferralData(referralData);
                         
                         // Also update user coins
                         const userData = getUserData();
-                        userData.aksharCoins = userRecord.totalCoins || 0;
+                        userData.aksharCoins = totalCoins;
                         saveUserData(userData);
                         
-                        // Directly update displays with synced data (don't recalculate)
-                        document.getElementById('coinBalance').textContent = userRecord.totalCoins || 0;
-                        document.getElementById('referralCount').textContent = userRecord.referralCount || 0;
-                        document.getElementById('totalCoinsEarned').textContent = userRecord.totalCoins || 0;
-            if (userData.fullName || userData.name) {
-                document.getElementById('userName').textContent = userData.fullName || userData.name;
-            }
-            
-                        console.log('✅ Synced with Google Sheets:', {
-                            referralCount: userRecord.referralCount,
-                            totalCoins: userRecord.totalCoins
+                        // Directly update ALL displays with synced data (don't recalculate)
+                        document.getElementById('coinBalance').textContent = totalCoins;
+                        document.getElementById('referralCount').textContent = referralCount;
+                        document.getElementById('totalShares').textContent = totalSharesFromSheets;
+                        document.getElementById('totalCoinsEarned').textContent = totalCoins;
+                        document.getElementById('totalReferrals').textContent = referralCount;
+                        document.getElementById('totalCoinsBreakdown').textContent = totalCoins;
+                        document.getElementById('whatsappShares').textContent = platformCounts['whatsapp'] || 0;
+                        document.getElementById('linkedinShares').textContent = platformCounts['linkedin'] || 0;
+                        
+                        // Update coin breakdown
+                        const coinsFromShares = totalSharesFromSheets * 3;
+                        const coinsFromReferrals = referralCount * 1;
+                        document.getElementById('coinsFromShares').textContent = coinsFromShares;
+                        document.getElementById('totalSharesBreakdown').textContent = totalSharesFromSheets;
+                        document.getElementById('coinsFromReferrals').textContent = coinsFromReferrals;
+                        document.getElementById('totalReferralsBreakdown').textContent = referralCount;
+                        
+                        if (userData.fullName || userData.name) {
+                            document.getElementById('userName').textContent = userData.fullName || userData.name;
+                        }
+                        
+                        console.log('✅ Synced with Google Sheets and updated all displays:', {
+                            totalRecords: allRecords.length,
+                            totalShares: totalSharesFromSheets,
+                            referralCount: referralCount,
+                            totalCoins: totalCoins,
+                            platformCounts: platformCounts,
+                            displayUpdated: true
                         });
+                        
+                        return true;  // Sync successful
                     }
                 }
             } catch (error) {
                 console.log('Could not sync with Google Sheets (using local data):', error);
                 // Not critical - continue with local data
+                return false;  // Sync failed
             }
+            
+            return false;  // No sync needed or failed
         }
         
         // ========== LOGIN SYSTEM ==========
@@ -1648,14 +1704,11 @@
         }
         
         // Helper function to complete login process
-        function loginUser(email) {
+        async function loginUser(email) {
             setCurrentUser(email);
             closeLoginModal();
-            loadUserData();
-            updateStats();
-            generatePersonalizedLink();
             
-            // Show user info and buttons in header
+            // Show user info and buttons in header FIRST
             const currentUserDisplay = document.getElementById('currentUserDisplay');
             const currentUserEmailSpan = document.getElementById('currentUserEmail');
             const switchBtn = document.getElementById('switchUserBtn');
@@ -1666,8 +1719,17 @@
             if (switchBtn) switchBtn.style.display = 'inline-flex';
             if (logoutBtn) logoutBtn.style.display = 'inline-flex';
             
-            // Sync with Google Sheets to get latest referral count and coins
-            syncReferralDataFromSheets();
+            // IMPORTANT: Sync with Google Sheets FIRST to get latest data
+            console.log('🔄 Starting Google Sheets sync for:', email);
+            await syncReferralDataFromSheets();
+            
+            // THEN load and display user data (this will use the synced data)
+            loadUserData();
+            updateStats();
+            generatePersonalizedLink();
+            
+            // Fetch referral clicks
+            fetchReferralClicks();
             
             showNotification(`Welcome back! Logged in as ${email}`, 'success');
         }
@@ -1693,15 +1755,30 @@
             
             // PRIORITY: Use Google Sheets synced data if available, otherwise calculate locally
             let totalCoins;
+            let totalShares;
+            let totalReferrals;
+            
             if (referralData.totalCoinsEarned && referralData.totalCoinsEarned > 0) {
                 // Use synced data from Google Sheets (authoritative source)
                 totalCoins = referralData.totalCoinsEarned;
-                console.log('💾 Using synced coins from Google Sheets:', totalCoins);
+                totalShares = referralData.totalShares || 0;
+                totalReferrals = referralData.totalReferrals || 0;
+                console.log('💾 Using synced data from Google Sheets:', {
+                    coins: totalCoins,
+                    shares: totalShares,
+                    referrals: totalReferrals
+                });
             } else {
                 // No synced data, calculate from local share history
                 const coinData = updateAccurateCoinCount();
                 totalCoins = coinData.totalCoins;
-                console.log('🔢 Calculating coins from local data:', totalCoins);
+                totalShares = referralData.totalShares || 0;
+                totalReferrals = referralData.totalReferrals || 0;
+                console.log('🔢 Calculating from local data:', {
+                    coins: totalCoins,
+                    shares: totalShares,
+                    referrals: totalReferrals
+                });
             }
             
             // Update user data with total coins
@@ -1716,8 +1793,8 @@
             document.getElementById('coinBalance').textContent = totalCoins;
             
             // Update referral stats (top section)
-            document.getElementById('referralCount').textContent = referralData.totalReferrals || 0;
-            document.getElementById('totalShares').textContent = referralData.totalShares || 0;
+            document.getElementById('referralCount').textContent = totalReferrals;
+            document.getElementById('totalShares').textContent = totalShares;
             
             // Save updated data back to localStorage
             saveUserData(userData);
@@ -1727,7 +1804,7 @@
             const userData = getUserData();
             const referralData = getReferralData();
             
-            // Calculate coins properly
+            // PRIORITY: Use synced data from Google Sheets if available
             const totalShares = referralData.totalShares || 0;
             const totalReferrals = referralData.totalReferrals || 0;
             
@@ -1741,30 +1818,34 @@
                 ? referralData.totalCoinsEarned 
                 : totalCoinsCalculated;
             
-            console.log('📊 updateStats - Using coins:', {
+            console.log('📊 updateStats - Using data:', {
                 syncedCoins: referralData.totalCoinsEarned,
+                syncedShares: referralData.totalShares,
+                syncedReferrals: referralData.totalReferrals,
                 calculatedCoins: totalCoinsCalculated,
-                finalCoins: totalCoins
+                finalCoins: totalCoins,
+                finalShares: totalShares,
+                finalReferrals: totalReferrals
             });
             
             // Update userData with total coins (don't overwrite synced value)
             userData.aksharCoins = totalCoins;
             saveUserData(userData);
             
-            // Update bottom stats section
+            // Update bottom stats section with synced data
             document.getElementById('totalReferrals').textContent = totalReferrals;
             document.getElementById('totalCoinsEarned').textContent = totalCoins;
             document.getElementById('whatsappShares').textContent = referralData.whatsappShares || 0;
             document.getElementById('linkedinShares').textContent = referralData.linkedinShares || 0;
             
-            // Update coin breakdown section
+            // Update coin breakdown section with synced data
             document.getElementById('coinsFromShares').textContent = coinsFromShares;
             document.getElementById('totalSharesBreakdown').textContent = totalShares;
             document.getElementById('coinsFromReferrals').textContent = coinsFromReferrals;
             document.getElementById('totalReferralsBreakdown').textContent = totalReferrals;
             document.getElementById('totalCoinsBreakdown').textContent = totalCoins;
             
-            console.log('📊 Coin Breakdown:', {
+            console.log('📊 Final Display Values:', {
                 totalShares,
                 coinsFromShares,
                 totalReferrals,
