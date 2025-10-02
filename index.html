@@ -1414,6 +1414,16 @@
         
         /* Mobile Responsive */
         @media (max-width: 768px) {
+            /* Prevent horizontal scrolling */
+            body {
+                overflow-x: hidden !important;
+            }
+            
+            .container {
+                max-width: 100% !important;
+                padding: 0 16px !important;
+            }
+            
             .sticky-cta-content {
                 flex-direction: column;
                 gap: 10px;
@@ -1707,16 +1717,26 @@
             }
             
             /* Mobile Role Cards - Single Column Layout with Enhanced Animations */
+            .roles-section .container {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 16px !important;
+            }
+            
             .role-card { 
                 padding: 20px; 
                 margin-bottom: 20px; 
                 border-radius: 16px;
                 box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-                width: 100%;
-                max-width: none;
+                width: 100% !important;
+                max-width: 100% !important;
+                display: block !important;
+                float: none !important;
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 position: relative;
                 overflow: hidden;
+                clear: both !important;
             }
             
             .role-card:hover {
@@ -1798,6 +1818,44 @@
             .benefits-list li:hover:before {
                 color: #059669;
                 transform: scale(1.1);
+            }
+            
+            /* Force vertical layout for roles section on mobile */
+            .roles-section {
+                display: block !important;
+                width: 100% !important;
+            }
+            
+            .roles-section .section-header {
+                display: block !important;
+                width: 100% !important;
+                text-align: center !important;
+            }
+            
+            /* Ensure role cards stack vertically */
+            .role-card {
+                display: block !important;
+                float: none !important;
+                clear: both !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+            
+            .role-header {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+            
+            .benefits-list {
+                display: block !important;
+            }
+            
+            .benefits-list li {
+                display: block !important;
+                width: 100% !important;
             }
             .role-header { 
                 flex-direction: column; 
