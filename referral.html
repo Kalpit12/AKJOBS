@@ -1137,23 +1137,23 @@
                 <!-- User Info -->
                 <div class="user-info" data-aos="fade-up" data-aos-delay="100">
                     <div class="welcome-message">
-                        Welcome back, <span id="userName">Job Seeker</span>! ðŸŽ‰
+                        Welcome back, <span id="userName">Job Seeker</span>! 🎉
                     </div>
                     <p>Share your referral code and earn rewards for every person who joins through your link.</p>
                     
                     <div class="user-details">
                         <div class="user-stat">
-                            <span class="icon">ðŸª™</span>
+                            <span class="icon">🪙</span>
                             <div class="value" id="coinBalance">0</div>
                             <div class="label">AksharCoins</div>
                         </div>
                         <div class="user-stat">
-                            <span class="icon">ðŸ‘¥</span>
+                            <span class="icon">👥</span>
                             <div class="value" id="referralCount">0</div>
                             <div class="label">Registered Via Link</div>
                         </div>
                         <div class="user-stat">
-                            <span class="icon">ðŸ“Š</span>
+                            <span class="icon">📊</span>
                             <div class="value" id="totalShares">0</div>
                             <div class="label">Total Shares</div>
                         </div>
@@ -1179,7 +1179,7 @@
                         <div class="copy-hint">Click to copy link (paste & share to earn coins)</div>
                     </div>
                     <div class="link-info">
-                        ðŸ’¡ <strong>Share via social media below</strong> to get <strong>3 coins instantly</strong> + <strong>1 bonus coin</strong> when someone registers!
+                        💡 <strong>Share via social media below</strong> to get <strong>3 coins instantly</strong> + <strong>1 bonus coin</strong> when someone registers!
                     </div>
                 </div>
 
@@ -1245,7 +1245,7 @@
                 
                 <!-- Coin Breakdown Section -->
                 <div class="coin-breakdown-section" data-aos="fade-up" data-aos-delay="450">
-                    <h2 class="section-title">ðŸ’° Coin Breakdown</h2>
+                    <h2 class="section-title">💰 Coin Breakdown</h2>
                     <div class="breakdown-grid">
                         <div class="breakdown-item">
                             <div class="breakdown-label">Coins from Shares</div>
@@ -1272,7 +1272,7 @@
                 
                 <!-- Users Registered Via Your Link -->
                 <div class="registered-users-section" data-aos="fade-up" data-aos-delay="475">
-                    <h2 class="section-title">ðŸ‘¥ Users Registered Via Your Link</h2>
+                    <h2 class="section-title">👥 Users Registered Via Your Link</h2>
                     <div id="registeredUsersList" class="registered-users-list">
                         <div class="empty-state">
                             <i class="fas fa-user-plus" style="font-size: 48px; color: #cbd5e1; margin-bottom: 15px;"></i>
@@ -1298,7 +1298,7 @@
                     </ol>
                     <div style="background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 15px; margin-top: 20px; border-radius: 8px;">
                         <p style="margin: 0; font-size: 14px; color: #1e40af;">
-                            <strong>ðŸ’¡ Important:</strong> Coins are earned when you <strong>actually share</strong> (click share buttons), 
+                            <strong>💡 Important:</strong> Coins are earned when you <strong>actually share</strong> (click share buttons), 
                             not just copy the link. Copy the link to share manually, then use share buttons to earn coins!
                         </p>
                     </div>
@@ -1482,9 +1482,13 @@
                         userData.aksharCoins = userRecord.totalCoins || 0;
                         saveUserData(userData);
                         
-                        // Refresh displays
-                        loadUserData();
-                        updateStats();
+                        // Directly update displays with synced data (don't recalculate)
+                        document.getElementById('coinBalance').textContent = userRecord.totalCoins || 0;
+                        document.getElementById('referralCount').textContent = userRecord.referralCount || 0;
+                        document.getElementById('totalCoinsEarned').textContent = userRecord.totalCoins || 0;
+                        if (userData.fullName || userData.name) {
+                            document.getElementById('userName').textContent = userData.fullName || userData.name;
+                        }
                         
                         console.log('âœ… Synced with Google Sheets:', {
                             referralCount: userRecord.referralCount,
@@ -1921,23 +1925,23 @@
                 }
             });
             
-            // Get referral bonus coins from Google Sheets or localStorage
+            // Get total coins from Google Sheets sync (this is the authoritative source)
             const referralData = getReferralData();
-            const referralBonusCoins = referralData.referralBonuses || 0;
             
-            // Total accurate coins = share coins + referral bonus coins
-            const totalAccurateCoins = shareCoins + referralBonusCoins;
+            // If we have synced data from Google Sheets, use that as the total
+            // Otherwise calculate based on local share history
+            const totalAccurateCoins = referralData.totalCoinsEarned || shareCoins;
             
-            console.log(`ðŸ“Š Accurate Coin Calculation for ${userEmail}:`, {
+            console.log(`📊 Accurate Coin Calculation for ${userEmail}:`, {
                 shareCoins: shareCoins,
-                referralBonusCoins: referralBonusCoins,
+                syncedCoins: referralData.totalCoinsEarned,
                 totalAccurateCoins: totalAccurateCoins,
                 shareHistory: userShareHistory
             });
             
             return {
                 shareCoins: shareCoins,
-                referralBonusCoins: referralBonusCoins,
+                syncedCoins: referralData.totalCoinsEarned || 0,
                 totalCoins: totalAccurateCoins,
                 platformsShared: platforms.filter(p => userShareHistory[p] === true)
             };
@@ -1954,13 +1958,13 @@
             // Update user data with accurate count
             userData.aksharCoins = coinData.totalCoins;
             userData.shareCoins = coinData.shareCoins;
-            userData.referralBonusCoins = coinData.referralBonusCoins;
+            userData.syncedCoins = coinData.syncedCoins;
             userData.platformsShared = coinData.platformsShared;
             
             // Save updated user data
             saveUserData(userData);
             
-            console.log(`âœ… Updated accurate coin count for ${userEmail}: ${coinData.totalCoins} coins`);
+            console.log(`✅ Updated accurate coin count for ${userEmail}: ${coinData.totalCoins} coins`);
             
             return coinData;
         }
