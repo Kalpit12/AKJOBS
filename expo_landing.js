@@ -782,13 +782,10 @@ Use my referral code: ${referralCode}`;
     
     const encodedMessage = encodeURIComponent(message);
     
-    // Show confirmation dialog BEFORE giving coins
+    // Show confirmation dialog and open WhatsApp
     showShareConfirmationDialog('whatsapp', () => {
-        // User confirmed they shared - open WhatsApp
+        // Open WhatsApp share window
         window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
-        
-        // Track referral share AFTER confirmation
-        trackReferralShare('whatsapp');
     });
 }
 
@@ -859,10 +856,9 @@ Use my referral code: ${referralCode}`;
     
     const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     
-    // Show confirmation dialog
+    // Show confirmation dialog and open email
     showShareConfirmationDialog('email', () => {
         window.open(mailtoLink, '_blank');
-        trackReferralShare('email');
     });
 }
 
@@ -887,10 +883,9 @@ Code: ${referralCode}`;
     
     const smsLink = `sms:?body=${encodeURIComponent(message)}`;
     
-    // Show confirmation dialog
+    // Show confirmation dialog and open SMS
     showShareConfirmationDialog('sms', () => {
         window.open(smsLink, '_blank');
-        trackReferralShare('sms');
     });
 }
 
@@ -938,10 +933,9 @@ Code: ${referralCode}
     const encodedTitle = encodeURIComponent(title);
     const encodedSummary = encodeURIComponent(summary);
     
-    // Show confirmation dialog
+    // Show confirmation dialog and open LinkedIn
     showShareConfirmationDialog('linkedin', () => {
         window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${encodedTitle}&summary=${encodedSummary}`, '_blank');
-        trackReferralShare('linkedin');
     });
 }
 
@@ -970,10 +964,9 @@ Code: ${referralCode}
 #AksharJobs #AI #CareerOpportunities`;
     const encodedText = encodeURIComponent(text);
     
-    // Show confirmation dialog
+    // Show confirmation dialog and open Twitter
     showShareConfirmationDialog('twitter', () => {
         window.open(`https://twitter.com/intent/tweet?text=${encodedText}`, '_blank');
-        trackReferralShare('twitter');
     });
 }
 
@@ -987,10 +980,9 @@ function shareReferralViaFacebook() {
     
     const url = encodeURIComponent(referralUrl);
     
-    // Show confirmation dialog
+    // Show confirmation dialog and open Facebook
     showShareConfirmationDialog('facebook', () => {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-        trackReferralShare('facebook');
     });
 }
 
@@ -1021,10 +1013,9 @@ Code: ${referralCode}`;
     
     const encodedMessage = encodeURIComponent(message);
     
-    // Show confirmation dialog
+    // Show confirmation dialog and open Telegram
     showShareConfirmationDialog('telegram', () => {
         window.open(`https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${encodedMessage}`, '_blank');
-        trackReferralShare('telegram');
     });
 }
 
@@ -1224,79 +1215,109 @@ function markPlatformAsShared(platform) {
     localStorage.setItem('aksharShareHistory', JSON.stringify(shareHistory));
 }
 
+// OLD FUNCTION - DEPRECATED
+// This function is no longer used directly
+// Coins are now only awarded after verification in showShareConfirmationDialog
 function trackReferralShare(platform) {
-    const now = Date.now();
+    console.log('⚠️ trackReferralShare called - this should not happen with new validation system');
+    showNotification('⚠️ Please use the share buttons to earn coins properly', 'warning');
+}
+
+// Share confirmation dialog to ensure user actually shares
+function showShareConfirmationDialog(platform, onConfirm) {
+    // Show immediate instruction dialog first
+    const instructionMessage = `📱 SHARE INSTRUCTIONS for ${platform.toUpperCase()}:\n\n1. The share window will open\n2. Complete the share by sending/posting the message\n3. Come back here and click "I Shared" button\n\n⚠️ You will NOT get coins just for opening the share window!\nYou MUST actually share the message to earn coins.`;
     
-    // Prevent duplicate actions within 3 seconds
-    if (lastReferralAction && (now - lastReferralAction.timestamp) < 3000 && lastReferralAction.platform === platform) {
-        console.log('Duplicate referral action prevented:', platform);
-        showNotification('⚠️ Please wait a moment before sharing again', 'info');
+    const proceed = confirm(instructionMessage);
+    
+    if (!proceed) {
+        showNotification('❌ Share cancelled. No coins awarded.', 'info');
         return;
     }
     
-    // Check if user has already shared on this platform
-    if (hasSharedOnPlatform(platform)) {
-        console.log('User has already shared on this platform:', platform);
-        showNotification(`⚠️ You've already shared on ${platform}. Try a different platform to earn more coins!`, 'warning');
-        return;
-    }
+    // Open the share window first
+    onConfirm();
     
-    lastReferralAction = { platform, timestamp: now };
-    
-    // Clear any existing timeout
-    if (referralActionTimeout) {
-        clearTimeout(referralActionTimeout);
-    }
-    
-    // Set timeout to clear lastReferralAction after 5 seconds
-    referralActionTimeout = setTimeout(() => {
-        lastReferralAction = null;
-    }, 5000);
-    
-    console.log('Processing referral share for platform:', platform);
-    
-    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
-    const referralData = JSON.parse(localStorage.getItem('aksharReferralData') || '{}');
-    
-    // Mark this platform as shared (prevents duplicate shares)
-    markPlatformAsShared(platform);
-    
-    // Give coins for the share (3 coins)
-    const coinsEarned = 3;
-    userData.aksharCoins = (userData.aksharCoins || 0) + coinsEarned;
-    referralData.totalShares = (referralData.totalShares || 0) + 1;
-    referralData.totalCoinsEarned = (referralData.totalCoinsEarned || 0) + coinsEarned;
-    referralData.platformShares = referralData.platformShares || {};
-    referralData.platformShares[platform] = (referralData.platformShares[platform] || 0) + 1;
-    
-    // Save to localStorage
-    localStorage.setItem('aksharUserData', JSON.stringify(userData));
-    localStorage.setItem('aksharReferralData', JSON.stringify(referralData));
-    
-    // Update displays
-    updateModalStats();
-    loadUserData();
-    updateStats();
-    
-    // PRIORITY 1: Try MongoDB API for referral tracking
+    // Then show the verification dialog after a delay
+    setTimeout(() => {
+        const verificationMessage = `✅ VERIFICATION REQUIRED:\n\nDid you ACTUALLY share the message on ${platform}?\n\n⚠️ Only click "YES" if you:\n• Opened the share window AND\n• Sent/posted the message AND\n• Completed the share action\n\n❌ Do NOT click "YES" if you just opened and closed the share window!`;
+        
+        const actuallyShared = confirm(verificationMessage);
+        
+        if (actuallyShared) {
+            // User confirmed they actually shared
+            // Now give coins
+            const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+            const referralData = JSON.parse(localStorage.getItem('aksharReferralData') || '{}');
+            
+            // Check if already shared on this platform
+            if (hasSharedOnPlatform(platform)) {
+                showNotification(`⚠️ You've already shared on ${platform}. Try a different platform!`, 'warning');
+                return;
+            }
+            
+            // Mark platform as shared
+            markPlatformAsShared(platform);
+            
+            // Give coins
+            const coinsEarned = 3;
+            userData.aksharCoins = (userData.aksharCoins || 0) + coinsEarned;
+            referralData.totalShares = (referralData.totalShares || 0) + 1;
+            referralData.totalCoinsEarned = (referralData.totalCoinsEarned || 0) + coinsEarned;
+            referralData.platformShares = referralData.platformShares || {};
+            referralData.platformShares[platform] = (referralData.platformShares[platform] || 0) + 1;
+            
+            // Save to localStorage
+            localStorage.setItem('aksharUserData', JSON.stringify(userData));
+            localStorage.setItem('aksharReferralData', JSON.stringify(referralData));
+            
+            // Update displays
+            updateModalStats();
+            loadUserData();
+            updateStats();
+            
+            // Send to backend
+            sendShareToBackend(userData, platform, coinsEarned, referralData);
+            
+            // Show success message
+            showNotification(`🎉 +${coinsEarned} AksharCoins earned! You successfully shared on ${platform}!`, 'success');
+            
+        } else {
+            // User admitted they didn't actually share
+            showNotification('❌ No coins awarded. Please actually share the message to earn coins!', 'info');
+        }
+    }, 3000); // 3 second delay to let them complete the share
+}
+
+// Send share data to backend
+function sendShareToBackend(userData, platform, coinsEarned, referralData) {
+    // PRIORITY 1: Try MongoDB API
     if (window.USE_MONGODB_API && window.ExpoAPIClient) {
         trackReferralShareMongoDB(userData, platform).then(success => {
             if (success) {
                 console.log('✅ MongoDB referral share tracking successful');
             } else {
                 console.log('⚠️ MongoDB failed, falling back to Google Sheets');
-                // Fallback to Google Sheets
-                sendReferralDataToSheetsForShare();
+                sendReferralDataToSheets({
+                    type: 'referral_share',
+                    referrerName: userData.fullName || 'Anonymous',
+                    referrerEmail: userData.email || 'anonymous@example.com',
+                    referrerPhone: userData.phone || '',
+                    referrerRole: userData.role || 'unknown',
+                    platform: platform,
+                    referredEmail: '',
+                    coinsEarned: coinsEarned,
+                    timestamp: new Date().toISOString(),
+                    referralCode: 'AKSHAR2025',
+                    totalCoins: userData.aksharCoins,
+                    totalShares: referralData.totalShares,
+                    shareCount: referralData.platformShares[platform] || 1,
+                    source: 'landing_page'
+                });
             }
         });
     } else {
         // Fallback to Google Sheets
-        sendReferralDataToSheetsForShare();
-    }
-    
-    // Helper function for Google Sheets fallback
-    function sendReferralDataToSheetsForShare() {
-        // Send share tracking to Google Sheets (FALLBACK/BACKUP)
         sendReferralDataToSheets({
             type: 'referral_share',
             referrerName: userData.fullName || 'Anonymous',
@@ -1304,7 +1325,7 @@ function trackReferralShare(platform) {
             referrerPhone: userData.phone || '',
             referrerRole: userData.role || 'unknown',
             platform: platform,
-            referredEmail: '',  // No referred email for just sharing
+            referredEmail: '',
             coinsEarned: coinsEarned,
             timestamp: new Date().toISOString(),
             referralCode: 'AKSHAR2025',
@@ -1314,29 +1335,6 @@ function trackReferralShare(platform) {
             source: 'landing_page'
         });
     }
-    
-    // Show success notification
-    showNotification(`🎉 +${coinsEarned} AksharCoins earned! Share on other platforms to earn more!`, 'success');
-}
-
-// Share confirmation dialog to ensure user actually shares
-function showShareConfirmationDialog(platform, onConfirm) {
-    // Create a simple confirmation mechanism
-    // We'll show a dialog AFTER they click share to confirm they completed it
-    
-    // For now, we'll add a delay and then give coins
-    // This assumes if they clicked the button, they likely shared
-    setTimeout(() => {
-        const shouldConfirm = confirm(`Did you complete sharing on ${platform}?\n\nClick OK if you shared the message.\nClick Cancel if you didn't share.`);
-        
-        if (shouldConfirm) {
-            // User confirmed they shared
-            onConfirm();
-        } else {
-            // User didn't share
-            showNotification('❌ Share cancelled. No coins awarded. Share when ready to earn coins!', 'info');
-        }
-    }, 1500); // Small delay to let the share window open first
 }
 
 // ========== MongoDB Referral Functions (NEW - Faster & More Reliable) ==========
