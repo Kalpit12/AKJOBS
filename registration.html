@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Join AksharJobs - Registration</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/jpeg" href="AK logo.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="AK logo.jpg">
+    <link rel="apple-touch-icon" href="AK logo.jpg">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Join AksharJobs - AI-Powered Job Portal. Register to get early access to our revolutionary recruitment platform.">
+    <meta name="keywords" content="AksharJobs registration, job portal signup, AI job matching, career opportunities">
+    <meta name="author" content="AksharJobs">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Professional Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="expo_landing.css">
+    
+    <!-- Registration Form Specific Styles -->
+    <style>
+        /* Registration Page Specific Styles */
+        .registration-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            padding: 60px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .registration-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .registration-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .registration-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            pointer-events: none;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .back-button:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .registration-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .registration-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .registration-header p {
+            font-size: 1.1rem;
+            color: #64748b;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        /* Role Selection Grid */
+        .role-selection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+            max-height: none;
+            overflow: visible;
+        }
+        
+        .role-option {
+            position: relative;
+        }
+        
+        .role-option input[type="radio"] {
+            display: none;
+        }
+        
+        .role-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            min-height: 140px;
+            justify-content: center;
+        }
+        
+        .role-option label:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .role-option input[type="radio"]:checked + label {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .role-option label i {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .role-option label h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .role-option label p {
+            font-size: 0.8rem;
+            color: #64748b;
+            line-height: 1.4;
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        /* Selected Role Display */
+        .selected-role-display {
+            margin-bottom: 25px;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .selected-role-card {
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .selected-role-icon {
+            font-size: 1.5rem;
+        }
+
+        .selected-role-text {
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Dynamic Fields */
+        .dynamic-fields {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1e293b;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Role-specific fields animation */
+        .role-specific-fields {
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Register Button */
+        .btn-register {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 30px;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .btn-text {
+            display: block;
+        }
+
+        .btn-loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .registration-section {
+                padding: 20px 0;
+            }
+
+            .registration-card {
+                padding: 30px 20px;
+                margin: 10px;
+                border-radius: 16px;
+            }
+            
+            .registration-header h1 {
+                font-size: 2rem;
+            }
+            
+            .role-selection {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .role-option label {
+                padding: 16px 12px;
+                min-height: 120px;
+            }
+
+            .role-option label h3 {
+                font-size: 0.9rem;
+            }
+
+            .role-option label p {
+                font-size: 0.75rem;
+            }
+
+            .back-button {
+                top: 15px;
+                left: 15px;
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .role-selection {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .registration-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .registration-header p {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Success Message Styles */
+        .registration-success-message {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+            animation: slideInUp 0.4s ease-out;
+        }
+        
+        .success-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .success-icon {
+            width: 24px;
+            height: 24px;
+            color: white;
+            flex-shrink: 0;
+            animation: checkmarkPop 0.6s ease-out;
+        }
+        
+        .success-text {
+            flex: 1;
+        }
+        
+        .success-title {
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+        
+        .success-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes checkmarkPop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Registration Form Section -->
+    <section class="registration-section">
+    <div class="registration-container">
+        <div class="registration-card" data-aos="fade-up">
+                <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            
+            <div class="registration-header">
+                <h1>Join AksharJobs</h1>
+                <p>Notify me when we launch - select your role to see relevant fields</p>
+            </div>
+            
+            <form id="registrationForm">
+                <div class="role-selection">
+                    <div class="role-option">
+                        <input type="radio" id="jobSeeker" name="role" value="job_seeker" >
+                        <label for="jobSeeker">
+                            <i class="fas fa-search"></i>
+                            <h3>Job Seeker</h3>
+                                <p>Find your dream job with our AI-powered matching</p>
+                        </label>
+                    </div>
+                        
+                    <div class="role-option">
+                        <input type="radio" id="recruiter" name="role" value="recruiter" >
+                        <label for="recruiter">
+                                <i class="fas fa-users"></i>
+                            <h3>Recruiter</h3>
+                                <p>Connect with top talent using advanced AI tools</p>
+                        </label>
+                    </div>
+                        
+                    <div class="role-option">
+                        <input type="radio" id="mentor" name="role" value="mentor" >
+                        <label for="mentor">
+                                <i class="fas fa-graduation-cap"></i>
+                            <h3>Mentor</h3>
+                                <p>Share your expertise and guide aspiring professionals</p>
+                        </label>
+                    </div>
+                        
+                    <div class="role-option">
+                        <input type="radio" id="trainer" name="role" value="trainer" >
+                        <label for="trainer">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <h3>Trainer</h3>
+                                <p>Deliver impactful training programs and workshops</p>
+                        </label>
+                    </div>
+                        
+                    <div class="role-option">
+                        <input type="radio" id="consultant" name="role" value="consultant" >
+                        <label for="consultant">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Consultant</h3>
+                                <p>Provide strategic guidance and specialized expertise</p>
+                        </label>
+                    </div>
+                        
+                    <div class="role-option">
+                        <input type="radio" id="volunteer" name="role" value="volunteer" >
+                        <label for="volunteer">
+                            <i class="fas fa-heart"></i>
+                            <h3>Volunteer</h3>
+                                <p>Make a positive impact in your community</p>
+                        </label>
+                    </div>
+                        
+                    <div class="role-option">
+                        <input type="radio" id="intern" name="role" value="intern" >
+                        <label for="intern">
+                                <i class="fas fa-user-graduate"></i>
+                            <h3>Intern</h3>
+                                <p>Gain valuable experience through real-world projects</p>
+                        </label>
+                    </div>
+                        
+                    <div class="role-option">
+                        <input type="radio" id="community" name="role" value="community" >
+                        <label for="community">
+                            <i class="fas fa-users"></i>
+                                <h3>Community</h3>
+                                <p>Join our growing professional network</p>
+                        </label>
+                    </div>
+                        
+                    <div class="role-option">
+                        <input type="radio" id="university" name="role" value="university" >
+                        <label for="university">
+                            <i class="fas fa-university"></i>
+                                <h3>University</h3>
+                                <p>Connect students with industry opportunities</p>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Dynamic form fields based on role selection -->
+                <div class="dynamic-fields" id="dynamicFields">
+                    <!-- Selected Role Display -->
+                    <div class="selected-role-display" id="selectedRoleDisplay" style="display: none;">
+                        <div class="selected-role-card">
+                            <i class="selected-role-icon"></i>
+                            <span class="selected-role-text">Selected: <strong></strong></span>
+                        </div>
+                    </div>
+                    
+                        <!-- Common Fields -->
+                    <div class="form-group">
+                            <label for="regFullName">Full Name</label>
+                            <input type="text" id="regFullName" name="fullName" placeholder="Enter your full name" required>
+                    </div>
+                        
+                    <div class="form-group">
+                            <label for="regEmail">Email Address</label>
+                            <input type="email" id="regEmail" name="email" placeholder="Enter your email address" required>
+                    </div>
+                        
+                    <div class="form-group">
+                            <label for="regPhone">Phone Number</label>
+                            <input type="tel" id="regPhone" name="phone" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                        <!-- Role-specific fields will be dynamically shown here -->
+                        <div class="role-specific-fields" id="jobSeekerFields" style="display: none;">
+                        <div class="form-group">
+                                <label for="regExperience">Years of Experience</label>
+                                <select id="regExperience" name="experience" >
+                                    <option value="">Select experience level</option>
+                                    <option value="0-1">0-1 years</option>
+                                    <option value="2-3">2-3 years</option>
+                                    <option value="4-5">4-5 years</option>
+                                    <option value="6-10">6-10 years</option>
+                                    <option value="10+">10+ years</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regSkills">Key Skills</label>
+                                <input type="text" id="regSkills" name="skills" placeholder="Key Skills (comma separated)" >
+                        </div>
+                        <div class="form-group">
+                                <label for="regLocation">Preferred Location</label>
+                                <select id="regLocation" name="location" >
+                                    <option value="">Select preferred location</option>
+                                <option value="remote">Remote</option>
+                                    <option value="hybrid">Hybrid</option>
+                                    <option value="mumbai">Mumbai</option>
+                                    <option value="delhi">Delhi</option>
+                                    <option value="bangalore">Bangalore</option>
+                                    <option value="chennai">Chennai</option>
+                                    <option value="pune">Pune</option>
+                                    <option value="hyderabad">Hyderabad</option>
+                                    <option value="kolkata">Kolkata</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="regJobType">Preferred Job Type</label>
+                                <select id="regJobType" name="jobType" >
+                                    <option value="">Select job type</option>
+                                    <option value="full-time">Full-time</option>
+                                    <option value="part-time">Part-time</option>
+                                    <option value="contract">Contract</option>
+                                    <option value="freelance">Freelance</option>
+                                    <option value="internship">Internship</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="regIndustry">Industry Interest</label>
+                                <select id="regIndustry" name="industry">
+                                    <option value="">Select industry (optional)</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="education">Education</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="consulting">Consulting</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                        <div class="role-specific-fields" id="recruiterFields" style="display: none;">
+                        <div class="form-group">
+                                <label for="regCompany">Company Name</label>
+                                <input type="text" id="regCompany" name="company" placeholder="Company Name" >
+                        </div>
+                        <div class="form-group">
+                                <label for="regPosition">Your Position</label>
+                                <input type="text" id="regPosition" name="position" placeholder="Your Position" >
+                        </div>
+                        <div class="form-group">
+                                <label for="regIndustry">Industry</label>
+                                <select id="regIndustry" name="industry" >
+                                    <option value="">Select industry</option>
+                                <option value="technology">Technology</option>
+                                <option value="finance">Finance</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="education">Education</option>
+                                    <option value="retail">Retail</option>
+                                <option value="manufacturing">Manufacturing</option>
+                                    <option value="consulting">Consulting</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                            <div class="form-group">
+                                <label for="regCompanySize">Company Size</label>
+                                <select id="regCompanySize" name="companySize" >
+                                    <option value="">Select company size</option>
+                                    <option value="1-10">1-10 employees</option>
+                                    <option value="11-50">11-50 employees</option>
+                                    <option value="51-200">51-200 employees</option>
+                                    <option value="201-500">201-500 employees</option>
+                                    <option value="501-1000">501-1000 employees</option>
+                                    <option value="1000+">1000+ employees</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="regHiringVolume">Monthly Hiring Volume</label>
+                                <select id="regHiringVolume" name="hiringVolume">
+                                    <option value="">Select hiring volume (optional)</option>
+                                    <option value="1-5">1-5 positions</option>
+                                    <option value="6-15">6-15 positions</option>
+                                    <option value="16-30">16-30 positions</option>
+                                    <option value="30+">30+ positions</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                        <div class="role-specific-fields" id="mentorFields" style="display: none;">
+                        <div class="form-group">
+                                <label for="regExpertise">Area of Expertise</label>
+                                <select id="regExpertise" name="expertise" >
+                                    <option value="">Select area of expertise</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="business">Business</option>
+                                    <option value="career-development">Career Development</option>
+                                    <option value="leadership">Leadership</option>
+                                    <option value="entrepreneurship">Entrepreneurship</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="sales">Sales</option>
+                                    <option value="other">Other</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regExperience">Years of Experience</label>
+                                <select id="regExperience" name="experience" >
+                                    <option value="">Select experience level</option>
+                                    <option value="5-10">5-10 years</option>
+                                    <option value="11-15">11-15 years</option>
+                                    <option value="16-20">16-20 years</option>
+                                    <option value="20+">20+ years</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regMentorshipType">Type of Mentorship</label>
+                                <select id="regMentorshipType" name="mentorshipType">
+                                    <option value="">Select mentorship type (optional)</option>
+                                    <option value="career-guidance">Career Guidance</option>
+                                    <option value="skill-development">Skill Development</option>
+                                    <option value="leadership-coaching">Leadership Coaching</option>
+                                    <option value="entrepreneurship">Entrepreneurship</option>
+                                    <option value="industry-insights">Industry Insights</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="regBio">Brief Bio</label>
+                            <textarea id="regBio" name="bio" placeholder="Brief Bio (optional)" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                        <div class="role-specific-fields" id="trainerFields" style="display: none;">
+                        <div class="form-group">
+                                <label for="regSpecialization">Training Specialization</label>
+                                <select id="regSpecialization" name="specialization" >
+                                    <option value="">Select specialization</option>
+                                    <option value="technical-skills">Technical Skills</option>
+                                    <option value="soft-skills">Soft Skills</option>
+                                    <option value="leadership">Leadership</option>
+                                    <option value="communication">Communication</option>
+                                    <option value="project-management">Project Management</option>
+                                    <option value="sales-training">Sales Training</option>
+                                    <option value="customer-service">Customer Service</option>
+                                    <option value="other">Other</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regTrainingFormat">Preferred Training Format</label>
+                                <select id="regTrainingFormat" name="trainingFormat" >
+                                    <option value="">Select training format</option>
+                                    <option value="online">Online</option>
+                                    <option value="in-person">In-person</option>
+                                    <option value="hybrid">Hybrid</option>
+                                    <option value="workshop">Workshop</option>
+                                    <option value="bootcamp">Bootcamp</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regExperience">Years of Training Experience</label>
+                                <select id="regExperience" name="experience" >
+                                    <option value="">Select experience level</option>
+                                    <option value="1-3">1-3 years</option>
+                                    <option value="4-7">4-7 years</option>
+                                    <option value="8-12">8-12 years</option>
+                                    <option value="12+">12+ years</option>
+                            </select>
+                        </div>
+                            <div class="form-group">
+                                <label for="regCertifications">Certifications</label>
+                                <input type="text" id="regCertifications" name="certifications" placeholder="Certifications (optional)">
+                        </div>
+                    </div>
+                    
+                        <div class="role-specific-fields" id="consultantFields" style="display: none;">
+                        <div class="form-group">
+                                <label for="regConsultantSpecialization">Consulting Specialization</label>
+                                <select id="regConsultantSpecialization" name="consultantSpecialization" >
+                                    <option value="">Select specialization</option>
+                                    <option value="strategy">Strategy</option>
+                                    <option value="operations">Operations</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="hr">Human Resources</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="digital-transformation">Digital Transformation</option>
+                                    <option value="other">Other</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regConsultantExperience">Years of Consulting Experience</label>
+                                <select id="regConsultantExperience" name="consultantExperience" >
+                                    <option value="">Select experience level</option>
+                                    <option value="2-5">2-5 years</option>
+                                    <option value="6-10">6-10 years</option>
+                                    <option value="11-15">11-15 years</option>
+                                    <option value="15+">15+ years</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regConsultantType">Consulting Engagement Type</label>
+                                <select id="regConsultantType" name="consultantType" >
+                                    <option value="">Select engagement type</option>
+                                    <option value="short-term">Short-term (1-3 months)</option>
+                                    <option value="medium-term">Medium-term (3-6 months)</option>
+                                    <option value="long-term">Long-term (6+ months)</option>
+                                    <option value="ongoing">Ongoing support</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="regIndustryFocus">Primary Industry Focus</label>
+                                <select id="regIndustryFocus" name="industryFocus">
+                                    <option value="">Select industry focus (optional)</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="education">Education</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                        <div class="role-specific-fields" id="volunteerFields" style="display: none;">
+                        <div class="form-group">
+                                <label for="regVolunteerInterests">Volunteer Interests</label>
+                                <select id="regVolunteerInterests" name="volunteerInterests" >
+                                    <option value="">Select volunteer interests</option>
+                                    <option value="community-outreach">Community Outreach</option>
+                                    <option value="education">Education</option>
+                                    <option value="environment">Environment</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="social-justice">Social Justice</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="event-management">Event Management</option>
+                                    <option value="other">Other</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regVolunteerAvailability">Availability</label>
+                                <select id="regVolunteerAvailability" name="volunteerAvailability" >
+                                    <option value="">Select availability</option>
+                                    <option value="weekends">Weekends only</option>
+                                    <option value="weekdays">Weekdays only</option>
+                                <option value="flexible">Flexible</option>
+                                    <option value="evenings">Evenings only</option>
+                                    <option value="full-time">Full-time volunteer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regVolunteerMotivation">Motivation</label>
+                            <textarea id="regVolunteerMotivation" name="volunteerMotivation" placeholder="Why do you want to volunteer? (optional)" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                        <div class="role-specific-fields" id="internFields" style="display: none;">
+                        <div class="form-group">
+                                <label for="regUniversity">University/Institution</label>
+                                <input type="text" id="regUniversity" name="university" placeholder="University/Institution" >
+                        </div>
+                        <div class="form-group">
+                                <label for="regField">Field of Study</label>
+                                <select id="regField" name="field" >
+                                    <option value="">Select field of study</option>
+                                    <option value="computer-science">Computer Science</option>
+                                    <option value="engineering">Engineering</option>
+                                    <option value="business">Business</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="design">Design</option>
+                                    <option value="data-science">Data Science</option>
+                                    <option value="other">Other</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regInternshipType">Type of Internship</label>
+                                <select id="regInternshipType" name="internshipType" >
+                                    <option value="">Select internship type</option>
+                                <option value="summer">Summer Internship</option>
+                                    <option value="semester">Semester Internship</option>
+                                    <option value="year-long">Year-long Internship</option>
+                                    <option value="part-time">Part-time Internship</option>
+                                    <option value="remote">Remote Internship</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="regGraduationYear">Expected Graduation Year</label>
+                                <select id="regGraduationYear" name="graduationYear">
+                                    <option value="">Select graduation year (optional)</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="2028">2028</option>
+                                    <option value="2029">2029</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                        <div class="role-specific-fields" id="communityFields" style="display: none;">
+                        <div class="form-group">
+                                <label for="regCommunityOrganization">Community Organization</label>
+                                <select id="regCommunityOrganization" name="communityOrganization" >
+                                    <option value="">Select your community organization</option>
+                                    <option value="uan">UAN (United Asian Network)</option>
+                                    <option value="hindu-council">Hindu Council of Kenya</option>
+                                    <option value="knm">KNM (Kenya National Muslim Association)</option>
+                                    <option value="sikh-community">Sikh Community Kenya</option>
+                                    <option value="jain-samaj">Jain Samaj Kenya</option>
+                                    <option value="buddhist-society">Buddhist Society of Kenya</option>
+                                    <option value="christian-fellowship">Christian Professional Fellowship</option>
+                                    <option value="rotary-club">Rotary Club</option>
+                                    <option value="lions-club">Lions Club</option>
+                                    <option value="rotaract">Rotaract Club</option>
+                                    <option value="young-professionals">Young Professionals Network</option>
+                                    <option value="women-in-tech">Women in Tech Kenya</option>
+                                    <option value="startup-community">Startup Community Kenya</option>
+                                    <option value="tech-community">Tech Community Kenya</option>
+                                    <option value="business-network">Business Network International (BNI)</option>
+                                    <option value="chamber-commerce">Kenya National Chamber of Commerce</option>
+                                    <option value="professional-body">Professional Body/Association</option>
+                                    <option value="alumni-network">University Alumni Network</option>
+                                    <option value="cultural-group">Cultural Group</option>
+                                    <option value="religious-community">Religious Community</option>
+                                    <option value="social-club">Social Club</option>
+                                    <option value="volunteer-group">Volunteer Group</option>
+                                    <option value="other">Other Community Organization</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regCommunityInterests">Community Interests</label>
+                                <select id="regCommunityInterests" name="communityInterests" >
+                                    <option value="">Select community interests</option>
+                                    <option value="networking">Professional Networking</option>
+                                    <option value="skill-sharing">Skill Sharing</option>
+                                    <option value="mentorship">Mentorship</option>
+                                    <option value="collaboration">Collaboration</option>
+                                    <option value="knowledge-exchange">Knowledge Exchange</option>
+                                    <option value="career-development">Career Development</option>
+                                    <option value="cultural-events">Cultural Events</option>
+                                    <option value="religious-activities">Religious Activities</option>
+                                    <option value="social-service">Social Service</option>
+                                    <option value="business-development">Business Development</option>
+                                    <option value="other">Other</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regCommunityRole">Preferred Community Role</label>
+                                <select id="regCommunityRole" name="communityRole" >
+                                    <option value="">Select preferred role</option>
+                                    <option value="active-member">Active Member</option>
+                                <option value="contributor">Contributor</option>
+                                <option value="moderator">Moderator</option>
+                                    <option value="organizer">Event Organizer</option>
+                                    <option value="ambassador">Community Ambassador</option>
+                                    <option value="volunteer">Volunteer</option>
+                                    <option value="mentor">Mentor</option>
+                                    <option value="leader">Community Leader</option>
+                            </select>
+                        </div>
+                            <div class="form-group">
+                                <label for="regCommunityExperience">Community Experience</label>
+                                <select id="regCommunityExperience" name="communityExperience">
+                                    <option value="">Select experience level (optional)</option>
+                                    <option value="new">New to communities</option>
+                                    <option value="some">Some experience</option>
+                                    <option value="experienced">Experienced</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="regCommunityDescription">Community Involvement Description</label>
+                                <textarea id="regCommunityDescription" name="communityDescription" placeholder="Describe your involvement in community activities (optional)" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                        <div class="role-specific-fields" id="universityFields" style="display: none;">
+                        <div class="form-group">
+                                <label for="regUniversityName">University/Institution Name</label>
+                                <input type="text" id="regUniversityName" name="universityName" placeholder="University/Institution Name" >
+                        </div>
+                        <div class="form-group">
+                                <label for="regDepartment">Department/Program</label>
+                                <select id="regDepartment" name="department" >
+                                    <option value="">Select department/program</option>
+                                    <option value="computer-science">Computer Science</option>
+                                    <option value="engineering">Engineering</option>
+                                    <option value="business">Business</option>
+                                    <option value="management">Management</option>
+                                    <option value="design">Design</option>
+                                    <option value="data-science">Data Science</option>
+                                    <option value="other">Other</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regUniversityType">Type of Institution</label>
+                                <select id="regUniversityType" name="universityType" >
+                                    <option value="">Select institution type</option>
+                                <option value="public">Public University</option>
+                                <option value="private">Private University</option>
+                                    <option value="community-college">Community College</option>
+                                    <option value="technical-institute">Technical Institute</option>
+                                <option value="vocational">Vocational School</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                                <label for="regStudentCount">Student Population</label>
+                            <input type="text" id="regStudentCount" name="studentCount" placeholder="Approximate Student Population">
+                        </div>
+                    </div>
+                </div>
+                
+                    <button type="submit" class="btn-register">
+                        <span class="btn-text">Get Early Access</span>
+                        <div class="btn-loading" style="display: none;">
+                            <div class="loading-spinner"></div>
+                            <span>Registering...</span>
+                        </div>
+                    </button>
+                    
+                    <!-- Success Message (hidden by default) -->
+                    <div id="registrationSuccessMessage" class="registration-success-message" style="display: none;">
+                        <div class="success-content">
+                            <svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <div class="success-text">
+                                <div class="success-title">Registration Successful!</div>
+                                <div class="success-subtitle">Welcome to AksharJobs. Redirecting to referral page...</div>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Note: expo_landing.js removed to prevent conflicts -->
+    
+    <!-- Registration Form JavaScript -->
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+        
+        // Google Sheets Integration
+        const REGISTRATION_FORM_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwtF6j5_WsWQHMpz2CnMOXX6_hzR_-WObtJjOpWPKbZRlCiiq9xX3GyTVKVrZ-HszLCoQ/exec';
+
+        // Role selection and dynamic field display
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleInputs = document.querySelectorAll('input[name="role"]');
+            const selectedRoleDisplay = document.getElementById('selectedRoleDisplay');
+            const selectedRoleText = selectedRoleDisplay.querySelector('.selected-role-text strong');
+            const selectedRoleIcon = selectedRoleDisplay.querySelector('.selected-role-icon');
+            
+            // Check if all required elements exist
+            if (!roleInputs.length || !selectedRoleDisplay || !selectedRoleText || !selectedRoleIcon) {
+                console.error('Missing required DOM elements for role selection');
+                return;
+            }
+            
+            // Role icons mapping
+            const roleIcons = {
+                'job_seeker': 'fas fa-search',
+                'recruiter': 'fas fa-users',
+                'mentor': 'fas fa-graduation-cap',
+                'trainer': 'fas fa-chalkboard-teacher',
+                'consultant': 'fas fa-chart-line',
+                'volunteer': 'fas fa-heart',
+                'intern': 'fas fa-user-graduate',
+                'community': 'fas fa-users',
+                'university': 'fas fa-university'
+            };
+
+            // Role labels mapping
+            const roleLabels = {
+                'job_seeker': 'Job Seeker',
+                'recruiter': 'Recruiter',
+                'mentor': 'Mentor',
+                'trainer': 'Trainer',
+                'consultant': 'Consultant',
+                'volunteer': 'Volunteer',
+                'intern': 'Intern',
+                'community': 'Community',
+                'university': 'University'
+        };
+        
+        roleInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                    const selectedRole = this.value;
+                
+                // Show selected role display
+                    selectedRoleDisplay.style.display = 'block';
+                    selectedRoleText.textContent = roleLabels[selectedRole];
+                    selectedRoleIcon.className = selectedRoleIcon.className.split(' ')[0] + ' ' + roleIcons[selectedRole];
+                    
+                    // Hide all role-specific fields
+                    const allRoleFields = document.querySelectorAll('.role-specific-fields');
+                    allRoleFields.forEach(field => {
+                        field.style.display = 'none';
+                    });
+                    
+                    // Show relevant fields based on selected role
+                    const relevantFields = document.getElementById(selectedRole + 'Fields');
+                    if (relevantFields) {
+                        relevantFields.style.display = 'block';
+                        
+                        // Remove required attribute from all role-specific fields
+                        const allRoleFields = relevantFields.querySelectorAll('input, select, textarea');
+                        allRoleFields.forEach(field => {
+                            field.removeAttribute('required');
+                        });
+                    } else {
+                        console.error('No fields found for role:', selectedRole);
+                    }
+            });
+        });
+        
+        // Form submission
+            const registrationForm = document.getElementById('registrationForm');
+            registrationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+                const submitButton = this.querySelector('.btn-register');
+                const btnText = submitButton.querySelector('.btn-text');
+                const btnLoading = submitButton.querySelector('.btn-loading');
+            
+            // Show loading state
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'flex';
+            submitButton.disabled = true;
+            
+                // Get form data
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData.entries());
+                
+                // Add timestamp
+                data.timestamp = new Date().toISOString();
+                data.type = 'registration';
+                
+                // Send to Google Sheets
+                sendToGoogleSheets(data)
+                    .then(() => {
+                        // Success - show success message
+                        showSuccessMessage();
+                        
+                        // Store user data for referral system
+                        localStorage.setItem('aksharUserData', JSON.stringify(data));
+                        
+                        // Check if user came from a referral link
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const referrerEmail = urlParams.get('ref');
+                        
+                        if (referrerEmail) {
+                            console.log('Processing referral registration for referrer:', referrerEmail);
+                            // Send referral bonus to Google Sheets
+                            processReferralRegistration(referrerEmail, data);
+                        }
+                        
+                        // Redirect to referral page after 2 seconds
+            setTimeout(() => {
+                            window.location.href = 'referral.html?from=registration';
+                        }, 2000);
+                    })
+                    .catch((error) => {
+                        console.error('Registration failed:', error);
+                        
+                        // Check if this is a duplicate registration error
+                        if (error.duplicate) {
+                            showErrorMessage(
+                                error.message || 'This email is already registered.',
+                                true,  // isDuplicate flag
+                                error.existingName,
+                                error.registeredAt
+                            );
+                        } else {
+                            showErrorMessage(error.message || 'Registration failed. Please try again.');
+                        }
+                        
+                        // Reset button state
+                        btnText.style.display = 'block';
+                        btnLoading.style.display = 'none';
+                        submitButton.disabled = false;
+                    });
+            });
+        });
+        
+        // Function to send data to Google Sheets
+        async function sendToGoogleSheets(data) {
+            return new Promise((resolve, reject) => {
+                try {
+                    console.log('Sending registration data to Google Sheets:', data);
+                    
+                    const params = new URLSearchParams(data);
+                    const url = `${REGISTRATION_FORM_WEBHOOK_URL}?${params.toString()}`;
+                    
+                    console.log('Webhook URL:', url);
+                    
+                    // Try to fetch with CORS to get response
+                    fetch(url, {
+                        method: 'GET',
+                        mode: 'cors'
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log('Registration response:', result);
+                        
+                        // Check for duplicate error
+                        if (result.error && result.duplicate) {
+                            console.log('Duplicate registration detected:', result);
+                            reject({
+                                duplicate: true,
+                                message: result.message || 'This email is already registered.',
+                                existingName: result.existingName,
+                                registeredAt: result.registeredAt
+                            });
+                            return;
+                        }
+                        
+                        // Check for other errors
+                        if (result.error) {
+                            console.error('Registration error:', result.error);
+                            reject({
+                                duplicate: false,
+                                message: result.message || result.error
+                            });
+                            return;
+                        }
+                        
+                        // Success
+                        resolve();
+                    })
+                    .catch(err => {
+                        console.log('CORS fetch failed, trying fallback method:', err);
+                        
+                        // Fallback: Create a hidden iframe to send the data
+                        const iframe = document.createElement('iframe');
+                        iframe.style.display = 'none';
+                        iframe.src = url;
+                        document.body.appendChild(iframe);
+                        
+                        // Clean up iframe after a short delay
+                        setTimeout(() => {
+                            if (iframe.parentNode) {
+                                iframe.parentNode.removeChild(iframe);
+                            }
+                            resolve(); // Proceed with success flow
+                        }, 2000);
+                    });
+                    
+                } catch (error) {
+                    console.error('Failed to send registration data:', error);
+                    reject({
+                        duplicate: false,
+                        message: 'Failed to send registration. Please try again.'
+                    });
+                }
+            });
+        }
+
+        // Function to show success message
+        function showSuccessMessage() {
+            // Show the minimal success message under the button
+            const successMessage = document.getElementById('registrationSuccessMessage');
+            if (successMessage) {
+                successMessage.style.display = 'block';
+            }
+            
+            // Disable the submit button
+            const submitButton = document.querySelector('.btn-register');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.style.opacity = '0.7';
+                submitButton.style.cursor = 'not-allowed';
+            }
+            
+            // Scroll to success message smoothly
+            setTimeout(() => {
+                if (successMessage) {
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }, 100);
+        }
+
+        // Function to show error message
+        function showErrorMessage(message, isDuplicate = false, existingName = '', registeredAt = '') {
+            // Remove any existing error messages
+            const existingErrors = document.querySelectorAll('.error-message');
+            existingErrors.forEach(err => err.remove());
+            
+            // Create error message
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            
+            if (isDuplicate) {
+                // Special message for duplicate registration
+                const registeredDate = registeredAt ? new Date(registeredAt).toLocaleDateString() : 'recently';
+                errorMessage.innerHTML = `
+                    <div style="text-align: center; padding: 30px; background: #ff9800; color: white; border-radius: 15px; margin: 20px 0; box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);">
+                        <div style="font-size: 50px; margin-bottom: 15px;">⚠️</div>
+                        <h3 style="margin-bottom: 15px; font-size: 24px;">Email Already Registered</h3>
+                        <p style="margin-bottom: 10px; font-size: 16px;">${message}</p>
+                        ${existingName ? `<p style="margin-top: 15px; font-size: 14px; opacity: 0.9;">Registered as: <strong>${existingName}</strong></p>` : ''}
+                        <p style="margin-top: 5px; font-size: 14px; opacity: 0.9;">Registration date: ${registeredDate}</p>
+                        <div style="margin-top: 25px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <button onclick="window.location.href='referral.html'" style="background: white; color: #ff9800; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                                Go to Referral Page
+                            </button>
+                            <button onclick="location.reload()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                                Try Different Email
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Standard error message
+                errorMessage.innerHTML = `
+                    <div style="text-align: center; padding: 20px; background: #ff6b6b; color: white; border-radius: 10px; margin: 20px 0; box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);">
+                        <div style="font-size: 40px; margin-bottom: 15px;">❌</div>
+                        <h3 style="margin-bottom: 10px;">Registration Failed</h3>
+                        <p>${message}</p>
+                        <button onclick="location.reload()" style="background: white; color: #ff6b6b; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: 600;">
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            }
+            
+            const formContainer = document.querySelector('.registration-form-container');
+            if (formContainer) {
+                formContainer.appendChild(errorMessage);
+                
+                // Scroll to error message
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Test function for debugging
+        // Function to process referral registration (award +1 coin to referrer)
+        function processReferralRegistration(referrerEmail, newUserData) {
+            try {
+                console.log('Sending referral bonus to Google Sheets');
+                
+                // Prepare referral bonus data
+                const referralData = {
+                    type: 'referral',
+                    referrerName: 'Referrer',  // Will be looked up in backend
+                    referrerEmail: referrerEmail,
+                    referrerPhone: '',
+                    referrerRole: 'unknown',
+                    referredEmail: newUserData.email,  // CRITICAL: This triggers count increment
+                    referredName: newUserData.fullName || newUserData.name,
+                    platform: 'registration',
+                    timestamp: new Date().toISOString(),
+                    referralCode: 'AKSHAR2025',
+                    source: 'registration_page'
+                };
+                
+                console.log('Referral data being sent:', referralData);
+                console.log('CRITICAL - referredEmail:', referralData.referredEmail);
+                
+                // Send to Google Sheets via GET request
+                const params = new URLSearchParams(referralData);
+                const url = `${REGISTRATION_FORM_WEBHOOK_URL}?${params.toString()}`;
+                
+                console.log('Referral bonus URL:', url);
+                
+                // Use hidden iframe to send data
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = url;
+                document.body.appendChild(iframe);
+                
+                // Remove iframe after 3 seconds
+                setTimeout(() => {
+                    if (iframe.parentNode) {
+                        iframe.parentNode.removeChild(iframe);
+                    }
+                }, 3000);
+                
+                console.log('✅ Referral bonus sent: +1 coin for referrer');
+            } catch (error) {
+                console.error('Error processing referral registration:', error);
+            }
+        }
+        
+        function testRegistration() {
+            console.log('Testing registration form...');
+            
+            // Fill form with test data
+            const fullNameField = document.getElementById('regFullName');
+            const emailField = document.getElementById('regEmail');
+            const phoneField = document.getElementById('regPhone');
+            
+            if (fullNameField) fullNameField.value = 'Test User';
+            if (emailField) emailField.value = 'test@example.com';
+            if (phoneField) phoneField.value = '+254 700 000 000';
+            
+            // Select a role
+            const jobSeekerRadio = document.querySelector('input[value="job_seeker"]');
+            if (jobSeekerRadio) {
+                jobSeekerRadio.checked = true;
+                jobSeekerRadio.dispatchEvent(new Event('change'));
+                
+                // Fill job seeker fields after role selection
+                setTimeout(() => {
+                    const experienceField = document.getElementById('regExperience');
+                    const skillsField = document.getElementById('regSkills');
+                    const locationField = document.getElementById('regLocation');
+                    const jobTypeField = document.getElementById('regJobType');
+                    const industryField = document.getElementById('regIndustry');
+                    
+                    if (experienceField) experienceField.value = '2-3';
+                    if (skillsField) skillsField.value = 'JavaScript, React, Node.js';
+                    if (locationField) locationField.value = 'remote';
+                    if (jobTypeField) jobTypeField.value = 'full-time';
+                    if (industryField) industryField.value = 'technology';
+                    
+                    console.log('Test data filled. Try submitting the form now.');
+                }, 500);
+            } else {
+                console.error('Job seeker radio button not found');
+            }
+        }
+
+    </script>
+</body>
+</html>
