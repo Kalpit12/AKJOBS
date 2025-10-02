@@ -725,20 +725,60 @@ function shareReferralViaWhatsApp() {
     const baseUrl = window.location.origin + window.location.pathname;
     const referralUrl = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
     
-    const message = `🚀 Join me on AksharJobs - the revolutionary AI-powered job portal launching October 20th, 2025!
+    const message = `www.AksharJobs.com
+🌟 Imagine this...
 
-✨ Features:
-• AI-powered job matching with 75.3% accuracy
-• Multilingual support (English, Hindi, Gujarati, Swahili)
-• Cultural intelligence for global opportunities
-• Advanced analytics and insights
+What if finding your dream opportunity didn't take months of endless searching?
+What if the perfect match was just minutes away?
 
-🎁 Use my referral code: ${referralCode}
-Get exclusive early access and premium benefits!
+Welcome to AksharJobs ✨
 
-Join the waitlist now: ${referralUrl}
+🧠 Powered by Advanced AI
+Our intelligent system doesn't just match keywords... it understands you. Your skills. Your aspirations. Your unique potential.
 
-#AksharJobs #AI #JobPortal #CareerOpportunities`;
+🌍 Speaks Your Language
+Breaking barriers with true multilingual support. Because opportunity shouldn't be limited by language.
+
+💫 Culturally Intelligent
+Built for the global market. Designed to understand what makes you unique.
+
+One Platform. Infinite Connections.
+
+Whether you're a:
+• Job Seeker ready for your breakthrough
+• Recruiter hunting for exceptional talent
+• Mentor eager to guide the next generation
+• Trainer sharing transformative knowledge
+• Consultant offering expertise
+• Volunteer making a difference
+• Intern starting your journey
+• Community builder
+• University shaping futures
+• HR professional
+• NGO creating impact
+• Evangelist spreading innovation
+
+You belong here.... 🤝
+
+🎁 Here's the beautiful part:
+Earn AksharCoins with every interaction.
+Use them to unlock premium features.
+Completely free.
+
+Your success shouldn't cost a fortune. It should reward you.
+
+⚡ Minutes, not months.
+💎 Perfect matches, not compromises.
+🚀 Your future, starting now.
+
+AksharJobs - Where opportunities find you.
+Connect | Discover | Elevate
+
+Ready to revolutionize your journey?
+Join the awesome Network for pre-launch & start earning AksharCoins...
+
+Register here: ${referralUrl}
+Use my referral code: ${referralCode}`;
     
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
@@ -756,30 +796,61 @@ function shareReferralViaEmail() {
     const baseUrl = window.location.origin + window.location.pathname;
     const referralUrl = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
     
-    const subject = 'Join AksharJobs - AI-Powered Job Portal (Referral Code Inside!)';
-    const body = `Hi there!
+    const subject = 'Join AksharJobs - Where Opportunities Find You';
+    const body = `www.AksharJobs.com
+🌟 Imagine this...
 
-I wanted to share something exciting with you - AksharJobs, a revolutionary AI-powered job portal that's launching on October 20th, 2025!
+What if finding your dream opportunity didn't take months of endless searching?
+What if the perfect match was just minutes away?
 
-🚀 What makes AksharJobs special:
-• AI-powered job matching with 75.3% accuracy
-• Multilingual support (English, Hindi, Gujarati, Swahili)
-• Cultural intelligence for global opportunities
-• Advanced analytics and career insights
-• Personalized career guidance
+Welcome to AksharJobs ✨
 
-🎁 Special Offer:
-Use my referral code "${referralCode}" to get:
-• Early access to the platform
-• Premium features for free
-• Exclusive career opportunities
+🧠 Powered by Advanced AI
+Our intelligent system doesn't just match keywords... it understands you. Your skills. Your aspirations. Your unique potential.
 
-Join the waitlist here: ${referralUrl}
+🌍 Speaks Your Language
+Breaking barriers with true multilingual support. Because opportunity shouldn't be limited by language.
 
-This is going to revolutionize how we find jobs and talent. Don't miss out on being part of the future of recruitment!
+💫 Culturally Intelligent
+Built for the global market. Designed to understand what makes you unique.
 
-Best regards,
-[Your Name]`;
+One Platform. Infinite Connections.
+
+Whether you're a:
+• Job Seeker ready for your breakthrough
+• Recruiter hunting for exceptional talent
+• Mentor eager to guide the next generation
+• Trainer sharing transformative knowledge
+• Consultant offering expertise
+• Volunteer making a difference
+• Intern starting your journey
+• Community builder
+• University shaping futures
+• HR professional
+• NGO creating impact
+• Evangelist spreading innovation
+
+You belong here.... 🤝
+
+🎁 Here's the beautiful part:
+Earn AksharCoins with every interaction.
+Use them to unlock premium features.
+Completely free.
+
+Your success shouldn't cost a fortune. It should reward you.
+
+⚡ Minutes, not months.
+💎 Perfect matches, not compromises.
+🚀 Your future, starting now.
+
+AksharJobs - Where opportunities find you.
+Connect | Discover | Elevate
+
+Ready to revolutionize your journey?
+Join the awesome Network for pre-launch & start earning AksharCoins...
+
+Register here: ${referralUrl}
+Use my referral code: ${referralCode}`;
     
     const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.open(mailtoLink, '_blank');
@@ -790,7 +861,22 @@ Best regards,
 
 function shareReferralViaSMS() {
     const referralCode = 'AKSHAR2025';
-    const message = `🚀 Join AksharJobs - AI job portal launching Oct 20, 2025! Use my code ${referralCode} for early access & premium benefits. Join: ${window.location.href}`;
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    const referrerEmail = userData.email || 'anonymous@example.com';
+    
+    // Create referral URL with referrer email
+    const baseUrl = window.location.origin + window.location.pathname;
+    const referralUrl = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
+    
+    const message = `🚀 Join AksharJobs - Where Opportunities Find You!
+
+🧠 AI-Powered • 🌍 Multilingual • 💫 Culturally Intelligent
+
+Earn AksharCoins with every interaction!
+⚡ Minutes, not months • 💎 Perfect matches
+
+Register: ${referralUrl}
+Code: ${referralCode}`;
     
     const smsLink = `sms:?body=${encodeURIComponent(message)}`;
     window.open(smsLink, '_blank');
@@ -801,23 +887,45 @@ function shareReferralViaSMS() {
 
 function shareReferralViaLinkedIn() {
     const referralCode = 'AKSHAR2025';
-    const title = 'AksharJobs - Revolutionary AI-Powered Job Portal';
-    const summary = `🚀 Excited to share AksharJobs - the revolutionary AI-powered job portal launching October 20th, 2025!
-
-✨ Key Features:
-• AI-powered job matching with 75.3% accuracy
-• Multilingual support (English, Hindi, Gujarati, Swahili)
-• Cultural intelligence for global opportunities
-• Advanced analytics and career insights
-
-🎁 Special Offer:
-Use my referral code "${referralCode}" to get early access and premium benefits!
-
-This platform is going to revolutionize recruitment and career development. Join the waitlist and be part of the future!
-
-#AksharJobs #AI #JobPortal #CareerOpportunities #Innovation`;
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    const referrerEmail = userData.email || 'anonymous@example.com';
     
-    const url = encodeURIComponent(window.location.href);
+    // Create referral URL with referrer email
+    const baseUrl = window.location.origin + window.location.pathname;
+    const referralUrl = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
+    
+    const title = 'AksharJobs - Where Opportunities Find You';
+    const summary = `www.AksharJobs.com
+🌟 Imagine this...
+
+What if finding your dream opportunity didn't take months of endless searching? What if the perfect match was just minutes away?
+
+Welcome to AksharJobs ✨
+
+🧠 Powered by Advanced AI - Our intelligent system understands you. Your skills. Your aspirations. Your unique potential.
+
+🌍 Speaks Your Language - Breaking barriers with true multilingual support.
+
+💫 Culturally Intelligent - Built for the global market.
+
+One Platform. Infinite Connections.
+
+Whether you're a Job Seeker, Recruiter, Mentor, Trainer, Consultant, Volunteer, Intern, Community builder, University, HR professional, NGO, or Evangelist - You belong here.... 🤝
+
+🎁 Earn AksharCoins with every interaction. Use them to unlock premium features. Completely free.
+
+⚡ Minutes, not months.
+💎 Perfect matches, not compromises.
+🚀 Your future, starting now.
+
+Join the awesome Network for pre-launch & start earning AksharCoins...
+
+Register: ${referralUrl}
+Code: ${referralCode}
+
+#AksharJobs #AI #CareerOpportunities #Innovation`;
+    
+    const url = encodeURIComponent(referralUrl);
     const encodedTitle = encodeURIComponent(title);
     const encodedSummary = encodeURIComponent(summary);
     
@@ -829,18 +937,44 @@ This platform is going to revolutionize recruitment and career development. Join
 
 function shareReferralViaTwitter() {
     const referralCode = 'AKSHAR2025';
-    const text = `🚀 Join AksharJobs - revolutionary AI-powered job portal launching Oct 20, 2025! Use my code ${referralCode} for early access & premium benefits. #AksharJobs #AI #JobPortal`;
-    const url = encodeURIComponent(window.location.href);
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    const referrerEmail = userData.email || 'anonymous@example.com';
+    
+    // Create referral URL with referrer email
+    const baseUrl = window.location.origin + window.location.pathname;
+    const referralUrl = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
+    
+    const text = `🚀 Join AksharJobs - Where Opportunities Find You
+
+🧠 AI-Powered matching
+🌍 Multilingual support
+💫 Culturally intelligent
+🎁 Earn AksharCoins
+
+⚡ Minutes, not months
+💎 Perfect matches, not compromises
+
+Join now: ${referralUrl}
+Code: ${referralCode}
+
+#AksharJobs #AI #CareerOpportunities`;
     const encodedText = encodeURIComponent(text);
     
-    window.open(`https://twitter.com/intent/tweet?text=${encodedText}&url=${url}`, '_blank');
+    window.open(`https://twitter.com/intent/tweet?text=${encodedText}`, '_blank');
     
     // Track referral share
     trackReferralShare('twitter');
 }
 
 function shareReferralViaFacebook() {
-    const url = encodeURIComponent(window.location.href);
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    const referrerEmail = userData.email || 'anonymous@example.com';
+    
+    // Create referral URL with referrer email
+    const baseUrl = window.location.origin + window.location.pathname;
+    const referralUrl = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
+    
+    const url = encodeURIComponent(referralUrl);
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
     
     // Track referral share
@@ -849,10 +983,31 @@ function shareReferralViaFacebook() {
 
 function shareReferralViaTelegram() {
     const referralCode = 'AKSHAR2025';
-    const message = `🚀 Join AksharJobs - AI-powered job portal launching Oct 20, 2025! Use my code ${referralCode} for early access & premium benefits. Join: ${window.location.href}`;
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    const referrerEmail = userData.email || 'anonymous@example.com';
+    
+    // Create referral URL with referrer email
+    const baseUrl = window.location.origin + window.location.pathname;
+    const referralUrl = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
+    
+    const message = `🚀 Join AksharJobs - Where Opportunities Find You
+
+🧠 AI-Powered matching that understands YOU
+🌍 Multilingual support - No language barriers
+💫 Culturally intelligent for global market
+🎁 Earn AksharCoins with every interaction
+
+⚡ Minutes, not months
+💎 Perfect matches, not compromises
+🚀 Your future, starting now
+
+Join the awesome Network for pre-launch & start earning AksharCoins...
+
+Register: ${referralUrl}
+Code: ${referralCode}`;
     
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodedMessage}`, '_blank');
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${encodedMessage}`, '_blank');
     
     // Track referral share
     trackReferralShare('telegram');
@@ -947,12 +1102,23 @@ function showNotification(message, type = 'success') {
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
+    
+    // Set background color based on type
+    let backgroundColor = '#28a745'; // success (green)
+    if (type === 'error') {
+        backgroundColor = '#dc3545'; // error (red)
+    } else if (type === 'warning') {
+        backgroundColor = '#ffc107'; // warning (orange/yellow)
+    } else if (type === 'info') {
+        backgroundColor = '#17a2b8'; // info (blue)
+    }
+    
     notification.style.cssText = `
         position: fixed;
         top: 20px;
         right: 20px;
-        background: ${type === 'success' ? '#28a745' : '#dc3545'};
-        color: white;
+        background: ${backgroundColor};
+        color: ${type === 'warning' ? '#000' : 'white'};
         padding: 15px 20px;
         border-radius: 5px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -966,12 +1132,13 @@ function showNotification(message, type = 'success') {
     
     document.body.appendChild(notification);
     
-    // Remove notification after 3 seconds
+    // Remove notification after 3 seconds (4 seconds for warnings)
+    const displayTime = type === 'warning' ? 4000 : 3000;
     setTimeout(() => {
         if (notification.parentNode) {
             notification.parentNode.removeChild(notification);
         }
-    }, 3000);
+    }, displayTime);
 }
 
 function updateModalStats() {
@@ -1079,8 +1246,8 @@ function trackReferralShare(platform) {
         });
     }
     
-    // Show notification
-    showNotification(`🎉 +3 AksharCoins! Referral link shared via ${platform}. You'll get 1 more coin when someone registers!`, 'success');
+    // Note: Actual notification will be shown by MongoDB/Google Sheets response
+    // This is just a temporary placeholder until server responds
 }
 
 // ========== MongoDB Referral Functions (NEW - Faster & More Reliable) ==========
@@ -1143,12 +1310,21 @@ async function trackReferralShareMongoDB(userData, platform) {
         if (result.success) {
             console.log('✅ MongoDB referral share tracked:', result.data);
             
-            // Update local coins display
-            if (result.data.coinsEarned) {
+            // Check if this was a duplicate share
+            if (result.data.isDuplicate || result.data.actionType === 'duplicate_share') {
+                showNotification(`⚠️ You already shared on ${platform}. Try a different platform to earn more coins!`, 'warning');
+                return true; // Still successful, just no coins awarded
+            }
+            
+            // Update local coins display if coins were earned
+            if (result.data.coinsEarned && result.data.coinsEarned > 0) {
                 userData.aksharCoins = result.data.totalCoins;
                 userData.referralCount = result.data.referralCount;
                 localStorage.setItem('aksharUserData', JSON.stringify(userData));
                 updateAksharCoinsDisplay();
+                
+                // Show success notification with coins earned
+                showNotification(`🎉 +${result.data.coinsEarned} AksharCoins! First time sharing on ${platform}!`, 'success');
             }
             
             return true;
