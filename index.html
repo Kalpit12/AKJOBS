@@ -1007,242 +1007,20 @@
             }
         }
         /* Roles section */
-        .roles-section { 
-            padding: 60px 0; 
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
-        }
-        .roles-section .section-header { text-align: center; margin-bottom: 40px; }
+        .roles-section { padding: 60px 0; background: #f8fafc; }
+        .roles-section .section-header { text-align: center; margin-bottom: 32px; }
         .roles-section .section-header h2 { font-size: 1.8rem; font-weight: 800; margin: 0 0 8px; }
         .roles-section .section-header .section-subtitle { color: var(--text-secondary); }
+        .role-card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: var(--shadow-lg); margin-bottom: 20px; }
+        .role-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .role-icon { width: 50px; height: 50px; border-radius: 12px; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .role-title { margin: 0; font-size: 1.3rem; font-weight: 700; }
+        .role-subtitle { margin: 4px 0 0; color: var(--text-secondary); font-size: 0.9rem; }
+        .benefits-list { list-style: none; padding: 0; margin: 0; }
+        .benefits-list li { position: relative; padding-left: 24px; margin: 8px 0; color: var(--text-primary); font-size: 0.9rem; }
+        .benefits-list li:before { content: "\2713"; position: absolute; left: 0; top: 0; color: #10b981; font-weight: 700; }
         
-        /* Modern Mobile-First Role Cards */
-        .role-card { 
-            background: #fff; 
-            border-radius: 20px; 
-            padding: 24px; 
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1); 
-            margin-bottom: 24px; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
         
-        .role-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 16px 48px rgba(0,0,0,0.15);
-        }
-        
-        .role-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .role-card:hover::before {
-            opacity: 1;
-        }
-        
-        .role-header { 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            text-align: center;
-            gap: 16px; 
-            margin-bottom: 20px; 
-        }
-        
-        .role-icon { 
-            width: 70px; 
-            height: 70px; 
-            border-radius: 20px; 
-            color: #fff; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 1.8rem;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .role-card:hover .role-icon {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-        }
-        
-        .role-title { 
-            margin: 0; 
-            font-size: 1.4rem; 
-            font-weight: 700; 
-            color: #1a202c;
-        }
-        
-        .role-subtitle { 
-            margin: 8px 0 0; 
-            color: var(--text-secondary); 
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-        
-        .benefits-list { 
-            list-style: none; 
-            padding: 0; 
-            margin: 0; 
-        }
-        
-        .benefits-list li { 
-            position: relative; 
-            padding-left: 32px; 
-            margin: 12px 0; 
-            color: var(--text-primary); 
-            font-size: 0.95rem;
-            line-height: 1.5;
-            transition: all 0.2s ease;
-        }
-        
-        .benefits-list li:hover {
-            color: #667eea;
-            transform: translateX(4px);
-        }
-        
-        .benefits-list li:before { 
-            content: "\2713"; 
-            position: absolute; 
-            left: 0; 
-            top: 0; 
-            color: #10b981; 
-            font-weight: 700; 
-            font-size: 1.1rem;
-            transition: all 0.2s ease;
-        }
-        
-        .benefits-list li:hover:before {
-            color: #059669;
-            transform: scale(1.2);
-        }
-        
-        /* Enhanced Animations and Effects */
-        @keyframes cardEntrance {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .role-card {
-            animation: cardEntrance 0.6s ease-out;
-        }
-        
-        /* Stagger animation delays for each card */
-        .role-card:nth-child(1) { animation-delay: 0.1s; }
-        .role-card:nth-child(2) { animation-delay: 0.2s; }
-        .role-card:nth-child(3) { animation-delay: 0.3s; }
-        .role-card:nth-child(4) { animation-delay: 0.4s; }
-        .role-card:nth-child(5) { animation-delay: 0.5s; }
-        .role-card:nth-child(6) { animation-delay: 0.6s; }
-        .role-card:nth-child(7) { animation-delay: 0.7s; }
-        .role-card:nth-child(8) { animation-delay: 0.8s; }
-        .role-card:nth-child(9) { animation-delay: 0.9s; }
-        .role-card:nth-child(10) { animation-delay: 1.0s; }
-        .role-card:nth-child(11) { animation-delay: 1.1s; }
-        .role-card:nth-child(12) { animation-delay: 1.2s; }
-        
-        /* Pulse animation for icons */
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .role-card:hover .role-icon {
-            animation: iconPulse 2s infinite;
-        }
-        
-        /* Gradient text effect for titles */
-        .role-title {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Tilted Card Effect for Role Cards */
-        .role-card {
-            perspective: 1000px;
-            transform-style: preserve-3d;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .role-card-inner {
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .role-card:hover .role-card-inner {
-            transform: rotateX(5deg) rotateY(5deg);
-        }
-        
-        .role-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-        }
-        
-        .role-icon {
-            transform: translateZ(20px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .role-card:hover .role-icon {
-            transform: translateZ(30px) scale(1.1);
-        }
-        
-        .benefits-list {
-            transform: translateZ(10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .role-card:hover .benefits-list {
-            transform: translateZ(15px);
-        }
-        
-        .role-title {
-            transform: translateZ(15px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .role-subtitle {
-            transform: translateZ(10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Enhanced 3D shadow effect */
-        .role-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            border-radius: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            transform: translateZ(-10px);
-        }
-        
-        .role-card:hover::before {
-            opacity: 1;
-        }
         
         /* Sticky CTA Bar */
         .sticky-cta {
@@ -1493,50 +1271,6 @@
                 padding: 0 16px !important;
             }
             
-            /* CRITICAL: Force roles section to be vertical on mobile */
-            .roles-section {
-                display: block !important;
-                width: 100vw !important;
-                max-width: 100vw !important;
-                overflow-x: hidden !important;
-                padding: 40px 0 !important;
-            }
-            
-            .roles-section .container {
-                display: block !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                padding: 0 16px !important;
-                margin: 0 !important;
-            }
-            
-            /* Force all role cards to be full width and stack vertically */
-            .role-card {
-                display: block !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                float: none !important;
-                clear: both !important;
-                margin: 0 0 20px 0 !important;
-                padding: 20px !important;
-                box-sizing: border-box !important;
-                position: relative !important;
-            }
-            
-            /* Override any potential flex or grid layouts */
-            .roles-section * {
-                display: block !important;
-                float: none !important;
-                clear: both !important;
-            }
-            
-            /* Allow flexbox only for role header content */
-            .role-header {
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                text-align: center !important;
-            }
             
             .sticky-cta-content {
                 flex-direction: column;
@@ -1830,82 +1564,6 @@
                 overflow-y: auto;
             }
             
-            /* Mobile Role Cards - Force Vertical Layout */
-            .roles-section {
-                display: block !important;
-                width: 100% !important;
-                overflow-x: hidden !important;
-            }
-            
-            .roles-section .container {
-                display: block !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                padding: 0 16px !important;
-                margin: 0 !important;
-            }
-            
-            /* Force all role cards to stack vertically */
-            .role-card { 
-                padding: 20px !important; 
-                margin-bottom: 20px !important; 
-                border-radius: 16px !important;
-                box-shadow: 0 6px 24px rgba(0,0,0,0.12) !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                display: block !important;
-                float: none !important;
-                position: relative !important;
-                overflow: hidden !important;
-                clear: both !important;
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-                box-sizing: border-box !important;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            }
-            
-            .role-card:hover {
-                transform: translateY(-6px);
-                box-shadow: 0 12px 32px rgba(0,0,0,0.18);
-            }
-            
-            .role-card::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 3px;
-                background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-            
-            .role-card:hover::before {
-                opacity: 1;
-            }
-            
-            .role-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 16px;
-                margin-bottom: 18px;
-            }
-            
-            .role-icon {
-                width: 65px;
-                height: 65px;
-                font-size: 1.7rem;
-                margin: 0 auto;
-                border-radius: 18px;
-                box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-                transition: all 0.3s ease;
-            }
-            
-            .role-card:hover .role-icon {
-                transform: scale(1.05) rotate(3deg);
-                box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            }
             
             .role-title {
                 font-size: 1.4rem;
@@ -1930,73 +1588,7 @@
                 transition: all 0.2s ease;
             }
             
-            .benefits-list li:hover {
-                color: #667eea;
-                transform: translateX(3px);
-            }
             
-            .benefits-list li:before {
-                font-size: 1.1rem;
-                transition: all 0.2s ease;
-            }
-            
-            .benefits-list li:hover:before {
-                color: #059669;
-                transform: scale(1.1);
-            }
-            
-            /* Ultra-strong mobile layout fixes */
-            .roles-section,
-            .roles-section * {
-                display: block !important;
-                float: none !important;
-                clear: both !important;
-            }
-            
-            .roles-section .section-header,
-            .roles-section .container {
-                display: block !important;
-                width: 100% !important;
-                text-align: center !important;
-            }
-            
-            /* Force vertical stacking - no exceptions */
-            .role-card,
-            .role-card * {
-                display: block !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                float: none !important;
-                clear: both !important;
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-                box-sizing: border-box !important;
-            }
-            
-            /* Allow flexbox only for role-header content alignment */
-            .role-header {
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
-            }
-            
-            .benefits-list {
-                display: block !important;
-                width: 100% !important;
-            }
-            
-            .benefits-list li {
-                display: block !important;
-                width: 100% !important;
-                box-sizing: border-box !important;
-            }
-            
-            /* Override any potential grid or flex layouts */
-            .roles-section [class*="grid"],
-            .roles-section [class*="flex"] {
-                display: block !important;
-            }
             .role-header { 
                 flex-direction: column; 
                 text-align: center; 
@@ -2290,64 +1882,57 @@
             </div>
 
             <div class="role-card" data-aos="fade-up" data-aos-delay="100" data-role="job-seeker">
-                <div class="role-card-inner">
-                    <div class="role-header">
-                        <div class="role-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);"><i class="fas fa-search"></i></div>
-                        <div>
-                            <h3 class="role-title">Job Seekers</h3>
-                            <p class="role-subtitle">AI-powered matching and career growth</p>
-                        </div>
+                <div class="role-header">
+                    <div class="role-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);"><i class="fas fa-search"></i></div>
+                    <div>
+                        <h3 class="role-title">Job Seekers</h3>
+                        <p class="role-subtitle">AI-powered matching and career growth</p>
                     </div>
-                    <ul class="benefits-list">
-                        <li>Smart matching to relevant jobs based on skills and experience</li>
-                        <li>Multilingual resume support (Swahili, English)</li>
-                        <li>Real-time alerts for new opportunities</li>
-                        <li>Interview prep and profile improvement tips</li>
-                        <li>Mobile-first experience on all devices</li>
-                    </ul>
                 </div>
+                <ul class="benefits-list">
+                    <li>Smart matching to relevant jobs based on skills and experience</li>
+                    <li>Multilingual resume support (Swahili, English)</li>
+                    <li>Real-time alerts for new opportunities</li>
+                    <li>Interview prep and profile improvement tips</li>
+                    <li>Mobile-first experience on all devices</li>
+                </ul>
             </div>
 
             <div class="role-card" data-aos="fade-up" data-aos-delay="150" data-role="recruiter">
-                <div class="role-card-inner">
-                    <div class="role-header">
-                        <div class="role-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fas fa-user-tie"></i></div>
-                        <div>
-                            <h3 class="role-title">Recruiters</h3>
-                            <p class="role-subtitle">Find top talent faster with AI</p>
-                        </div>
+                <div class="role-header">
+                    <div class="role-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fas fa-user-tie"></i></div>
+                    <div>
+                        <h3 class="role-title">Recruiters</h3>
+                        <p class="role-subtitle">Find top talent faster with AI</p>
                     </div>
-                    <ul class="benefits-list">
-                        <li>75.3% accurate candidate-job matching</li>
-                        <li>Powerful filters: skills, experience, location</li>
-                        <li>AI resume parsing and insights</li>
-                        <li>Interview scheduling and smart notifications</li>
-                        <li>Analytics on hiring funnel performance</li>
-                    </ul>
                 </div>
+                <ul class="benefits-list">
+                    <li>75.3% accurate candidate-job matching</li>
+                    <li>Powerful filters: skills, experience, location</li>
+                    <li>AI resume parsing and insights</li>
+                    <li>Interview scheduling and smart notifications</li>
+                    <li>Analytics on hiring funnel performance</li>
+                </ul>
             </div>
 
             <div class="role-card" data-aos="fade-up" data-aos-delay="200" data-role="mentor">
-                <div class="role-card-inner">
-                    <div class="role-header">
+                <div class="role-header">
                     <div class="role-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><i class="fas fa-lightbulb"></i></div>
                     <div>
                         <h3 class="role-title">Mentors</h3>
                         <p class="role-subtitle">Guide and inspire talent</p>
                     </div>
-                    </div>
-                    <ul class="benefits-list">
-                        <li>Connect with mentees aligned to your expertise</li>
-                        <li>Structured goals and progress tracking</li>
-                        <li>Resource library and community support</li>
-                        <li>Recognition for mentorship impact</li>
-                    </ul>
                 </div>
+                <ul class="benefits-list">
+                    <li>Connect with mentees aligned to your expertise</li>
+                    <li>Structured goals and progress tracking</li>
+                    <li>Resource library and community support</li>
+                    <li>Recognition for mentorship impact</li>
+                </ul>
             </div>
 
             <div class="role-card" data-aos="fade-up" data-aos-delay="250" data-role="trainer">
-                <div class="role-card-inner">
-                    <div class="role-header">
+                <div class="role-header">
                     <div class="role-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-chalkboard-teacher"></i></div>
                     <div>
                         <h3 class="role-title">Trainers</h3>
@@ -2500,7 +2085,6 @@
                     <li>Influencer network development</li>
                 </ul>
             </div>
-        </div>
     </section>
 
     <!-- WhatsApp Floating Button -->
