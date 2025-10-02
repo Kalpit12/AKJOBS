@@ -2055,9 +2055,12 @@ Join the awesome Network for pre-launch & start earning AksharCoins...
 
 Register here: ${referralLink}
 Use my referral code: ${referralCode}`;
-            const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-            trackReferralShare('whatsapp');
+            
+            // Show confirmation dialog and open WhatsApp
+            showShareConfirmationDialog('whatsapp', () => {
+                const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+            });
         }
 
         function shareReferralViaLinkedIn() {
@@ -2098,9 +2101,12 @@ Register: ${referralLink}
 Code: ${referralCode}
 
 #AksharJobs #AI #CareerOpportunities #Innovation`;
-            const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(referralLink)}`;
-            window.open(url, '_blank');
-            trackReferralShare('linkedin');
+            
+            // Show confirmation dialog and open LinkedIn
+            showShareConfirmationDialog('linkedin', () => {
+                const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(referralLink)}`;
+                window.open(url, '_blank');
+            });
         }
 
         function shareReferralViaEmail() {
@@ -2168,8 +2174,11 @@ Join the awesome Network for pre-launch & start earning AksharCoins...
 Register here: ${referralLink}
 Use my referral code: ${referralCode}`;
             const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.open(url);
-            trackReferralShare('email');
+            
+            // Show confirmation dialog and open email
+            showShareConfirmationDialog('email', () => {
+                window.open(url);
+            });
         }
 
         function shareReferralViaTwitter() {
@@ -2195,9 +2204,11 @@ Join now: ${referralLink}
 Code: ${referralCode}
 
 #AksharJobs #AI #CareerOpportunities`;
-            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-            trackReferralShare('twitter');
+            // Show confirmation dialog and open Twitter
+            showShareConfirmationDialog('twitter', () => {
+                const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+            });
         }
 
         function shareReferralViaFacebook() {
@@ -2208,9 +2219,11 @@ Code: ${referralCode}
             const baseUrl = window.location.origin + window.location.pathname.replace('referral.html', 'registration.html');
             const referralLink = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
             
-            const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`;
-            window.open(url, '_blank');
-            trackReferralShare('facebook');
+            // Show confirmation dialog and open Facebook
+            showShareConfirmationDialog('facebook', () => {
+                const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`;
+                window.open(url, '_blank');
+            });
         }
 
         function shareReferralViaTelegram() {
@@ -2237,9 +2250,11 @@ Join the awesome Network for pre-launch & start earning AksharCoins...
 
 Register: ${referralLink}
 Code: ${referralCode}`;
-            const url = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-            trackReferralShare('telegram');
+            // Show confirmation dialog and open Telegram
+            showShareConfirmationDialog('telegram', () => {
+                const url = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+            });
         }
 
         // Debug Modal Functions
