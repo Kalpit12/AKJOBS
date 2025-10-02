@@ -1687,10 +1687,12 @@
             const userData = getUserData();
             const referralData = getReferralData();
             
-            // Sync coins: Ensure both userData and referralData have same total coins
-            const totalCoins = userData.aksharCoins || referralData.totalCoinsEarned || 0;
-            userData.aksharCoins = totalCoins;
-            referralData.totalCoinsEarned = totalCoins;
+            // Calculate and update accurate coin count
+            const coinData = updateAccurateCoinCount();
+            
+            // Use accurate coin count
+            userData.aksharCoins = coinData.totalCoins;
+            referralData.totalCoinsEarned = coinData.totalCoins;
             
             // Update user info
             if (userData.fullName || userData.name) {
@@ -1861,28 +1863,105 @@
         let lastAction = null;
         let actionTimeout = null;
 
-        // Store platform-specific share tracking to prevent duplicate shares per platform
+        // Enhanced platform-specific share tracking with accurate coin calculation
         function hasSharedOnPlatform(platform) {
             const userData = getUserData();
-            const shareHistory = JSON.parse(localStorage.getItem('aksharShareHistory') || '{}');
             const userEmail = userData.email || getCurrentUserEmail() || 'anonymous@example.com';
             
-            // Check if user has already shared on this platform
-            const platformKey = `${userEmail}_${platform}`;
-            return shareHistory[platformKey] === true;
+            // Get user-specific share history
+            const userShareHistory = getUserShareHistory(userEmail);
+            return userShareHistory[platform] === true;
         }
 
         function markPlatformAsShared(platform) {
             const userData = getUserData();
-            const shareHistory = JSON.parse(localStorage.getItem('aksharShareHistory') || '{}');
             const userEmail = userData.email || getCurrentUserEmail() || 'anonymous@example.com';
             
-            // Mark this platform as shared for this user
-            const platformKey = `${userEmail}_${platform}`;
-            shareHistory[platformKey] = true;
-            shareHistory[`${platformKey}_timestamp`] = new Date().toISOString();
+            // Get user-specific share history
+            const userShareHistory = getUserShareHistory(userEmail);
             
-            localStorage.setItem('aksharShareHistory', JSON.stringify(shareHistory));
+            // Mark this platform as shared for this user
+            userShareHistory[platform] = true;
+            userShareHistory[`${platform}_timestamp`] = new Date().toISOString();
+            userShareHistory[`${platform}_coins_earned`] = 3;
+            
+            // Save user-specific share history
+            saveUserShareHistory(userEmail, userShareHistory);
+        }
+
+        // Get share history for specific user (prevents mixing between users)
+        function getUserShareHistory(userEmail) {
+            const allShareHistory = JSON.parse(localStorage.getItem('aksharShareHistory') || '{}');
+            return allShareHistory[userEmail] || {};
+        }
+
+        // Save share history for specific user
+        function saveUserShareHistory(userEmail, userShareHistory) {
+            const allShareHistory = JSON.parse(localStorage.getItem('aksharShareHistory') || '{}');
+            allShareHistory[userEmail] = userShareHistory;
+            localStorage.setItem('aksharShareHistory', JSON.stringify(allShareHistory));
+        }
+
+        // Calculate accurate coin count for current user based on actual shares
+        function calculateAccurateCoins() {
+            const userData = getUserData();
+            const userEmail = userData.email || getCurrentUserEmail() || 'anonymous@example.com';
+            
+            // Get user's share history
+            const userShareHistory = getUserShareHistory(userEmail);
+            
+            // Calculate coins from shares
+            let shareCoins = 0;
+            const platforms = ['whatsapp', 'email', 'linkedin', 'twitter', 'facebook', 'telegram', 'sms', 'native'];
+            
+            platforms.forEach(platform => {
+                if (userShareHistory[platform] === true) {
+                    shareCoins += 3; // 3 coins per platform share
+                }
+            });
+            
+            // Get referral bonus coins from Google Sheets or localStorage
+            const referralData = getReferralData();
+            const referralBonusCoins = referralData.referralBonuses || 0;
+            
+            // Total accurate coins = share coins + referral bonus coins
+            const totalAccurateCoins = shareCoins + referralBonusCoins;
+            
+            console.log(`📊 Accurate Coin Calculation for ${userEmail}:`, {
+                shareCoins: shareCoins,
+                referralBonusCoins: referralBonusCoins,
+                totalAccurateCoins: totalAccurateCoins,
+                shareHistory: userShareHistory
+            });
+            
+            return {
+                shareCoins: shareCoins,
+                referralBonusCoins: referralBonusCoins,
+                totalCoins: totalAccurateCoins,
+                platformsShared: platforms.filter(p => userShareHistory[p] === true)
+            };
+        }
+
+        // Update user data with accurate coin count
+        function updateAccurateCoinCount() {
+            const userData = getUserData();
+            const userEmail = userData.email || getCurrentUserEmail() || 'anonymous@example.com';
+            
+            // Calculate accurate coins
+            const coinData = calculateAccurateCoins();
+            
+            // Update user data with accurate count
+            userData.aksharCoins = coinData.totalCoins;
+            userData.shareCoins = coinData.shareCoins;
+            userData.referralBonusCoins = coinData.referralBonusCoins;
+            userData.platformsShared = coinData.platformsShared;
+            
+            // Save updated user data
+            saveUserData(userData);
+            
+            console.log(`✅ Updated accurate coin count for ${userEmail}: ${coinData.totalCoins} coins`);
+            
+            return coinData;
         }
 
         // Share confirmation dialog to ensure user actually shares
@@ -1918,32 +1997,33 @@
                         return;
                     }
                     
-                    // Mark platform as shared
+                    // Mark platform as shared (this updates share history)
                     markPlatformAsShared(platform);
                     
-                    // Give coins
-                    const coinsEarned = 3;
-                    userData.aksharCoins = (userData.aksharCoins || 0) + coinsEarned;
+                    // Calculate and update accurate coin count
+                    const coinData = updateAccurateCoinCount();
+                    
+                    // Update referral data
                     referralData.totalShares = (referralData.totalShares || 0) + 1;
-                    referralData.totalCoinsEarned = (referralData.totalCoinsEarned || 0) + coinsEarned;
+                    referralData.totalCoinsEarned = coinData.totalCoins;
                     referralData.platformShares = referralData.platformShares || {};
                     referralData.platformShares[platform] = (referralData.platformShares[platform] || 0) + 1;
                     
-                    // Save data
+                    // Save updated data
                     saveUserData(userData);
                     saveReferralData(referralData);
                     
-                    // Update displays
+                    // Update all displays with accurate data
                     updateReferralStats();
                     updateCoinDisplay();
                     loadUserData();
                     updateStats();
                     
-                    // Send to backend
-                    sendShareToBackend(userData, platform, coinsEarned, referralData);
+                    // Send to backend with accurate data
+                    sendShareToBackend(userData, platform, 3, referralData);
                     
-                    // Show success message
-                    showNotification(`🎉 +${coinsEarned} AksharCoins earned! You successfully shared on ${platform}!`, 'success');
+                    // Show success message with accurate count
+                    showNotification(`🎉 +3 AksharCoins earned! Total: ${coinData.totalCoins} coins (${coinData.platformsShared.length}/8 platforms shared)`, 'success');
                     
                 } else {
                     // User admitted they didn't actually share
@@ -1952,9 +2032,12 @@
             }, 3000); // 3 second delay to let them complete the share
         }
 
-        // Send share data to backend
+        // Send share data to backend with accurate coin information
         function sendShareToBackend(userData, platform, coinsEarned, referralData) {
-            // Send to Google Sheets
+            // Get accurate coin calculation
+            const coinData = calculateAccurateCoins();
+            
+            // Send to Google Sheets with accurate data
             sendReferralDataToSheets({
                 type: 'referral_share',
                 referrerName: userData.fullName || 'Anonymous',
@@ -1964,12 +2047,24 @@
                 platform: platform,
                 referredEmail: '',
                 coinsEarned: coinsEarned,
+                shareCoins: coinData.shareCoins,
+                referralBonusCoins: coinData.referralBonusCoins,
+                totalAccurateCoins: coinData.totalCoins,
+                platformsShared: coinData.platformsShared.join(','),
                 timestamp: new Date().toISOString(),
                 referralCode: document.getElementById('referralCode') ? document.getElementById('referralCode').textContent : 'AKSHAR2025',
-                totalCoins: userData.aksharCoins,
+                totalCoins: coinData.totalCoins, // Use accurate count
                 totalShares: referralData.totalShares,
                 shareCount: referralData.platformShares ? (referralData.platformShares[platform] || 1) : 1,
                 source: 'referral_page'
+            });
+            
+            console.log(`📤 Sent accurate share data to backend for ${platform}:`, {
+                userEmail: userData.email,
+                platform: platform,
+                coinsEarned: coinsEarned,
+                totalAccurateCoins: coinData.totalCoins,
+                platformsShared: coinData.platformsShared
             });
         }
 
