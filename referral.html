@@ -49,12 +49,22 @@
             right: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* Shrink header when scrolling */
+        .header.scrolled {
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(30px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s ease;
         }
 
         .logo {
@@ -63,6 +73,7 @@
             gap: 15px;
             color: white;
             text-decoration: none;
+            transition: all 0.3s ease;
         }
 
         .logo img {
@@ -70,11 +81,24 @@
             height: 50px;
             border-radius: 10px;
             object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        /* Shrink logo when scrolling */
+        .header.scrolled .logo img {
+            width: 40px;
+            height: 40px;
         }
 
         .logo h1 {
             font-size: 24px;
             font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        /* Shrink logo text when scrolling */
+        .header.scrolled .logo h1 {
+            font-size: 20px;
         }
 
         .back-btn {
@@ -90,6 +114,13 @@
             gap: 8px;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            font-size: 14px;
+        }
+
+        /* Shrink back button when scrolling */
+        .header.scrolled .back-btn {
+            padding: 8px 16px;
+            font-size: 13px;
         }
 
         .back-btn:hover {
@@ -851,6 +882,12 @@
             transition: all 0.3s;
         }
         
+        /* Shrink switch user button when scrolling */
+        .header.scrolled .switch-user-btn {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+        
         .switch-user-btn:hover {
             background: #764ba2;
             transform: scale(1.05);
@@ -860,6 +897,12 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Shrink header actions gap when scrolling */
+        .header.scrolled .header-actions {
+            gap: 10px;
         }
         
         .current-user-display {
@@ -871,10 +914,22 @@
             border-radius: 20px;
             font-size: 13px;
             color: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+        
+        /* Shrink user display when scrolling */
+        .header.scrolled .current-user-display {
+            padding: 6px 12px;
+            font-size: 11px;
         }
         
         .current-user-display i {
             font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .header.scrolled .current-user-display i {
+            font-size: 14px;
         }
         
         .logout-btn {
@@ -890,6 +945,12 @@
             align-items: center;
             gap: 6px;
             transition: all 0.3s;
+        }
+        
+        /* Shrink logout button when scrolling */
+        .header.scrolled .logout-btn {
+            padding: 6px 12px;
+            font-size: 11px;
         }
         
         .logout-btn:hover {
@@ -1330,6 +1391,24 @@
             once: true
         });
 
+        // ========== STICKY SHRINKING HEADER ==========
+        // Add scroll event listener to shrink header on scroll
+        let lastScrollTop = 0;
+        const header = document.querySelector('.header');
+        
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Add 'scrolled' class when user scrolls down more than 50px
+            if (scrollTop > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScrollTop = scrollTop;
+        }, { passive: true });
+
         // Google Sheets integration
         const REFERRAL_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwtF6j5_WsWQHMpz2CnMOXX6_hzR_-WObtJjOpWPKbZRlCiiq9xX3GyTVKVrZ-HszLCoQ/exec';
 
@@ -1426,21 +1505,21 @@
                 if (currentUserEmailSpan) currentUserEmailSpan.textContent = currentEmail;
                 if (switchBtn) switchBtn.style.display = 'inline-flex';
                 if (logoutBtn) logoutBtn.style.display = 'inline-flex';
-                
+            
                 // IMPORTANT: Sync with Google Sheets FIRST before displaying data
                 console.log('🔄 Page load - Syncing with Google Sheets for existing user:', currentEmail);
                 syncReferralDataFromSheets().then(() => {
                     // After sync completes, load and display the synced data
-                    loadUserData();
-                    updateStats();
+            loadUserData();
+            updateStats();
                     generatePersonalizedLink();
-                    fetchReferralClicks();
+            fetchReferralClicks();
                 }).catch(err => {
                     // If sync fails, still load local data
                     console.warn('Sync failed, using local data:', err);
-                    loadUserData();
-                    updateStats();
-                    generatePersonalizedLink();
+            loadUserData();
+            updateStats();
+            generatePersonalizedLink();
                     fetchReferralClicks();
                 });
             }
@@ -1494,8 +1573,8 @@
                         const totalCoins = firstRecord.totalCoins || 0;
                         
                         // Update local referral data with Google Sheets data
-                        const referralData = getReferralData();
-                        
+            const referralData = getReferralData();
+            
                         // Update with aggregated data from ALL records
                         referralData.totalShares = totalSharesFromSheets;
                         referralData.totalReferrals = referralCount;
@@ -1508,18 +1587,18 @@
                         referralData.facebookShares = platformCounts['facebook'] || 0;
                         
                         // Save updated data
-                        saveReferralData(referralData);
-                        
+            saveReferralData(referralData);
+
                         // Also update user coins
-                        const userData = getUserData();
-                        userData.aksharCoins = totalCoins;
-                        saveUserData(userData);
+            const userData = getUserData();
+            userData.aksharCoins = totalCoins;
+            saveUserData(userData);
                         
                         // Directly update ALL displays with synced data (don't recalculate)
                         document.getElementById('coinBalance').textContent = totalCoins;
                         document.getElementById('referralCount').textContent = referralCount;
                         document.getElementById('totalShares').textContent = totalSharesFromSheets;
-                        document.getElementById('totalCoinsEarned').textContent = totalCoins;
+            document.getElementById('totalCoinsEarned').textContent = totalCoins;
                         document.getElementById('totalReferrals').textContent = referralCount;
                         document.getElementById('totalCoinsBreakdown').textContent = totalCoins;
                         document.getElementById('whatsappShares').textContent = platformCounts['whatsapp'] || 0;
@@ -1528,9 +1607,9 @@
                         // Update coin breakdown
                         const coinsFromShares = totalSharesFromSheets * 3;
                         const coinsFromReferrals = referralCount * 1;
-                        document.getElementById('coinsFromShares').textContent = coinsFromShares;
+            document.getElementById('coinsFromShares').textContent = coinsFromShares;
                         document.getElementById('totalSharesBreakdown').textContent = totalSharesFromSheets;
-                        document.getElementById('coinsFromReferrals').textContent = coinsFromReferrals;
+            document.getElementById('coinsFromReferrals').textContent = coinsFromReferrals;
                         document.getElementById('totalReferralsBreakdown').textContent = referralCount;
                         
                         if (userData.fullName || userData.name) {
@@ -1770,7 +1849,7 @@
                 });
             } else {
                 // No synced data, calculate from local share history
-                const coinData = updateAccurateCoinCount();
+            const coinData = updateAccurateCoinCount();
                 totalCoins = coinData.totalCoins;
                 totalShares = referralData.totalShares || 0;
                 totalReferrals = referralData.totalReferrals || 0;
