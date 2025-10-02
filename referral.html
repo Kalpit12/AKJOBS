@@ -1137,23 +1137,23 @@
                 <!-- User Info -->
                 <div class="user-info" data-aos="fade-up" data-aos-delay="100">
                     <div class="welcome-message">
-                        Welcome back, <span id="userName">Job Seeker</span>! 🎉
+                        Welcome back, <span id="userName">Job Seeker</span>! ðŸŽ‰
                     </div>
                     <p>Share your referral code and earn rewards for every person who joins through your link.</p>
                     
                     <div class="user-details">
                         <div class="user-stat">
-                            <span class="icon">🪙</span>
+                            <span class="icon">ðŸª™</span>
                             <div class="value" id="coinBalance">0</div>
                             <div class="label">AksharCoins</div>
                         </div>
                         <div class="user-stat">
-                            <span class="icon">👥</span>
+                            <span class="icon">ðŸ‘¥</span>
                             <div class="value" id="referralCount">0</div>
                             <div class="label">Registered Via Link</div>
                         </div>
                         <div class="user-stat">
-                            <span class="icon">📊</span>
+                            <span class="icon">ðŸ“Š</span>
                             <div class="value" id="totalShares">0</div>
                             <div class="label">Total Shares</div>
                         </div>
@@ -1179,7 +1179,7 @@
                         <div class="copy-hint">Click to copy link (paste & share to earn coins)</div>
                     </div>
                     <div class="link-info">
-                        💡 <strong>Share via social media below</strong> to get <strong>3 coins instantly</strong> + <strong>1 bonus coin</strong> when someone registers!
+                        ðŸ’¡ <strong>Share via social media below</strong> to get <strong>3 coins instantly</strong> + <strong>1 bonus coin</strong> when someone registers!
                     </div>
                 </div>
 
@@ -1245,20 +1245,20 @@
                 
                 <!-- Coin Breakdown Section -->
                 <div class="coin-breakdown-section" data-aos="fade-up" data-aos-delay="450">
-                    <h2 class="section-title">💰 Coin Breakdown</h2>
+                    <h2 class="section-title">ðŸ’° Coin Breakdown</h2>
                     <div class="breakdown-grid">
                         <div class="breakdown-item">
                             <div class="breakdown-label">Coins from Shares</div>
                             <div class="breakdown-value">
                                 <span id="coinsFromShares">0</span> coins
-                                <small>(<span id="totalSharesBreakdown">0</span> shares × 3)</small>
+                                <small>(<span id="totalSharesBreakdown">0</span> shares Ã— 3)</small>
                             </div>
                         </div>
                         <div class="breakdown-item">
                             <div class="breakdown-label">Coins from Referrals</div>
                             <div class="breakdown-value">
                                 <span id="coinsFromReferrals">0</span> coins
-                                <small>(<span id="totalReferralsBreakdown">0</span> registrations × 1)</small>
+                                <small>(<span id="totalReferralsBreakdown">0</span> registrations Ã— 1)</small>
                             </div>
                         </div>
                         <div class="breakdown-item total">
@@ -1272,7 +1272,7 @@
                 
                 <!-- Users Registered Via Your Link -->
                 <div class="registered-users-section" data-aos="fade-up" data-aos-delay="475">
-                    <h2 class="section-title">👥 Users Registered Via Your Link</h2>
+                    <h2 class="section-title">ðŸ‘¥ Users Registered Via Your Link</h2>
                     <div id="registeredUsersList" class="registered-users-list">
                         <div class="empty-state">
                             <i class="fas fa-user-plus" style="font-size: 48px; color: #cbd5e1; margin-bottom: 15px;"></i>
@@ -1298,7 +1298,7 @@
                     </ol>
                     <div style="background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 15px; margin-top: 20px; border-radius: 8px;">
                         <p style="margin: 0; font-size: 14px; color: #1e40af;">
-                            <strong>💡 Important:</strong> Coins are earned when you <strong>actually share</strong> (click share buttons), 
+                            <strong>ðŸ’¡ Important:</strong> Coins are earned when you <strong>actually share</strong> (click share buttons), 
                             not just copy the link. Copy the link to share manually, then use share buttons to earn coins!
                         </p>
                     </div>
@@ -1310,7 +1310,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 AksharJobs. All rights reserved. | Built with ❤️ for the community</p>
+            <p>&copy; 2025 AksharJobs. All rights reserved. | Built with â¤ï¸ for the community</p>
         </div>
     </footer>
 
@@ -1335,14 +1335,14 @@
 
         // AksharCoins reward system (only for ACTUAL sharing, not copying)
         const AKSHAR_COINS_REWARDS = {
-            'whatsapp': 3,   // ✅ Opens WhatsApp = 3 coins
-            'linkedin': 3,   // ✅ Opens LinkedIn = 3 coins
-            'email': 3,      // ✅ Opens Email = 3 coins
-            'twitter': 3,    // ✅ Opens Twitter = 3 coins
-            'facebook': 3,   // ✅ Opens Facebook = 3 coins
-            'telegram': 3,   // ✅ Opens Telegram = 3 coins
-            'native': 3,     // ✅ Opens share dialog = 3 coins
-            'copy': 0        // ❌ Just copying = NO coins (must share it)
+            'whatsapp': 3,   // âœ… Opens WhatsApp = 3 coins
+            'linkedin': 3,   // âœ… Opens LinkedIn = 3 coins
+            'email': 3,      // âœ… Opens Email = 3 coins
+            'twitter': 3,    // âœ… Opens Twitter = 3 coins
+            'facebook': 3,   // âœ… Opens Facebook = 3 coins
+            'telegram': 3,   // âœ… Opens Telegram = 3 coins
+            'native': 3,     // âœ… Opens share dialog = 3 coins
+            'copy': 0        // âŒ Just copying = NO coins (must share it)
         };
 
         // ========== USER-SPECIFIC DATA STORAGE ==========
@@ -1486,7 +1486,7 @@
                         loadUserData();
                         updateStats();
                         
-                        console.log('✅ Synced with Google Sheets:', {
+                        console.log('âœ… Synced with Google Sheets:', {
                             referralCount: userRecord.referralCount,
                             totalCoins: userRecord.totalCoins
                         });
@@ -1544,7 +1544,7 @@
                 
                 if (localUserData) {
                     // User exists locally - quick login
-                    console.log('✅ User found in local storage');
+                    console.log('âœ… User found in local storage');
                     loginUser(email);
                     return;
                 }
@@ -1567,7 +1567,7 @@
                         
                         if (data.registered && data.userData) {
                             // User is registered in Google Sheets!
-                            console.log('✅ User found in Google Sheets:', data.userData);
+                            console.log('âœ… User found in Google Sheets:', data.userData);
                             
                             // Create local user data from Google Sheets
                             const userData = {
@@ -1601,7 +1601,7 @@
                 
                 // Step 3: CORS blocks us from verifying, but allow login anyway
                 // If user knows their email from registration, let them in
-                console.log('⚠️ Cannot verify via Google Sheets (CORS), but allowing login');
+                console.log('âš ï¸ Cannot verify via Google Sheets (CORS), but allowing login');
                 console.log('Creating fresh account for:', email);
                 
                 // Create fresh user data (will sync from Google Sheets after login)
@@ -1700,6 +1700,7 @@
             }
             
             // Update coin balance (top section)
+            const totalCoins = userData.aksharCoins || 0;
             document.getElementById('coinBalance').textContent = totalCoins;
             
             // Update referral stats (top section)
@@ -1746,7 +1747,7 @@
             document.getElementById('totalReferralsBreakdown').textContent = totalReferrals;
             document.getElementById('totalCoinsBreakdown').textContent = totalCoins;
             
-            console.log('📊 Coin Breakdown:', {
+            console.log('ðŸ“Š Coin Breakdown:', {
                 totalShares,
                 coinsFromShares,
                 totalReferrals,
@@ -1927,7 +1928,7 @@
             // Total accurate coins = share coins + referral bonus coins
             const totalAccurateCoins = shareCoins + referralBonusCoins;
             
-            console.log(`📊 Accurate Coin Calculation for ${userEmail}:`, {
+            console.log(`ðŸ“Š Accurate Coin Calculation for ${userEmail}:`, {
                 shareCoins: shareCoins,
                 referralBonusCoins: referralBonusCoins,
                 totalAccurateCoins: totalAccurateCoins,
@@ -1959,7 +1960,7 @@
             // Save updated user data
             saveUserData(userData);
             
-            console.log(`✅ Updated accurate coin count for ${userEmail}: ${coinData.totalCoins} coins`);
+            console.log(`âœ… Updated accurate coin count for ${userEmail}: ${coinData.totalCoins} coins`);
             
             return coinData;
         }
@@ -1967,12 +1968,12 @@
         // Share confirmation dialog to ensure user actually shares
         function showShareConfirmationDialog(platform, onConfirm) {
             // Show immediate instruction dialog first
-            const instructionMessage = `📱 SHARE INSTRUCTIONS for ${platform.toUpperCase()}:\n\n1. The share window will open\n2. Complete the share by sending/posting the message\n3. Come back here and click "I Shared" button\n\n⚠️ You will NOT get coins just for opening the share window!\nYou MUST actually share the message to earn coins.`;
+            const instructionMessage = `ðŸ“± SHARE INSTRUCTIONS for ${platform.toUpperCase()}:\n\n1. The share window will open\n2. Complete the share by sending/posting the message\n3. Come back here and click "I Shared" button\n\nâš ï¸ You will NOT get coins just for opening the share window!\nYou MUST actually share the message to earn coins.`;
             
             const proceed = confirm(instructionMessage);
             
             if (!proceed) {
-                showNotification('❌ Share cancelled. No coins awarded.', 'info');
+                showNotification('âŒ Share cancelled. No coins awarded.', 'info');
                 return;
             }
             
@@ -1981,7 +1982,7 @@
             
             // Then show the verification dialog after a delay
             setTimeout(() => {
-                const verificationMessage = `✅ VERIFICATION REQUIRED:\n\nDid you ACTUALLY share the message on ${platform}?\n\n⚠️ Only click "YES" if you:\n• Opened the share window AND\n• Sent/posted the message AND\n• Completed the share action\n\n❌ Do NOT click "YES" if you just opened and closed the share window!`;
+                const verificationMessage = `âœ… VERIFICATION REQUIRED:\n\nDid you ACTUALLY share the message on ${platform}?\n\nâš ï¸ Only click "YES" if you:\nâ€¢ Opened the share window AND\nâ€¢ Sent/posted the message AND\nâ€¢ Completed the share action\n\nâŒ Do NOT click "YES" if you just opened and closed the share window!`;
                 
                 const actuallyShared = confirm(verificationMessage);
                 
@@ -1993,7 +1994,7 @@
                     
                     // Check if already shared on this platform
                     if (hasSharedOnPlatform(platform)) {
-                        showNotification(`⚠️ You've already shared on ${platform}. Try a different platform!`, 'warning');
+                        showNotification(`âš ï¸ You've already shared on ${platform}. Try a different platform!`, 'warning');
                         return;
                     }
                     
@@ -2023,11 +2024,11 @@
                     sendShareToBackend(userData, platform, 3, referralData);
                     
                     // Show success message with accurate count
-                    showNotification(`🎉 +3 AksharCoins earned! Total: ${coinData.totalCoins} coins (${coinData.platformsShared.length}/8 platforms shared)`, 'success');
+                    showNotification(`ðŸŽ‰ +3 AksharCoins earned! Total: ${coinData.totalCoins} coins (${coinData.platformsShared.length}/8 platforms shared)`, 'success');
                     
                 } else {
                     // User admitted they didn't actually share
-                    showNotification('❌ No coins awarded. Please actually share the message to earn coins!', 'info');
+                    showNotification('âŒ No coins awarded. Please actually share the message to earn coins!', 'info');
                 }
             }, 3000); // 3 second delay to let them complete the share
         }
@@ -2059,7 +2060,7 @@
                 source: 'referral_page'
             });
             
-            console.log(`📤 Sent accurate share data to backend for ${platform}:`, {
+            console.log(`ðŸ“¤ Sent accurate share data to backend for ${platform}:`, {
                 userEmail: userData.email,
                 platform: platform,
                 coinsEarned: coinsEarned,
@@ -2129,7 +2130,7 @@
                 source: 'referral_page'
             });
             
-            showNotification(`🎉 +${coinsEarned} Coins! You'll get +1 more when someone registers via your link!`, 'success');
+            showNotification(`ðŸŽ‰ +${coinsEarned} Coins! You'll get +1 more when someone registers via your link!`, 'success');
         }
 
         function sendReferralDataToSheets(data) {
@@ -2210,50 +2211,50 @@
             const referralLink = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
             
             const message = `www.AksharJobs.com
-🌟 Imagine this...
+ðŸŒŸ Imagine this...
 
 What if finding your dream opportunity didn't take months of endless searching?
 What if the perfect match was just minutes away?
 
-Welcome to AksharJobs ✨
+Welcome to AksharJobs âœ¨
 
-🧠 Powered by Advanced AI
+ðŸ§  Powered by Advanced AI
 Our intelligent system doesn't just match keywords... it understands you. Your skills. Your aspirations. Your unique potential.
 
-🌍 Speaks Your Language
+ðŸŒ Speaks Your Language
 Breaking barriers with true multilingual support. Because opportunity shouldn't be limited by language.
 
-💫 Culturally Intelligent
+ðŸ’« Culturally Intelligent
 Built for the global market. Designed to understand what makes you unique.
 
 One Platform. Infinite Connections.
 
 Whether you're a:
-• Job Seeker ready for your breakthrough
-• Recruiter hunting for exceptional talent
-• Mentor eager to guide the next generation
-• Trainer sharing transformative knowledge
-• Consultant offering expertise
-• Volunteer making a difference
-• Intern starting your journey
-• Community builder
-• University shaping futures
-• HR professional
-• NGO creating impact
-• Evangelist spreading innovation
+â€¢ Job Seeker ready for your breakthrough
+â€¢ Recruiter hunting for exceptional talent
+â€¢ Mentor eager to guide the next generation
+â€¢ Trainer sharing transformative knowledge
+â€¢ Consultant offering expertise
+â€¢ Volunteer making a difference
+â€¢ Intern starting your journey
+â€¢ Community builder
+â€¢ University shaping futures
+â€¢ HR professional
+â€¢ NGO creating impact
+â€¢ Evangelist spreading innovation
 
-You belong here.... 🤝
+You belong here.... ðŸ¤
 
-🎁 Here's the beautiful part:
+ðŸŽ Here's the beautiful part:
 Earn AksharCoins with every interaction.
 Use them to unlock premium features.
 Completely free.
 
 Your success shouldn't cost a fortune. It should reward you.
 
-⚡ Minutes, not months.
-💎 Perfect matches, not compromises.
-🚀 Your future, starting now.
+âš¡ Minutes, not months.
+ðŸ’Ž Perfect matches, not compromises.
+ðŸš€ Your future, starting now.
 
 AksharJobs - Where opportunities find you.
 Connect | Discover | Elevate
@@ -2281,27 +2282,27 @@ Use my referral code: ${referralCode}`;
             const referralLink = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
             
             const message = `www.AksharJobs.com
-🌟 Imagine this...
+ðŸŒŸ Imagine this...
 
 What if finding your dream opportunity didn't take months of endless searching? What if the perfect match was just minutes away?
 
-Welcome to AksharJobs ✨
+Welcome to AksharJobs âœ¨
 
-🧠 Powered by Advanced AI - Our intelligent system understands you. Your skills. Your aspirations. Your unique potential.
+ðŸ§  Powered by Advanced AI - Our intelligent system understands you. Your skills. Your aspirations. Your unique potential.
 
-🌍 Speaks Your Language - Breaking barriers with true multilingual support.
+ðŸŒ Speaks Your Language - Breaking barriers with true multilingual support.
 
-💫 Culturally Intelligent - Built for the global market.
+ðŸ’« Culturally Intelligent - Built for the global market.
 
 One Platform. Infinite Connections.
 
-Whether you're a Job Seeker, Recruiter, Mentor, Trainer, Consultant, Volunteer, Intern, Community builder, University, HR professional, NGO, or Evangelist - You belong here.... 🤝
+Whether you're a Job Seeker, Recruiter, Mentor, Trainer, Consultant, Volunteer, Intern, Community builder, University, HR professional, NGO, or Evangelist - You belong here.... ðŸ¤
 
-🎁 Earn AksharCoins with every interaction. Use them to unlock premium features. Completely free.
+ðŸŽ Earn AksharCoins with every interaction. Use them to unlock premium features. Completely free.
 
-⚡ Minutes, not months.
-💎 Perfect matches, not compromises.
-🚀 Your future, starting now.
+âš¡ Minutes, not months.
+ðŸ’Ž Perfect matches, not compromises.
+ðŸš€ Your future, starting now.
 
 Join the awesome Network for pre-launch & start earning AksharCoins...
 
@@ -2328,50 +2329,50 @@ Code: ${referralCode}
             
             const subject = 'Join AksharJobs - Where Opportunities Find You';
             const body = `www.AksharJobs.com
-🌟 Imagine this...
+ðŸŒŸ Imagine this...
 
 What if finding your dream opportunity didn't take months of endless searching?
 What if the perfect match was just minutes away?
 
-Welcome to AksharJobs ✨
+Welcome to AksharJobs âœ¨
 
-🧠 Powered by Advanced AI
+ðŸ§  Powered by Advanced AI
 Our intelligent system doesn't just match keywords... it understands you. Your skills. Your aspirations. Your unique potential.
 
-🌍 Speaks Your Language
+ðŸŒ Speaks Your Language
 Breaking barriers with true multilingual support. Because opportunity shouldn't be limited by language.
 
-💫 Culturally Intelligent
+ðŸ’« Culturally Intelligent
 Built for the global market. Designed to understand what makes you unique.
 
 One Platform. Infinite Connections.
 
 Whether you're a:
-• Job Seeker ready for your breakthrough
-• Recruiter hunting for exceptional talent
-• Mentor eager to guide the next generation
-• Trainer sharing transformative knowledge
-• Consultant offering expertise
-• Volunteer making a difference
-• Intern starting your journey
-• Community builder
-• University shaping futures
-• HR professional
-• NGO creating impact
-• Evangelist spreading innovation
+â€¢ Job Seeker ready for your breakthrough
+â€¢ Recruiter hunting for exceptional talent
+â€¢ Mentor eager to guide the next generation
+â€¢ Trainer sharing transformative knowledge
+â€¢ Consultant offering expertise
+â€¢ Volunteer making a difference
+â€¢ Intern starting your journey
+â€¢ Community builder
+â€¢ University shaping futures
+â€¢ HR professional
+â€¢ NGO creating impact
+â€¢ Evangelist spreading innovation
 
-You belong here.... 🤝
+You belong here.... ðŸ¤
 
-🎁 Here's the beautiful part:
+ðŸŽ Here's the beautiful part:
 Earn AksharCoins with every interaction.
 Use them to unlock premium features.
 Completely free.
 
 Your success shouldn't cost a fortune. It should reward you.
 
-⚡ Minutes, not months.
-💎 Perfect matches, not compromises.
-🚀 Your future, starting now.
+âš¡ Minutes, not months.
+ðŸ’Ž Perfect matches, not compromises.
+ðŸš€ Your future, starting now.
 
 AksharJobs - Where opportunities find you.
 Connect | Discover | Elevate
@@ -2398,15 +2399,15 @@ Use my referral code: ${referralCode}`;
             const baseUrl = window.location.origin + window.location.pathname.replace('referral.html', 'registration.html');
             const referralLink = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
             
-            const message = `🚀 Join AksharJobs - Where Opportunities Find You
+            const message = `ðŸš€ Join AksharJobs - Where Opportunities Find You
 
-🧠 AI-Powered matching
-🌍 Multilingual support
-💫 Culturally intelligent
-🎁 Earn AksharCoins
+ðŸ§  AI-Powered matching
+ðŸŒ Multilingual support
+ðŸ’« Culturally intelligent
+ðŸŽ Earn AksharCoins
 
-⚡ Minutes, not months
-💎 Perfect matches, not compromises
+âš¡ Minutes, not months
+ðŸ’Ž Perfect matches, not compromises
 
 Join now: ${referralLink}
 Code: ${referralCode}
@@ -2443,16 +2444,16 @@ Code: ${referralCode}
             const baseUrl = window.location.origin + window.location.pathname.replace('referral.html', 'registration.html');
             const referralLink = `${baseUrl}?ref=${encodeURIComponent(referrerEmail)}`;
             
-            const message = `🚀 Join AksharJobs - Where Opportunities Find You
+            const message = `ðŸš€ Join AksharJobs - Where Opportunities Find You
 
-🧠 AI-Powered matching that understands YOU
-🌍 Multilingual support - No language barriers
-💫 Culturally intelligent for global market
-🎁 Earn AksharCoins with every interaction
+ðŸ§  AI-Powered matching that understands YOU
+ðŸŒ Multilingual support - No language barriers
+ðŸ’« Culturally intelligent for global market
+ðŸŽ Earn AksharCoins with every interaction
 
-⚡ Minutes, not months
-💎 Perfect matches, not compromises
-🚀 Your future, starting now
+âš¡ Minutes, not months
+ðŸ’Ž Perfect matches, not compromises
+ðŸš€ Your future, starting now
 
 Join the awesome Network for pre-launch & start earning AksharCoins...
 
@@ -2546,16 +2547,16 @@ Code: ${referralCode}`;
                 // Show error with fallback to local data
                 container.innerHTML = `
                     <div class="debug-error">
-                        <strong>⚠️ Note:</strong> The Google Apps Script needs to be redeployed with the new code.<br>
+                        <strong>âš ï¸ Note:</strong> The Google Apps Script needs to be redeployed with the new code.<br>
                         Currently showing local data only.<br>
                         <small style="display: block; margin-top: 8px;"><strong>Error Details:</strong> ${error.message}</small>
                         <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 5px;">
-                            <strong>📝 To fix this:</strong>
+                            <strong>ðŸ“ To fix this:</strong>
                             <ol style="margin: 10px 0 0 20px; text-align: left;">
                                 <li>Open <a href="https://script.google.com" target="_blank" style="color: #667eea;">script.google.com</a></li>
                                 <li>Find your AksharJobs project</li>
                                 <li>Copy the updated code from google_sheets_integration.gs</li>
-                                <li>Click <strong>Deploy → New deployment</strong></li>
+                                <li>Click <strong>Deploy â†’ New deployment</strong></li>
                                 <li>Update the deployment</li>
                             </ol>
                         </div>
@@ -2571,7 +2572,7 @@ Code: ${referralCode}`;
             
             return `
                 <div class="debug-success">
-                    <strong>✅ Local Storage Data</strong>
+                    <strong>âœ… Local Storage Data</strong>
                 </div>
                 <table class="debug-table">
                     <thead>
@@ -2599,7 +2600,7 @@ Code: ${referralCode}`;
                         </tr>
                         <tr>
                             <td><strong>AksharCoins</strong></td>
-                            <td><strong style="color: #667eea;">${userData.aksharCoins || 0} 🪙</strong></td>
+                            <td><strong style="color: #667eea;">${userData.aksharCoins || 0} ðŸª™</strong></td>
                         </tr>
                         <tr>
                             <td><strong>Total Shares</strong></td>
@@ -2611,7 +2612,7 @@ Code: ${referralCode}`;
                         </tr>
                         <tr>
                             <td><strong>Total Coins Earned</strong></td>
-                            <td>${referralData.totalCoinsEarned || 0} 🪙</td>
+                            <td>${referralData.totalCoinsEarned || 0} ðŸª™</td>
                         </tr>
                         <tr>
                             <td><strong>WhatsApp Shares</strong></td>
@@ -2640,7 +2641,7 @@ Code: ${referralCode}`;
                     </tbody>
                 </table>
                 <div style="margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 10px; border-left: 4px solid #2196f3;">
-                    <strong>ℹ️ How to verify in Google Sheets:</strong><br>
+                    <strong>â„¹ï¸ How to verify in Google Sheets:</strong><br>
                     1. Open the Google Sheet directly: <a href="https://docs.google.com/spreadsheets/d/${SHEET_ID || '1rnLQpt9FDACUZUsGC87vGsK61z1DcoCyUW0yXXIuHf8'}" target="_blank" style="color: #667eea;">Click here</a><br>
                     2. Look for the "Referral_Tracking" tab<br>
                     3. Find your email address to see your referral records<br>
@@ -2655,7 +2656,7 @@ Code: ${referralCode}`;
             if (!data || !data.success) {
                 container.innerHTML = `
                     <div class="debug-error">
-                        <strong>⚠️ Error:</strong> ${data?.error || 'Failed to fetch data'}
+                        <strong>âš ï¸ Error:</strong> ${data?.error || 'Failed to fetch data'}
                     </div>
                 `;
                 return;
@@ -2664,7 +2665,7 @@ Code: ${referralCode}`;
             // Display the data in a nice format
             container.innerHTML = `
                 <div class="debug-success">
-                    <strong>✅ Data fetched successfully from Google Sheets!</strong><br>
+                    <strong>âœ… Data fetched successfully from Google Sheets!</strong><br>
                     <small>Last updated: ${new Date().toLocaleString()}</small>
                 </div>
                 <table class="debug-table">
@@ -2689,7 +2690,7 @@ Code: ${referralCode}`;
                                     <td>${record.phone || 'N/A'}</td>
                                     <td>${record.role || 'N/A'}</td>
                                     <td>${record.referralCount || 0}</td>
-                                    <td><strong style="color: #667eea;">${record.totalCoins || 0} 🪙</strong></td>
+                                    <td><strong style="color: #667eea;">${record.totalCoins || 0} ðŸª™</strong></td>
                                     <td>${record.platform || 'N/A'}</td>
                                     <td>${record.timestamp ? new Date(record.timestamp).toLocaleString() : 'N/A'}</td>
                                 </tr>
@@ -2764,7 +2765,7 @@ Code: ${referralCode}`;
                         </div>
                     </div>
                     <div class="registered-user-coin">
-                        +${click.coinsAwarded || 1} 🪙
+                        +${click.coinsAwarded || 1} ðŸª™
                     </div>
                 </div>
             `).join('');
