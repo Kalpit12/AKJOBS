@@ -1486,10 +1486,10 @@
                         document.getElementById('coinBalance').textContent = userRecord.totalCoins || 0;
                         document.getElementById('referralCount').textContent = userRecord.referralCount || 0;
                         document.getElementById('totalCoinsEarned').textContent = userRecord.totalCoins || 0;
-                        if (userData.fullName || userData.name) {
-                            document.getElementById('userName').textContent = userData.fullName || userData.name;
-                        }
-                        
+            if (userData.fullName || userData.name) {
+                document.getElementById('userName').textContent = userData.fullName || userData.name;
+            }
+            
                         console.log('âœ… Synced with Google Sheets:', {
                             referralCount: userRecord.referralCount,
                             totalCoins: userRecord.totalCoins
