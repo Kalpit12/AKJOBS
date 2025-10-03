@@ -958,6 +958,102 @@
             transform: scale(1.05);
         }
         
+        /* Share Verification Modal */
+        .share-verification-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .share-verification-modal.show {
+            display: flex;
+        }
+        
+        .share-verification-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: slideInDown 0.3s ease-out;
+        }
+        
+        .share-verification-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .share-verification-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .share-verification-message {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .share-verification-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .verify-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .verify-btn-yes {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .verify-btn-yes:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+        
+        .verify-btn-no {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .verify-btn-no:hover {
+            background: #d1d5db;
+        }
+        
+        .platform-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        
         .refer-earn-btn {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
@@ -1417,6 +1513,29 @@
     <!-- Notification -->
     <div class="notification" id="notification">
         <span id="notificationText"></span>
+    </div>
+    
+    <!-- Share Verification Modal -->
+    <div id="shareVerificationModal" class="share-verification-modal">
+        <div class="share-verification-content">
+            <div class="share-verification-icon">✅</div>
+            <div class="platform-badge" id="sharePlatformBadge">WHATSAPP</div>
+            <h2 class="share-verification-title">Did you complete the share?</h2>
+            <p class="share-verification-message">
+                <strong>Please confirm:</strong> Did you actually send/post the referral message on <span id="sharePlatformName">this platform</span>?
+                <br><br>
+                ✅ Click <strong>"Yes, I Shared"</strong> if you completed the share<br>
+                ❌ Click <strong>"No, Cancel"</strong> if you didn't share
+            </p>
+            <div class="share-verification-buttons">
+                <button class="verify-btn verify-btn-yes" onclick="confirmShareComplete()">
+                    <i class="fas fa-check-circle"></i> Yes, I Shared!
+                </button>
+                <button class="verify-btn verify-btn-no" onclick="cancelShareVerification()">
+                    <i class="fas fa-times-circle"></i> No, Cancel
+                </button>
+            </div>
+        </div>
     </div>
 
 
@@ -2181,8 +2300,25 @@
             return coinData;
         }
 
-        // Share confirmation dialog to ensure user actually shares
+        // NEW: Share confirmation using modal (won't be blocked by browser!)
         function showShareConfirmationDialog(platform, onConfirm) {
+            // Store current platform for modal
+            currentSharePlatform = platform;
+            
+            // Show instruction notification
+            showNotification(`📱 Opening ${platform.toUpperCase()} share... Complete it and come back to confirm!`, 'info');
+            
+            // Open the share window immediately
+            onConfirm();
+            
+            // Show verification modal after user has time to share
+            setTimeout(() => {
+                showShareVerificationModal(platform);
+            }, 2000); // 2 second delay
+        }
+        
+        // OLD: Share confirmation dialog (DISABLED - confirm() dialogs get blocked)
+        function showShareConfirmationDialog_OLD_BLOCKED(platform, onConfirm) {
             // Show immediate instruction dialog first
             const instructionMessage = `📱 SHARE INSTRUCTIONS for ${platform.toUpperCase()}:\n\n1. The share window will open\n2. Complete the share by sending/posting the message\n3. Come back here and click "I Shared" button\n\n⚠️ You will NOT get coins just for opening the share window!\nYou MUST actually share the message to earn coins.`;
             
@@ -2247,6 +2383,97 @@
                     showNotification('❌ No coins awarded. Please actually share the message to earn coins!', 'info');
                 }
             }, 3000); // 3 second delay to let them complete the share
+        }
+        
+        // ===== NEW MODAL-BASED SHARE VERIFICATION (REPLACES confirm() DIALOGS) =====
+        
+        // Global variable to track current share platform
+        let currentSharePlatform = null;
+        
+        // Show the verification modal
+        function showShareVerificationModal(platform) {
+            const modal = document.getElementById('shareVerificationModal');
+            const platformBadge = document.getElementById('sharePlatformBadge');
+            const platformName = document.getElementById('sharePlatformName');
+            
+            if (modal && platformBadge && platformName) {
+                platformBadge.textContent = platform.toUpperCase();
+                platformName.textContent = platform;
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // Close the verification modal
+        function closeShareVerificationModal() {
+            const modal = document.getElementById('shareVerificationModal');
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+            currentSharePlatform = null;
+        }
+        
+        // User confirmed they shared - award coins
+        function confirmShareComplete() {
+            if (!currentSharePlatform) {
+                showNotification('❌ Error: No platform selected', 'error');
+                closeShareVerificationModal();
+                return;
+            }
+            
+            const platform = currentSharePlatform;
+            const userData = getUserData();
+            const referralData = getReferralData();
+            
+            // Check if already shared on this platform
+            if (hasSharedOnPlatform(platform)) {
+                showNotification(`⚠️ You've already shared on ${platform}. Try a different platform!`, 'error');
+                closeShareVerificationModal();
+                return;
+            }
+            
+            // Mark platform as shared (this updates share history)
+            markPlatformAsShared(platform);
+            
+            // Calculate and update accurate coin count
+            const coinData = updateAccurateCoinCount();
+            
+            // Update referral data
+            referralData.totalShares = (referralData.totalShares || 0) + 1;
+            referralData.totalCoinsEarned = coinData.totalCoins;
+            referralData.platformShares = referralData.platformShares || {};
+            referralData.platformShares[platform] = (referralData.platformShares[platform] || 0) + 1;
+            
+            // Save updated data
+            saveUserData(userData);
+            saveReferralData(referralData);
+            
+            // Update all displays with accurate data
+            loadUserData();
+            updateStats();
+            
+            // Send to backend with accurate data
+            sendShareToBackend(userData, platform, 3, referralData);
+            
+            // Close modal
+            closeShareVerificationModal();
+            
+            // Show success message with accurate count
+            showNotification(`🎉 +3 AksharCoins earned! Total: ${coinData.totalCoins} coins (${coinData.platformsShared.length}/8 platforms)`, 'success');
+            
+            console.log(`✅ Coins awarded for ${platform} share:`, {
+                platform: platform,
+                coinsEarned: 3,
+                totalCoins: coinData.totalCoins,
+                totalShares: referralData.totalShares
+            });
+        }
+        
+        // User cancelled - no coins awarded
+        function cancelShareVerification() {
+            closeShareVerificationModal();
+            showNotification('❌ No coins awarded. Share again when ready!', 'info');
         }
 
         // Send share data to backend with accurate coin information
