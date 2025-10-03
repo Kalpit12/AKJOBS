@@ -2581,6 +2581,9 @@
                     return;
                 }
                 
+                // ✅ ADD UNIQUE ID to prevent duplicate processing
+                data.shareId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                
                 console.log('📤 Sending referral data to Google Sheets:', data);
                 
                 const params = new URLSearchParams(data);
@@ -2588,20 +2591,9 @@
                 
                 console.log('🔗 Webhook URL:', url);
                 console.log('📧 User Email:', data.referrerEmail);
+                console.log('🆔 Share ID:', data.shareId);
                 
-                // ✅ METHOD 1: Fetch with no-cors (most reliable)
-                fetch(url, {
-                    method: 'GET',
-                    mode: 'no-cors',
-                    cache: 'no-cache',
-                    redirect: 'follow'
-                }).then(() => {
-                    console.log('✅ Fetch sent to Google Sheets successfully');
-                }).catch(error => {
-                    console.error('⚠️ Fetch error:', error);
-                });
-                
-                // ✅ METHOD 2: Direct navigation (opens in hidden iframe)
+                // ✅ USE ONLY ONE METHOD: Iframe (most reliable for Google Apps Script)
                 const iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
                 iframe.style.width = '0';
@@ -2614,15 +2606,16 @@
                 };
                 
                 iframe.onerror = (error) => {
-                    console.error('⚠️ Iframe error:', error);
+                    console.error('⚠️ Iframe error (but data might still be sent):', error);
                 };
                 
                 document.body.appendChild(iframe);
                 
-                // Clean up after 5 seconds
+                // Clean up iframe after 5 seconds
                 setTimeout(() => {
                     if (iframe && iframe.parentNode) {
                         iframe.parentNode.removeChild(iframe);
+                        console.log('🗑️ Iframe cleaned up');
                     }
                 }, 5000);
                 
