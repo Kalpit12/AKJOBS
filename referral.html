@@ -1768,9 +1768,7 @@
                         document.getElementById('whatsappShares').textContent = platformCounts['whatsapp'] || 0;
                         document.getElementById('linkedinShares').textContent = platformCounts['linkedin'] || 0;
                         
-                        // Update coin breakdown
-                        const coinsFromShares = totalSharesFromSheets * 3;
-                        const coinsFromReferrals = referralCount * 1;
+                        // Update coin breakdown (using already calculated values)
             document.getElementById('coinsFromShares').textContent = coinsFromShares;
                         document.getElementById('totalSharesBreakdown').textContent = totalSharesFromSheets;
             document.getElementById('coinsFromReferrals').textContent = coinsFromReferrals;
