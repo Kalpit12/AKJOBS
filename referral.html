@@ -2234,7 +2234,38 @@
         // Get share history for specific user (prevents mixing between users)
         function getUserShareHistory(userEmail) {
             const allShareHistory = JSON.parse(localStorage.getItem('aksharShareHistory') || '{}');
-            return allShareHistory[userEmail] || {};
+            let userHistory = allShareHistory[userEmail] || {};
+            
+            // ✅ MIGRATE OLD DATA: Convert boolean format to array format
+            const platforms = ['whatsapp', 'email', 'linkedin', 'twitter', 'facebook', 'telegram', 'sms', 'native'];
+            let needsSave = false;
+            
+            platforms.forEach(platform => {
+                if (userHistory[platform]) {
+                    // Check if it's old boolean format
+                    if (userHistory[platform] === true || typeof userHistory[platform] === 'boolean') {
+                        console.log(`🔄 Migrating ${platform} from boolean to array format`);
+                        userHistory[platform] = [{
+                            timestamp: new Date().toISOString(),
+                            coinsEarned: 3
+                        }];
+                        needsSave = true;
+                    } else if (!Array.isArray(userHistory[platform])) {
+                        // Invalid format, reset to empty array
+                        console.log(`⚠️ Invalid format for ${platform}, resetting to empty array`);
+                        userHistory[platform] = [];
+                        needsSave = true;
+                    }
+                }
+            });
+            
+            // Save migrated data if needed
+            if (needsSave) {
+                saveUserShareHistory(userEmail, userHistory);
+                console.log('✅ Migrated old share history data to new format');
+            }
+            
+            return userHistory;
         }
 
         // Save share history for specific user
@@ -2271,26 +2302,12 @@
             const platformCounts = {};
             
             platforms.forEach(platform => {
-                // ✅ IMPORTANT: Handle old boolean format and convert to array
-                if (shareHistory[platform]) {
-                    if (Array.isArray(shareHistory[platform])) {
-                        // New format: array of share objects
-                        const platformShareCount = shareHistory[platform].length;
-                        shareCoins += platformShareCount * 3; // 3 coins per share (unlimited!)
-                        totalShares += platformShareCount;
-                        platformCounts[platform] = platformShareCount;
-                    } else if (shareHistory[platform] === true) {
-                        // Old format: boolean (migrate to array)
-                        shareHistory[platform] = [{
-                            timestamp: new Date().toISOString(),
-                            coinsEarned: 3
-                        }];
-                        shareCoins += 3;
-                        totalShares += 1;
-                        platformCounts[platform] = 1;
-                        // Save migrated data
-                        saveUserShareHistory(userEmail, shareHistory);
-                    }
+                // Data is already migrated by getUserShareHistory, just check if it's an array
+                if (shareHistory[platform] && Array.isArray(shareHistory[platform])) {
+                    const platformShareCount = shareHistory[platform].length;
+                    shareCoins += platformShareCount * 3; // 3 coins per share (unlimited!)
+                    totalShares += platformShareCount;
+                    platformCounts[platform] = platformShareCount;
                 }
             });
             
