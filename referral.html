@@ -2212,8 +2212,8 @@
             // Get user's complete share history
             const shareHistory = getUserShareHistory(userEmail);
             
-            // Initialize array for this platform if it doesn't exist
-            if (!shareHistory[platform]) {
+            // ✅ IMPORTANT: Convert old boolean format to array format
+            if (!shareHistory[platform] || !Array.isArray(shareHistory[platform])) {
                 shareHistory[platform] = [];
             }
             
@@ -2271,11 +2271,26 @@
             const platformCounts = {};
             
             platforms.forEach(platform => {
-                if (shareHistory[platform] && Array.isArray(shareHistory[platform])) {
-                    const platformShareCount = shareHistory[platform].length;
-                    shareCoins += platformShareCount * 3; // 3 coins per share (unlimited!)
-                    totalShares += platformShareCount;
-                    platformCounts[platform] = platformShareCount;
+                // ✅ IMPORTANT: Handle old boolean format and convert to array
+                if (shareHistory[platform]) {
+                    if (Array.isArray(shareHistory[platform])) {
+                        // New format: array of share objects
+                        const platformShareCount = shareHistory[platform].length;
+                        shareCoins += platformShareCount * 3; // 3 coins per share (unlimited!)
+                        totalShares += platformShareCount;
+                        platformCounts[platform] = platformShareCount;
+                    } else if (shareHistory[platform] === true) {
+                        // Old format: boolean (migrate to array)
+                        shareHistory[platform] = [{
+                            timestamp: new Date().toISOString(),
+                            coinsEarned: 3
+                        }];
+                        shareCoins += 3;
+                        totalShares += 1;
+                        platformCounts[platform] = 1;
+                        // Save migrated data
+                        saveUserShareHistory(userEmail, shareHistory);
+                    }
                 }
             });
             
