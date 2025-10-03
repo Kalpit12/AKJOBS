@@ -1714,7 +1714,7 @@
                         // IMPORTANT: User may have MULTIPLE rows (one per share action)
                         // We need to aggregate all rows for accurate counts
                         const allRecords = data.records;
-                        const firstRecord = allRecords[0];
+                        const lastRecord = allRecords[allRecords.length - 1]; // Get LATEST record
                         
                         console.log('📊 Found', allRecords.length, 'record(s) for user');
                         
@@ -1728,9 +1728,13 @@
                             platformCounts[platform] = (platformCounts[platform] || 0) + 1;
                         });
                         
-                        // Get referral count and total coins from first record (should be same across all rows)
-                        const referralCount = firstRecord.referralCount || 0;
-                        const totalCoins = firstRecord.totalCoins || 0;
+                        // Get referral count from last record (most recent)
+                        const referralCount = lastRecord.referralCount || 0;
+                        
+                        // ✅ CALCULATE COINS FROM ACTUAL SHARE COUNT (most accurate!)
+                        const coinsFromShares = totalSharesFromSheets * 3;  // 3 coins per share
+                        const coinsFromReferrals = referralCount * 1;  // 1 coin per referral
+                        const totalCoins = coinsFromShares + coinsFromReferrals;
                         
                         // Update local referral data with Google Sheets data
             const referralData = getReferralData();
@@ -2502,6 +2506,9 @@
             const userPhone = userData.phone || '';
             const userRole = userData.role || 'unknown';
             
+            // Get referral count (how many people registered via user's link)
+            const referralCount = referralData.totalReferrals || referralData.referralCount || 0;
+            
             // Prepare complete tracking data for Google Sheets
             const trackingData = {
                 type: 'share',
@@ -2517,6 +2524,8 @@
                 totalCoins: coinData.totalCoins,
                 totalShares: coinData.totalShares,
                 platformShareCount: coinData.platformCounts[platform] || 0,
+                referralCount: referralCount,  // ✅ Added: How many registered via link
+                totalReferrals: referralCount,  // ✅ Alias for compatibility
                 timestamp: new Date().toISOString(),
                 referralCode: document.getElementById('referralCode') ? document.getElementById('referralCode').textContent : 'AKSHAR2025',
                 source: 'referral_page'
