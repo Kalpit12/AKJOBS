@@ -958,10 +958,45 @@
             transform: scale(1.05);
         }
         
+        .refer-earn-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        /* Shrink refer button when scrolling */
+        .header.scrolled .refer-earn-btn {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+        
+        .refer-earn-btn:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        
         @media (max-width: 768px) {
             .header-actions {
-                flex-direction: column;
+                flex-wrap: wrap;
                 gap: 10px;
+                justify-content: center;
+            }
+            
+            .refer-earn-btn,
+            .back-btn {
+                font-size: 12px;
+                padding: 8px 16px;
             }
             
             .current-user-display {
@@ -1130,11 +1165,15 @@
                     <img src="AK logo.jpg" alt="AksharJobs Logo">
                     <h1>AksharJobs</h1>
                 </a>
-                <a href="index.html" class="back-btn">
-                    <i class="fas fa-arrow-left"></i>
-                    Back to Home
-                </a>
                 <div class="header-actions">
+                    <a href="index.html#referral" class="refer-earn-btn">
+                        <i class="fas fa-gift"></i>
+                        Refer & Earn
+                    </a>
+                    <a href="index.html" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Home
+                    </a>
                     <span class="current-user-display" id="currentUserDisplay" style="display: none;">
                         <i class="fas fa-user-circle"></i>
                         <span id="currentUserEmail"></span>
