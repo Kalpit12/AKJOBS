@@ -2574,39 +2574,57 @@
 
         function sendReferralDataToSheets(data) {
             try {
-                console.log('Sending referral data to Google Sheets:', data);
+                // ✅ VALIDATE: Make sure we have user email before sending!
+                if (!data.referrerEmail || data.referrerEmail === 'unknown@example.com' || data.referrerEmail === 'anonymous@example.com') {
+                    console.error('❌ Cannot send to Google Sheets - Invalid user email:', data.referrerEmail);
+                    showNotification('⚠️ Please login first before sharing!', 'warning');
+                    return;
+                }
+                
+                console.log('📤 Sending referral data to Google Sheets:', data);
                 
                 const params = new URLSearchParams(data);
                 const url = `${REFERRAL_WEBHOOK_URL}?${params.toString()}`;
                 
-                console.log('Referral webhook URL:', url);
+                console.log('🔗 Webhook URL:', url);
+                console.log('📧 User Email:', data.referrerEmail);
                 
-                // Method 1: Hidden iframe
+                // ✅ METHOD 1: Fetch with no-cors (most reliable)
+                fetch(url, {
+                    method: 'GET',
+                    mode: 'no-cors',
+                    cache: 'no-cache',
+                    redirect: 'follow'
+                }).then(() => {
+                    console.log('✅ Fetch sent to Google Sheets successfully');
+                }).catch(error => {
+                    console.error('⚠️ Fetch error:', error);
+                });
+                
+                // ✅ METHOD 2: Direct navigation (opens in hidden iframe)
                 const iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
-                iframe.style.width = '1px';
-                iframe.style.height = '1px';
+                iframe.style.width = '0';
+                iframe.style.height = '0';
+                iframe.style.border = 'none';
                 iframe.src = url;
                 
                 iframe.onload = () => {
-                    console.log('Referral iframe loaded successfully');
+                    console.log('✅ Iframe loaded successfully - Data sent to Google Sheets');
                 };
                 
                 iframe.onerror = (error) => {
-                    console.error('Referral iframe error:', error);
+                    console.error('⚠️ Iframe error:', error);
                 };
                 
                 document.body.appendChild(iframe);
                 
-                // Method 2: Image pixel as backup
-                const img = new Image();
-                img.onload = () => {
-                    console.log('Referral image pixel loaded successfully');
-                };
-                img.onerror = (error) => {
-                    console.error('Referral image pixel error:', error);
-                };
-                img.src = url;
+                // Clean up after 5 seconds
+                setTimeout(() => {
+                    if (iframe && iframe.parentNode) {
+                        iframe.parentNode.removeChild(iframe);
+                    }
+                }, 5000);
                 
                 setTimeout(() => {
                     if (iframe.parentNode) {
