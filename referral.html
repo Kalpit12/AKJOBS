@@ -1421,7 +1421,7 @@
             'facebook': 3,   // ✅ Opens Facebook = 3 coins
             'telegram': 3,   // ✅ Opens Telegram = 3 coins
             'native': 3,     // ✅ Opens share dialog = 3 coins
-            'copy': 0        // âŒ Just copying = NO coins (must share it)
+            'copy': 0        // ❌ Just copying = NO coins (must share it)
         };
 
         // ========== USER-SPECIFIC DATA STORAGE ==========
@@ -2150,7 +2150,7 @@
             const proceed = confirm(instructionMessage);
             
             if (!proceed) {
-                showNotification('âŒ Share cancelled. No coins awarded.', 'info');
+                showNotification('❌ Share cancelled. No coins awarded.', 'info');
                 return;
             }
             
@@ -2159,7 +2159,7 @@
             
             // Then show the verification dialog after a delay
             setTimeout(() => {
-                const verificationMessage = `✅ VERIFICATION REQUIRED:\n\nDid you ACTUALLY share the message on ${platform}?\n\n⚠️ Only click "YES" if you:\nâ€¢ Opened the share window AND\nâ€¢ Sent/posted the message AND\nâ€¢ Completed the share action\n\nâŒ Do NOT click "YES" if you just opened and closed the share window!`;
+                const verificationMessage = `✅ VERIFICATION REQUIRED:\n\nDid you ACTUALLY share the message on ${platform}?\n\n⚠️ Only click "YES" if you:\n• Opened the share window AND\n• Sent/posted the message AND\n• Completed the share action\n\n❌ Do NOT click "YES" if you just opened and closed the share window!`;
                 
                 const actuallyShared = confirm(verificationMessage);
                 
@@ -2205,7 +2205,7 @@
                     
                 } else {
                     // User admitted they didn't actually share
-                    showNotification('âŒ No coins awarded. Please actually share the message to earn coins!', 'info');
+                    showNotification('❌ No coins awarded. Please actually share the message to earn coins!', 'info');
                 }
             }, 3000); // 3 second delay to let them complete the share
         }
@@ -2393,7 +2393,7 @@
 What if finding your dream opportunity didn't take months of endless searching?
 What if the perfect match was just minutes away?
 
-Welcome to AksharJobs âœ¨
+Welcome to AksharJobs ✨
 
 🧠 Powered by Advanced AI
 Our intelligent system doesn't just match keywords... it understands you. Your skills. Your aspirations. Your unique potential.
@@ -2407,18 +2407,18 @@ Built for the global market. Designed to understand what makes you unique.
 One Platform. Infinite Connections.
 
 Whether you're a:
-â€¢ Job Seeker ready for your breakthrough
-â€¢ Recruiter hunting for exceptional talent
-â€¢ Mentor eager to guide the next generation
-â€¢ Trainer sharing transformative knowledge
-â€¢ Consultant offering expertise
-â€¢ Volunteer making a difference
-â€¢ Intern starting your journey
-â€¢ Community builder
-â€¢ University shaping futures
-â€¢ HR professional
-â€¢ NGO creating impact
-â€¢ Evangelist spreading innovation
+• Job Seeker ready for your breakthrough
+• Recruiter hunting for exceptional talent
+• Mentor eager to guide the next generation
+• Trainer sharing transformative knowledge
+• Consultant offering expertise
+• Volunteer making a difference
+• Intern starting your journey
+• Community builder
+• University shaping futures
+• HR professional
+• NGO creating impact
+• Evangelist spreading innovation
 
 You belong here.... 🤝
 
@@ -2463,7 +2463,7 @@ Use my referral code: ${referralCode}`;
 
 What if finding your dream opportunity didn't take months of endless searching? What if the perfect match was just minutes away?
 
-Welcome to AksharJobs âœ¨
+Welcome to AksharJobs ✨
 
 🧠 Powered by Advanced AI - Our intelligent system understands you. Your skills. Your aspirations. Your unique potential.
 
@@ -2511,7 +2511,7 @@ Code: ${referralCode}
 What if finding your dream opportunity didn't take months of endless searching?
 What if the perfect match was just minutes away?
 
-Welcome to AksharJobs âœ¨
+Welcome to AksharJobs ✨
 
 🧠 Powered by Advanced AI
 Our intelligent system doesn't just match keywords... it understands you. Your skills. Your aspirations. Your unique potential.
@@ -2525,18 +2525,18 @@ Built for the global market. Designed to understand what makes you unique.
 One Platform. Infinite Connections.
 
 Whether you're a:
-â€¢ Job Seeker ready for your breakthrough
-â€¢ Recruiter hunting for exceptional talent
-â€¢ Mentor eager to guide the next generation
-â€¢ Trainer sharing transformative knowledge
-â€¢ Consultant offering expertise
-â€¢ Volunteer making a difference
-â€¢ Intern starting your journey
-â€¢ Community builder
-â€¢ University shaping futures
-â€¢ HR professional
-â€¢ NGO creating impact
-â€¢ Evangelist spreading innovation
+• Job Seeker ready for your breakthrough
+• Recruiter hunting for exceptional talent
+• Mentor eager to guide the next generation
+• Trainer sharing transformative knowledge
+• Consultant offering expertise
+• Volunteer making a difference
+• Intern starting your journey
+• Community builder
+• University shaping futures
+• HR professional
+• NGO creating impact
+• Evangelist spreading innovation
 
 You belong here.... 🤝
 
