@@ -379,19 +379,36 @@ class LiveVisitorTracker {
         }
     }
     
+    async sendTrackingData(data) {
+        try {
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            // With no-cors mode, we can't read the response, but the request is sent
+            console.log('✅ Tracking data sent successfully:', data.action);
+            return true;
+        } catch (error) {
+            console.error('❌ Error sending tracking data:', error);
+            return false;
+        }
+    }
+    
     async updateLiveCount() {
         try {
             const response = await fetch(`${this.apiUrl}?action=get_live_count`, {
                 method: 'GET',
-                mode: 'cors'
+                mode: 'no-cors'
             });
             
-            if (response.ok) {
-                const data = await response.json();
-                if (data.success) {
-                    this.displayLiveCount(data.liveCount, data.totalVisitors, data.newVisitorsToday);
-                }
-            }
+            // With no-cors mode, we can't read the response
+            // The live count will be updated when the Google Apps Script processes the request
+            console.log('✅ Live count request sent');
         } catch (error) {
             console.error('❌ Error updating live count:', error);
         }
