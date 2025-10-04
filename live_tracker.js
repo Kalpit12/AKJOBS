@@ -406,7 +406,8 @@ class LiveVisitorTracker {
     
     storeTrackingDataLocally(data) {
         try {
-            // Get existing data
+            // Store data locally as BACKUP only - NOT used for counting
+            // All counts are fetched from centralized Google Sheets API
             const storedData = JSON.parse(localStorage.getItem('akshar_visitor_data') || '[]');
             
             // Add new data with timestamp
@@ -422,10 +423,10 @@ class LiveVisitorTracker {
                 storedData.splice(0, storedData.length - 1000);
             }
             
-            // Save back to localStorage
+            // Save back to localStorage (for backup/debugging only)
             localStorage.setItem('akshar_visitor_data', JSON.stringify(storedData));
             
-            console.log('💾 Tracking data stored locally:', data.action);
+            console.log('💾 Tracking data stored locally as backup:', data.action);
         } catch (error) {
             console.error('❌ Error storing tracking data locally:', error);
         }
@@ -433,43 +434,64 @@ class LiveVisitorTracker {
     
     async updateLiveCount() {
         try {
-            // Use a different approach for live count since no-cors doesn't allow reading responses
-            // We'll simulate live counts based on our tracking and update the display
-            this.updateLiveCountDisplay();
+            // Fetch live count from centralized Google Sheets API
+            await this.fetchAndUpdateLiveCount();
         } catch (error) {
             console.error('❌ Error updating live count:', error);
+            // Fallback to showing at least 1 visitor (current user)
+            this.displayLiveCount(1, 1, 1);
+        }
+    }
+    
+    async fetchAndUpdateLiveCount() {
+        try {
+            console.log('📊 Fetching centralized live count from Google Apps Script...');
+            
+            const response = await fetch(this.googleSheetsUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    type: 'get_centralized_counts',
+                    action: 'get_centralized_counts',
+                    timestamp: new Date().toISOString()
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('✅ Received centralized live count data:', data);
+            
+            if (data.success && data.isCentralized) {
+                // Use centralized counts from Google Sheets
+                const liveVisitors = data.liveCount || 1;
+                const totalVisitors = data.totalVisitors || 1;
+                const newToday = data.newVisitorsToday || 1;
+                
+                // Update the display with centralized data
+                this.displayLiveCount(liveVisitors, totalVisitors, newToday);
+                
+                console.log(`📊 Centralized Live Count: ${liveVisitors} live, ${totalVisitors} total, ${newToday} new today`);
+            } else {
+                console.warn('⚠️ API returned success=false or not centralized:', data);
+                // Fallback to showing at least current user
+                this.displayLiveCount(1, 1, 1);
+            }
+            
+        } catch (error) {
+            console.error('❌ Error fetching centralized live count:', error);
+            // Fallback to showing at least current user
+            this.displayLiveCount(1, 1, 1);
         }
     }
     
     updateLiveCountDisplay() {
-        // Get stored visitor data from localStorage
-        const storedVisits = JSON.parse(localStorage.getItem('akshar_visitor_data') || '[]');
-        const today = new Date().toDateString();
-        
-        // Count visitors for today
-        const todayVisits = storedVisits.filter(visit => 
-            new Date(visit.timestamp).toDateString() === today
-        );
-        
-        // Count unique visitors for today
-        const uniqueVisitorsToday = new Set(todayVisits.map(visit => visit.visitorId)).size;
-        
-        // Estimate live visitors (active in last 2 minutes for more accuracy)
-        const twoMinutesAgo = Date.now() - (2 * 60 * 1000);
-        const recentVisits = storedVisits.filter(visit => 
-            new Date(visit.timestamp).getTime() > twoMinutesAgo
-        );
-        const liveVisitors = new Set(recentVisits.map(visit => visit.sessionId)).size;
-        
-        // Ensure at least 1 live visitor (current user) is shown
-        const displayLiveVisitors = Math.max(liveVisitors, 1);
-        const displayTotalVisitors = Math.max(storedVisits.length, 1);
-        const displayNewToday = Math.max(uniqueVisitorsToday, 1);
-        
-        // Update the display
-        this.displayLiveCount(displayLiveVisitors, displayTotalVisitors, displayNewToday);
-        
-        console.log(`📊 Live Count Update: ${displayLiveVisitors} live, ${displayTotalVisitors} total, ${displayNewToday} new today`);
+        // This method is now just a wrapper to fetch from API
+        this.fetchAndUpdateLiveCount();
     }
     
     displayLiveCount(liveCount, totalVisitors, newVisitorsToday) {
@@ -824,15 +846,25 @@ class LiveVisitorTracker {
     }
     
     setupLiveCountUpdates() {
-        // Update live count every 15 seconds for more accuracy
+        // Update live count every 10 seconds for maximum accuracy and consistency
         setInterval(() => {
             this.updateLiveCountDisplay();
-        }, 15000);
+        }, 10000);
         
         // Also update immediately after a short delay
         setTimeout(() => {
             this.updateLiveCountDisplay();
-        }, 1000);
+        }, 500);
+        
+        // Additional update when page becomes visible (user switches back to tab)
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                console.log('👁️ Page became visible, updating live counts...');
+                setTimeout(() => {
+                    this.updateLiveCountDisplay();
+                }, 1000);
+            }
+        });
     }
 }
 
