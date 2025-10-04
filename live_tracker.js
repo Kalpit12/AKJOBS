@@ -107,17 +107,10 @@ class LiveVisitorTracker {
             
             console.log('📊 Tracking visit:', visitData);
             
-            // Send to Google Sheets
-            const response = await fetch(this.apiUrl, {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(visitData)
-            });
+            // Send to Google Sheets using the sendTrackingData method
+            const success = await this.sendTrackingData(visitData);
             
-            if (response.ok) {
+            if (success) {
                 console.log('✅ Visit tracked successfully');
                 await this.updateLiveCount();
             } else {
@@ -614,14 +607,7 @@ class LiveVisitorTracker {
                 timestamp: new Date().toISOString()
             };
             
-            await fetch(this.apiUrl, {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(sessionData)
-            });
+            await this.sendTrackingData(sessionData);
             
         } catch (error) {
             console.error('❌ Error tracking session duration:', error);
@@ -661,14 +647,7 @@ class LiveVisitorTracker {
             if (navigator.sendBeacon) {
                 navigator.sendBeacon(this.apiUrl, JSON.stringify(exitData));
             } else {
-                fetch(this.apiUrl, {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(exitData)
-                });
+                this.sendTrackingData(exitData);
             }
             
         } catch (error) {
@@ -685,14 +664,7 @@ class LiveVisitorTracker {
                 timestamp: new Date().toISOString()
             };
             
-            await fetch(this.apiUrl, {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(returnData)
-            });
+            await this.sendTrackingData(returnData);
             
         } catch (error) {
             console.error('❌ Error tracking return:', error);
@@ -738,14 +710,7 @@ class LiveVisitorTracker {
                 timestamp: new Date().toISOString()
             };
             
-            await fetch(this.apiUrl, {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(interactionData)
-            });
+            await this.sendTrackingData(interactionData);
             
         } catch (error) {
             console.error('❌ Error tracking interaction:', error);
