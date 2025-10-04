@@ -453,18 +453,16 @@ class LiveVisitorTracker {
     
     async fetchAndUpdateLiveCount() {
         try {
-            console.log('📊 Fetching centralized live count from Google Apps Script...');
+            // Fetch the centralized count from Google Sheets API using GET
+            const apiUrl = `${this.apiUrl}?action=get_live_count&timestamp=${Date.now()}`;
             
-            const response = await fetch(this.googleSheetsUrl, {
-                method: 'POST',
+            console.log('📊 Fetching live count from:', apiUrl);
+            
+            const response = await fetch(apiUrl, {
+                method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    type: 'get_centralized_counts',
-                    action: 'get_centralized_counts',
-                    timestamp: new Date().toISOString()
-                })
+                    'Accept': 'application/json'
+                }
             });
             
             if (!response.ok) {
@@ -472,26 +470,26 @@ class LiveVisitorTracker {
             }
             
             const data = await response.json();
-            console.log('✅ Received centralized live count data:', data);
+            console.log('✅ Received live count data:', data);
             
-            if (data.success && data.isCentralized) {
+            if (data.success) {
                 // Use centralized counts from Google Sheets
-                const liveVisitors = data.liveCount || 1;
-                const totalVisitors = data.totalVisitors || 1;
-                const newToday = data.newVisitorsToday || 1;
+                const liveVisitors = Math.max(data.liveCount || 0, 1); // At least show current user
+                const totalVisitors = Math.max(data.totalVisitors || 0, 1);
+                const newToday = Math.max(data.newVisitorsToday || 0, 1);
                 
                 // Update the display with centralized data
                 this.displayLiveCount(liveVisitors, totalVisitors, newToday);
                 
-                console.log(`📊 Centralized Live Count: ${liveVisitors} live, ${totalVisitors} total, ${newToday} new today`);
+                console.log(`📊 Live Count (Centralized): ${liveVisitors} live, ${totalVisitors} total, ${newToday} new today`);
             } else {
-                console.warn('⚠️ API returned success=false or not centralized:', data);
+                console.warn('⚠️ API returned success=false:', data);
                 // Fallback to showing at least current user
                 this.displayLiveCount(1, 1, 1);
             }
             
         } catch (error) {
-            console.error('❌ Error fetching centralized live count:', error);
+            console.error('❌ Error fetching live count from API:', error);
             // Fallback to showing at least current user
             this.displayLiveCount(1, 1, 1);
         }
@@ -876,21 +874,19 @@ class LiveVisitorTracker {
     }
 }
 
-// Test function to verify centralized counting
+// Test function to verify centralized counting (uses GET to avoid CORS issues)
 async function testCentralizedCounting() {
     console.log('🧪 Testing centralized counting system...');
     
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxSKL04akfo3W_XiUfQJQg0dg3ded6EwsbEEg6VsW1SD5eVoEDV-3EoxH-IgZy-ccEMsQ/exec', {
-            method: 'POST',
+        const apiUrl = 'https://script.google.com/macros/s/AKfycbxSKL04akfo3W_XiUfQJQg0dg3ded6EwsbEEg6VsW1SD5eVoEDV-3EoxH-IgZy-ccEMsQ/exec';
+        const testUrl = `${apiUrl}?action=get_live_count&timestamp=${Date.now()}`;
+        
+        const response = await fetch(testUrl, {
+            method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                type: 'get_centralized_counts',
-                action: 'get_centralized_counts',
-                timestamp: new Date().toISOString()
-            })
+                'Accept': 'application/json'
+            }
         });
         
         if (!response.ok) {
@@ -900,7 +896,7 @@ async function testCentralizedCounting() {
         const data = await response.json();
         console.log('🧪 Centralized counting test result:', data);
         
-        if (data.success && data.isCentralized) {
+        if (data.success) {
             console.log('✅ Centralized counting system is working correctly!');
             console.log(`📊 Test Results: ${data.liveCount} live, ${data.totalVisitors} total, ${data.newVisitorsToday} new today`);
         } else {
@@ -919,12 +915,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the live tracker
     window.liveTracker = new LiveVisitorTracker();
     
-    // Test centralized counting after 3 seconds
-    setTimeout(() => {
-        testCentralizedCounting();
-    }, 3000);
-    
     console.log('🚀 Live Visitor Tracker initialized');
+    
+    // Optional: Uncomment to test centralized counting manually
+    // setTimeout(() => testCentralizedCounting(), 3000);
 });
 
 // Export for use in other scripts
