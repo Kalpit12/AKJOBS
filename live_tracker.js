@@ -454,10 +454,10 @@ class LiveVisitorTracker {
         // Count unique visitors for today
         const uniqueVisitorsToday = new Set(todayVisits.map(visit => visit.visitorId)).size;
         
-        // Estimate live visitors (active in last 5 minutes)
-        const fiveMinutesAgo = Date.now() - (5 * 60 * 1000);
+        // Estimate live visitors (active in last 2 minutes for more accuracy)
+        const twoMinutesAgo = Date.now() - (2 * 60 * 1000);
         const recentVisits = storedVisits.filter(visit => 
-            new Date(visit.timestamp).getTime() > fiveMinutesAgo
+            new Date(visit.timestamp).getTime() > twoMinutesAgo
         );
         const liveVisitors = new Set(recentVisits.map(visit => visit.sessionId)).size;
         
@@ -542,12 +542,19 @@ class LiveVisitorTracker {
             // Add styles
             this.addCounterStyles();
             
-            // Insert at the top of the page
-            const header = document.querySelector('header') || document.querySelector('.header') || document.body.firstChild;
-            if (header) {
-                header.parentNode.insertBefore(counterElement, header);
+            // Insert after the Start Your Journey button
+            const heroButtons = document.querySelector('.hero-buttons');
+            const liveCounterContainer = document.querySelector('.live-counter-container');
+            
+            if (heroButtons && liveCounterContainer) {
+                // Insert the floating counter at the beginning of the live counter container
+                liveCounterContainer.insertBefore(counterElement, liveCounterContainer.firstChild);
+            } else if (heroButtons) {
+                // If no live counter container, insert after the hero buttons
+                heroButtons.parentNode.insertBefore(counterElement, heroButtons.nextSibling);
             } else {
-                document.body.insertBefore(counterElement, document.body.firstChild);
+                // Fallback to body
+                document.body.appendChild(counterElement);
             }
         } else {
             // Update existing counter
@@ -564,19 +571,18 @@ class LiveVisitorTracker {
         styles.id = 'liveTrackerStyles';
         styles.textContent = `
             .live-visitor-counter {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                padding: 15px 20px;
-                border-radius: 15px;
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-                z-index: 1000;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                position: relative;
+                background: rgba(255, 255, 255, 0.15);
                 backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                animation: slideInRight 0.5s ease-out;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: white;
+                padding: 20px;
+                border-radius: 15px;
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                animation: slideInUp 0.5s ease-out;
+                min-width: 280px;
+                margin-bottom: 20px;
             }
             
             .live-counter-content {
@@ -818,15 +824,15 @@ class LiveVisitorTracker {
     }
     
     setupLiveCountUpdates() {
-        // Update live count every 30 seconds
+        // Update live count every 15 seconds for more accuracy
         setInterval(() => {
             this.updateLiveCountDisplay();
-        }, 30000);
+        }, 15000);
         
         // Also update immediately after a short delay
         setTimeout(() => {
             this.updateLiveCountDisplay();
-        }, 2000);
+        }, 1000);
     }
 }
 
