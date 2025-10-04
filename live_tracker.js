@@ -52,8 +52,14 @@ class LiveVisitorTracker {
         // Check if this is a new visitor
         this.isNewVisitor = this.checkIfNewVisitor();
         
-        // Track the visit
+        // Track the visit immediately (this happens for ALL visitors)
         await this.trackVisit();
+        
+        // Track page load event
+        await this.trackPageLoad();
+        
+        // Set up comprehensive tracking
+        this.setupComprehensiveTracking();
         
         // Set up periodic updates
         this.setupPeriodicUpdates();
@@ -63,6 +69,9 @@ class LiveVisitorTracker {
         
         // Track user interactions
         this.trackUserInteractions();
+        
+        // Track navigation and link clicks
+        this.trackNavigationEvents();
     }
     
     checkIfNewVisitor() {
@@ -117,6 +126,256 @@ class LiveVisitorTracker {
             
         } catch (error) {
             console.error('❌ Error tracking visit:', error);
+        }
+    }
+    
+    async trackPageLoad() {
+        try {
+            const pageLoadData = {
+                type: 'visitor_tracking',
+                action: 'page_load',
+                visitorId: this.visitorId,
+                sessionId: this.sessionId,
+                isNewVisitor: this.isNewVisitor,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent,
+                language: navigator.language,
+                screenResolution: `${screen.width}x${screen.height}`,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                referrer: document.referrer || 'direct',
+                url: window.location.href,
+                pageTitle: document.title,
+                loadTime: performance.now(),
+                connectionType: navigator.connection ? navigator.connection.effectiveType : 'unknown'
+            };
+            
+            console.log('📄 Tracking page load:', pageLoadData);
+            
+            await this.sendTrackingData(pageLoadData);
+        } catch (error) {
+            console.error('❌ Error tracking page load:', error);
+        }
+    }
+    
+    setupComprehensiveTracking() {
+        // Track any link clicks (internal or external)
+        document.addEventListener('click', (event) => {
+            const target = event.target;
+            const link = target.closest('a');
+            
+            if (link) {
+                this.trackLinkClick(link);
+            }
+        });
+        
+        // Track form submissions
+        document.addEventListener('submit', (event) => {
+            this.trackFormSubmission(event.target);
+        });
+        
+        // Track scroll depth
+        this.trackScrollDepth();
+        
+        // Track time on page
+        this.trackTimeOnPage();
+    }
+    
+    async trackLinkClick(link) {
+        try {
+            const linkData = {
+                type: 'visitor_tracking',
+                action: 'link_click',
+                visitorId: this.visitorId,
+                sessionId: this.sessionId,
+                timestamp: new Date().toISOString(),
+                linkUrl: link.href,
+                linkText: link.textContent.trim(),
+                linkTarget: link.target || '_self',
+                isExternal: !link.href.startsWith(window.location.origin),
+                referrer: document.referrer || 'direct',
+                url: window.location.href,
+                pageTitle: document.title
+            };
+            
+            console.log('🔗 Tracking link click:', linkData);
+            await this.sendTrackingData(linkData);
+        } catch (error) {
+            console.error('❌ Error tracking link click:', error);
+        }
+    }
+    
+    async trackFormSubmission(form) {
+        try {
+            const formData = {
+                type: 'visitor_tracking',
+                action: 'form_submission',
+                visitorId: this.visitorId,
+                sessionId: this.sessionId,
+                timestamp: new Date().toISOString(),
+                formAction: form.action,
+                formMethod: form.method,
+                formId: form.id || 'unnamed',
+                formClass: form.className,
+                referrer: document.referrer || 'direct',
+                url: window.location.href,
+                pageTitle: document.title
+            };
+            
+            console.log('📝 Tracking form submission:', formData);
+            await this.sendTrackingData(formData);
+        } catch (error) {
+            console.error('❌ Error tracking form submission:', error);
+        }
+    }
+    
+    trackScrollDepth() {
+        let maxScrollDepth = 0;
+        const scrollThresholds = [25, 50, 75, 90, 100];
+        const reportedThresholds = new Set();
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = Math.round((scrollTop / documentHeight) * 100);
+            
+            if (scrollPercent > maxScrollDepth) {
+                maxScrollDepth = scrollPercent;
+                
+                // Report when reaching specific thresholds
+                scrollThresholds.forEach(threshold => {
+                    if (scrollPercent >= threshold && !reportedThresholds.has(threshold)) {
+                        reportedThresholds.add(threshold);
+                        this.trackScrollEvent(threshold);
+                    }
+                });
+            }
+        });
+    }
+    
+    async trackScrollEvent(scrollPercent) {
+        try {
+            const scrollData = {
+                type: 'visitor_tracking',
+                action: 'scroll_depth',
+                visitorId: this.visitorId,
+                sessionId: this.sessionId,
+                timestamp: new Date().toISOString(),
+                scrollPercent: scrollPercent,
+                referrer: document.referrer || 'direct',
+                url: window.location.href,
+                pageTitle: document.title
+            };
+            
+            console.log('📜 Tracking scroll depth:', scrollData);
+            await this.sendTrackingData(scrollData);
+        } catch (error) {
+            console.error('❌ Error tracking scroll depth:', error);
+        }
+    }
+    
+    trackTimeOnPage() {
+        const startTime = Date.now();
+        const timeThresholds = [10, 30, 60, 120, 300]; // seconds
+        const reportedTimes = new Set();
+        
+        // Report time milestones
+        timeThresholds.forEach(seconds => {
+            setTimeout(() => {
+                if (!reportedTimes.has(seconds)) {
+                    reportedTimes.add(seconds);
+                    this.trackTimeEvent(seconds);
+                }
+            }, seconds * 1000);
+        });
+        
+        // Track when user leaves the page
+        window.addEventListener('beforeunload', () => {
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            this.trackTimeEvent(timeSpent, true); // true indicates page exit
+        });
+    }
+    
+    async trackTimeEvent(seconds, isExit = false) {
+        try {
+            const timeData = {
+                type: 'visitor_tracking',
+                action: isExit ? 'page_exit' : 'time_on_page',
+                visitorId: this.visitorId,
+                sessionId: this.sessionId,
+                timestamp: new Date().toISOString(),
+                timeSpent: seconds,
+                referrer: document.referrer || 'direct',
+                url: window.location.href,
+                pageTitle: document.title
+            };
+            
+            console.log('⏱️ Tracking time event:', timeData);
+            await this.sendTrackingData(timeData);
+        } catch (error) {
+            console.error('❌ Error tracking time event:', error);
+        }
+    }
+    
+    trackNavigationEvents() {
+        // Track any navigation events
+        window.addEventListener('popstate', () => {
+            this.trackNavigationEvent('popstate');
+        });
+        
+        // Track if user tries to navigate away
+        window.addEventListener('beforeunload', () => {
+            this.trackNavigationEvent('beforeunload');
+        });
+        
+        // Track page focus/blur
+        window.addEventListener('focus', () => {
+            this.trackPageFocusEvent(true);
+        });
+        
+        window.addEventListener('blur', () => {
+            this.trackPageFocusEvent(false);
+        });
+    }
+    
+    async trackNavigationEvent(eventType) {
+        try {
+            const navData = {
+                type: 'visitor_tracking',
+                action: 'navigation_event',
+                visitorId: this.visitorId,
+                sessionId: this.sessionId,
+                timestamp: new Date().toISOString(),
+                eventType: eventType,
+                referrer: document.referrer || 'direct',
+                url: window.location.href,
+                pageTitle: document.title
+            };
+            
+            console.log('🧭 Tracking navigation event:', navData);
+            await this.sendTrackingData(navData);
+        } catch (error) {
+            console.error('❌ Error tracking navigation event:', error);
+        }
+    }
+    
+    async trackPageFocusEvent(hasFocus) {
+        try {
+            const focusData = {
+                type: 'visitor_tracking',
+                action: hasFocus ? 'page_focus' : 'page_blur',
+                visitorId: this.visitorId,
+                sessionId: this.sessionId,
+                timestamp: new Date().toISOString(),
+                hasFocus: hasFocus,
+                referrer: document.referrer || 'direct',
+                url: window.location.href,
+                pageTitle: document.title
+            };
+            
+            console.log('👁️ Tracking page focus:', focusData);
+            await this.sendTrackingData(focusData);
+        } catch (error) {
+            console.error('❌ Error tracking page focus:', error);
         }
     }
     
