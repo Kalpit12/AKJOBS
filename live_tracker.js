@@ -1,6 +1,14 @@
 /**
  * Live Visitor Tracker for AksharJobs Expo Landing Page
- * Tracks unique visitors and displays live count
+ * 
+ * CENTRALIZED COUNTING SYSTEM:
+ * - All visitor counts are fetched from Google Sheets API (centralized database)
+ * - Same counts displayed on all devices/browsers
+ * - localStorage used ONLY for backup/debugging, NOT for counting
+ * - Counts update every 15 seconds from the central API
+ * 
+ * API Endpoint: Google Sheets Web App
+ * Action: ?action=get_live_count
  */
 
 class LiveVisitorTracker {
@@ -868,10 +876,55 @@ class LiveVisitorTracker {
     }
 }
 
+// Test function to verify centralized counting
+async function testCentralizedCounting() {
+    console.log('🧪 Testing centralized counting system...');
+    
+    try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxSKL04akfo3W_XiUfQJQg0dg3ded6EwsbEEg6VsW1SD5eVoEDV-3EoxH-IgZy-ccEMsQ/exec', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type: 'get_centralized_counts',
+                action: 'get_centralized_counts',
+                timestamp: new Date().toISOString()
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('🧪 Centralized counting test result:', data);
+        
+        if (data.success && data.isCentralized) {
+            console.log('✅ Centralized counting system is working correctly!');
+            console.log(`📊 Test Results: ${data.liveCount} live, ${data.totalVisitors} total, ${data.newVisitorsToday} new today`);
+        } else {
+            console.warn('⚠️ Centralized counting test failed:', data);
+        }
+        
+    } catch (error) {
+        console.error('❌ Centralized counting test error:', error);
+    }
+}
+
 // Initialize the live tracker when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🎯 Initializing Live Visitor Tracker...');
-    new LiveVisitorTracker();
+    
+    // Initialize the live tracker
+    window.liveTracker = new LiveVisitorTracker();
+    
+    // Test centralized counting after 3 seconds
+    setTimeout(() => {
+        testCentralizedCounting();
+    }, 3000);
+    
+    console.log('🚀 Live Visitor Tracker initialized');
 });
 
 // Export for use in other scripts
