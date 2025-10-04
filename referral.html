@@ -1569,14 +1569,13 @@
 
         // ========== API CONFIGURATION ==========
         // ✅ Google Sheets integration (PRIMARY tracking system)
-        const REFERRAL_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby7P-JIqTcTVofj4JooM3XDLoEz3GCUIsoi_BmQTxtIMOFa_kFzpwA8QZzzdsZ7tbPFPw/exec';
+        const REFERRAL_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxX3S2ivdebL0H6ZnkLPeBToKfYJI_YXCHERWAfGnN16W29idW67BDJQNjHPBppb-Eb7w/exec';
         
         // ✅ AksharCoins reward system (UNLIMITED SHARES ALLOWED - Every share is tracked!)
         const AKSHAR_COINS_REWARDS = {
             'whatsapp': 3,   // ✅ 3 coins per share (share unlimited times!)
             'linkedin': 3,   // ✅ 3 coins per share (share unlimited times!)
             'email': 3,      // ✅ 3 coins per share (share unlimited times!)
-            'twitter': 3,    // ✅ 3 coins per share (share unlimited times!)
             'facebook': 3,   // ✅ 3 coins per share (share unlimited times!)
             'telegram': 3,   // ✅ 3 coins per share (share unlimited times!)
             'native': 3,     // ✅ 3 coins per share (share unlimited times!)
@@ -1589,7 +1588,9 @@
         
         function getCurrentUserEmail() {
             // Get the current logged-in user's email from a non-user-specific key
-            return localStorage.getItem('currentUserEmail') || 'anonymous@example.com';
+            const email = localStorage.getItem('currentUserEmail');
+            console.log('getCurrentUserEmail called, returning:', email);
+            return email || 'anonymous@example.com';
         }
         
         function setCurrentUser(email) {
@@ -3157,8 +3158,11 @@ Code: ${referralCode}`;
         async function fetchReferralClicks() {
             const currentEmail = getCurrentUserEmail();
             
+            console.log('fetchReferralClicks called with email:', currentEmail);
+            
             if (!currentEmail || currentEmail === 'anonymous@example.com') {
                 console.log('No user logged in, cannot fetch referral clicks');
+                displayEmptyReferralClicks();
                 return;
             }
             
@@ -3167,11 +3171,17 @@ Code: ${referralCode}`;
                 
                 // Fetch from Google Sheets
                 const apiUrl = `${REFERRAL_WEBHOOK_URL}?action=get_referral_clicks&referrer=${encodeURIComponent(currentEmail)}`;
+                console.log('API URL:', apiUrl);
                 
                 const response = await fetch(apiUrl, {
                     method: 'GET',
                     mode: 'cors'
-                }).catch(() => null);
+                }).catch((error) => {
+                    console.error('Fetch error:', error);
+                    return null;
+                });
+                
+                console.log('Response received:', response);
                 
                 if (response && response.ok) {
                     const data = await response.json();
@@ -3181,14 +3191,16 @@ Code: ${referralCode}`;
                         displayReferralClicks(data.clicks);
                     } else {
                         // No clicks yet - show empty state
+                        console.log('No referral clicks found for user:', currentEmail);
                         displayEmptyReferralClicks();
                     }
                 } else {
+                    console.log('Response not ok, status:', response?.status);
                     // CORS might block, show empty state
                     displayEmptyReferralClicks();
                 }
             } catch (error) {
-                console.log('Could not fetch referral clicks:', error);
+                console.error('Could not fetch referral clicks:', error);
                 displayEmptyReferralClicks();
             }
         }
