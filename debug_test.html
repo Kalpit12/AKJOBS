@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test - AksharJobs Live Tracking</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .test-section { background: white; padding: 20px; margin: 20px 0; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-button { background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .test-button:hover { background: #5a67d8; }
+        .result { background: #f7fafc; border: 1px solid #e2e8f0; padding: 15px; margin: 10px 0; border-radius: 5px; white-space: pre-wrap; font-family: monospace; font-size: 12px; }
+        .success { border-color: #48bb78; background: #f0fff4; }
+        .error { border-color: #f56565; background: #fff5f5; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug Test - Live Tracking Issue</h1>
+    
+    <div class="test-section">
+        <h2>🔗 Direct API Test</h2>
+        <p>Test the Google Apps Script API directly to see what's happening.</p>
+        <button class="test-button" onclick="testDirectAPI()">Test Direct API</button>
+        <button class="test-button" onclick="testLiveCountAPI()">Test Live Count API</button>
+        <div id="apiResult" class="result" style="display: none;"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 Live Tracker Test</h2>
+        <p>Test the live tracker JavaScript functionality.</p>
+        <button class="test-button" onclick="testLiveTracker()">Test Live Tracker</button>
+        <div id="trackerResult" class="result" style="display: none;"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🛠️ Manual Test</h2>
+        <p>Manually test the visitor tracking functionality.</p>
+        <button class="test-button" onclick="manualTest()">Manual Test</button>
+        <div id="manualResult" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxX3S2ivdebL0H6ZnkLPeBToKfYJI_YXCHERWAfGnN16W29idW67BDJQNjHPBppb-Eb7w/exec';
+        
+        function showResult(elementId, result, isSuccess = true) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `result ${isSuccess ? 'success' : 'error'}`;
+            element.textContent = typeof result === 'object' ? JSON.stringify(result, null, 2) : result;
+        }
+        
+        // Test direct API access
+        async function testDirectAPI() {
+            try {
+                console.log('Testing direct API access...');
+                
+                // Test 1: Basic API access
+                const response1 = await fetch(API_URL, { method: 'GET', mode: 'cors' });
+                const data1 = await response1.json();
+                
+                console.log('Basic API response:', data1);
+                
+                // Test 2: With parameters
+                const url = `${API_URL}?test=1&debug=1`;
+                const response2 = await fetch(url, { method: 'GET', mode: 'cors' });
+                const data2 = await response2.json();
+                
+                console.log('API with params response:', data2);
+                
+                showResult('apiResult', {
+                    test: 'Direct API Test',
+                    basicResponse: data1,
+                    paramsResponse: data2,
+                    basicStatus: response1.status,
+                    paramsStatus: response2.status,
+                    apiUrl: API_URL
+                }, true);
+                
+            } catch (error) {
+                console.error('API test error:', error);
+                showResult('apiResult', {
+                    test: 'Direct API Test',
+                    error: error.message,
+                    apiUrl: API_URL
+                }, false);
+            }
+        }
+        
+        // Test live count API specifically
+        async function testLiveCountAPI() {
+            try {
+                console.log('Testing live count API...');
+                
+                // Test different ways to call the live count API
+                const urls = [
+                    `${API_URL}?action=get_live_count`,
+                    `${API_URL}?action=get_live_count&debug=1`,
+                    `${API_URL}?type=visitor_tracking&action=get_live_count`
+                ];
+                
+                const results = [];
+                
+                for (let i = 0; i < urls.length; i++) {
+                    try {
+                        console.log(`Testing URL ${i + 1}:`, urls[i]);
+                        const response = await fetch(urls[i], { method: 'GET', mode: 'cors' });
+                        const data = await response.json();
+                        
+                        results.push({
+                            url: urls[i],
+                            status: response.status,
+                            data: data
+                        });
+                        
+                        console.log(`URL ${i + 1} result:`, data);
+                        
+                    } catch (error) {
+                        results.push({
+                            url: urls[i],
+                            error: error.message
+                        });
+                    }
+                }
+                
+                showResult('apiResult', {
+                    test: 'Live Count API Test',
+                    results: results
+                }, true);
+                
+            } catch (error) {
+                console.error('Live count API test error:', error);
+                showResult('apiResult', {
+                    test: 'Live Count API Test',
+                    error: error.message
+                }, false);
+            }
+        }
+        
+        // Test live tracker functionality
+        function testLiveTracker() {
+            try {
+                console.log('Testing live tracker...');
+                
+                // Check if LiveVisitorTracker is available
+                const trackerAvailable = typeof window.LiveVisitorTracker !== 'undefined';
+                
+                // Test visitor ID generation
+                let visitorId = null;
+                if (trackerAvailable) {
+                    const tracker = new window.LiveVisitorTracker();
+                    visitorId = tracker.visitorId;
+                }
+                
+                // Test session ID generation
+                let sessionId = null;
+                if (trackerAvailable) {
+                    const tracker = new window.LiveVisitorTracker();
+                    sessionId = tracker.sessionId;
+                }
+                
+                showResult('trackerResult', {
+                    test: 'Live Tracker Test',
+                    trackerAvailable: trackerAvailable,
+                    visitorId: visitorId,
+                    sessionId: sessionId,
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    screenResolution: `${screen.width}x${screen.height}`,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                }, true);
+                
+            } catch (error) {
+                console.error('Live tracker test error:', error);
+                showResult('trackerResult', {
+                    test: 'Live Tracker Test',
+                    error: error.message
+                }, false);
+            }
+        }
+        
+        // Manual test of visitor tracking
+        async function manualTest() {
+            try {
+                console.log('Manual visitor tracking test...');
+                
+                const testData = {
+                    type: 'visitor_tracking',
+                    action: 'track_visit',
+                    visitorId: 'manual_test_' + Date.now(),
+                    sessionId: 'manual_session_' + Date.now(),
+                    isNewVisitor: true,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    screenResolution: `${screen.width}x${screen.height}`,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    referrer: document.referrer || 'manual-test',
+                    url: window.location.href,
+                    pageTitle: document.title
+                };
+                
+                console.log('Sending test data:', testData);
+                
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                const data = await response.json();
+                
+                console.log('Manual test response:', data);
+                
+                showResult('manualResult', {
+                    test: 'Manual Visitor Tracking Test',
+                    sentData: testData,
+                    response: data,
+                    status: response.status
+                }, response.ok);
+                
+            } catch (error) {
+                console.error('Manual test error:', error);
+                showResult('manualResult', {
+                    test: 'Manual Visitor Tracking Test',
+                    error: error.message
+                }, false);
+            }
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🔍 Debug test page loaded');
+            console.log('API URL:', API_URL);
+            
+            // Check if live tracker script is loaded
+            if (typeof window.LiveVisitorTracker !== 'undefined') {
+                console.log('✅ Live Visitor Tracker script loaded');
+            } else {
+                console.log('❌ Live Visitor Tracker script not loaded');
+            }
+        });
+    </script>
+</body>
+</html>
