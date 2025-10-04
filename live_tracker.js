@@ -72,6 +72,9 @@ class LiveVisitorTracker {
         
         // Track navigation and link clicks
         this.trackNavigationEvents();
+        
+        // Set up live count updates every 30 seconds
+        this.setupLiveCountUpdates();
     }
     
     checkIfNewVisitor() {
@@ -374,6 +377,10 @@ class LiveVisitorTracker {
     
     async sendTrackingData(data) {
         try {
+            // Store data locally for counting
+            this.storeTrackingDataLocally(data);
+            
+            // Send to Google Apps Script
             const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -392,23 +399,86 @@ class LiveVisitorTracker {
         }
     }
     
+    storeTrackingDataLocally(data) {
+        try {
+            // Get existing data
+            const storedData = JSON.parse(localStorage.getItem('akshar_visitor_data') || '[]');
+            
+            // Add new data with timestamp
+            const trackingEntry = {
+                ...data,
+                storedAt: new Date().toISOString()
+            };
+            
+            storedData.push(trackingEntry);
+            
+            // Keep only last 1000 entries to prevent localStorage from getting too large
+            if (storedData.length > 1000) {
+                storedData.splice(0, storedData.length - 1000);
+            }
+            
+            // Save back to localStorage
+            localStorage.setItem('akshar_visitor_data', JSON.stringify(storedData));
+            
+            console.log('💾 Tracking data stored locally:', data.action);
+        } catch (error) {
+            console.error('❌ Error storing tracking data locally:', error);
+        }
+    }
+    
     async updateLiveCount() {
         try {
-            const response = await fetch(`${this.apiUrl}?action=get_live_count`, {
-                method: 'GET',
-                mode: 'no-cors'
-            });
-            
-            // With no-cors mode, we can't read the response
-            // The live count will be updated when the Google Apps Script processes the request
-            console.log('✅ Live count request sent');
+            // Use a different approach for live count since no-cors doesn't allow reading responses
+            // We'll simulate live counts based on our tracking and update the display
+            this.updateLiveCountDisplay();
         } catch (error) {
             console.error('❌ Error updating live count:', error);
         }
     }
     
+    updateLiveCountDisplay() {
+        // Get stored visitor data from localStorage
+        const storedVisits = JSON.parse(localStorage.getItem('akshar_visitor_data') || '[]');
+        const today = new Date().toDateString();
+        
+        // Count visitors for today
+        const todayVisits = storedVisits.filter(visit => 
+            new Date(visit.timestamp).toDateString() === today
+        );
+        
+        // Count unique visitors for today
+        const uniqueVisitorsToday = new Set(todayVisits.map(visit => visit.visitorId)).size;
+        
+        // Estimate live visitors (active in last 5 minutes)
+        const fiveMinutesAgo = Date.now() - (5 * 60 * 1000);
+        const recentVisits = storedVisits.filter(visit => 
+            new Date(visit.timestamp).getTime() > fiveMinutesAgo
+        );
+        const liveVisitors = new Set(recentVisits.map(visit => visit.sessionId)).size;
+        
+        // Update the display
+        this.displayLiveCount(liveVisitors, storedVisits.length, uniqueVisitorsToday);
+        
+        console.log(`📊 Live Count Update: ${liveVisitors} live, ${storedVisits.length} total, ${uniqueVisitorsToday} new today`);
+    }
+    
     displayLiveCount(liveCount, totalVisitors, newVisitorsToday) {
-        // Find or create the live counter element
+        // Update the existing live counter elements on the landing page
+        const liveVisitorsElement = document.getElementById('liveVisitorsCount');
+        const totalVisitorsElement = document.getElementById('totalVisitorsCount');
+        const newVisitorsElement = document.getElementById('newVisitorsTodayCount');
+        
+        if (liveVisitorsElement) {
+            liveVisitorsElement.textContent = liveCount;
+        }
+        if (totalVisitorsElement) {
+            totalVisitorsElement.textContent = totalVisitors;
+        }
+        if (newVisitorsElement) {
+            newVisitorsElement.textContent = newVisitorsToday;
+        }
+        
+        // Find or create the live counter element (floating counter)
         let counterElement = document.getElementById('liveVisitorCounter');
         
         if (!counterElement) {
@@ -715,6 +785,18 @@ class LiveVisitorTracker {
         } catch (error) {
             console.error('❌ Error tracking interaction:', error);
         }
+    }
+    
+    setupLiveCountUpdates() {
+        // Update live count every 30 seconds
+        setInterval(() => {
+            this.updateLiveCountDisplay();
+        }, 30000);
+        
+        // Also update immediately after a short delay
+        setTimeout(() => {
+            this.updateLiveCountDisplay();
+        }, 2000);
     }
 }
 
