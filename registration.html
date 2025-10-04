@@ -134,7 +134,8 @@
             position: relative;
         }
         
-        .role-option input[type="radio"] {
+        .role-option input[type="radio"],
+        .role-option input[type="checkbox"] {
             display: none;
         }
         
@@ -160,7 +161,8 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
         
-        .role-option input[type="radio"]:checked + label {
+        .role-option input[type="radio"]:checked + label,
+        .role-option input[type="checkbox"]:checked + label {
             background: rgba(102, 126, 234, 0.1);
             border-color: #667eea;
             transform: translateY(-2px);
@@ -463,13 +465,13 @@
             
             <div class="registration-header">
                 <h1>Join AksharJobs</h1>
-                <p>Notify me when we launch - select your role to see relevant fields</p>
+                <p>Notify me when we launch - select one or more roles (you can select multiple!)</p>
             </div>
             
             <form id="registrationForm">
                 <div class="role-selection">
                     <div class="role-option">
-                        <input type="radio" id="jobSeeker" name="role" value="job_seeker" >
+                        <input type="checkbox" id="jobSeeker" name="roles" value="job_seeker" >
                         <label for="jobSeeker">
                             <i class="fas fa-search"></i>
                             <h3>Job Seeker</h3>
@@ -478,7 +480,7 @@
                     </div>
                         
                     <div class="role-option">
-                        <input type="radio" id="recruiter" name="role" value="recruiter" >
+                        <input type="checkbox" id="recruiter" name="roles" value="recruiter" >
                         <label for="recruiter">
                                 <i class="fas fa-users"></i>
                             <h3>Recruiter</h3>
@@ -487,7 +489,7 @@
                     </div>
                         
                     <div class="role-option">
-                        <input type="radio" id="mentor" name="role" value="mentor" >
+                        <input type="checkbox" id="mentor" name="roles" value="mentor" >
                         <label for="mentor">
                                 <i class="fas fa-graduation-cap"></i>
                             <h3>Mentor</h3>
@@ -496,7 +498,7 @@
                     </div>
                         
                     <div class="role-option">
-                        <input type="radio" id="trainer" name="role" value="trainer" >
+                        <input type="checkbox" id="trainer" name="roles" value="trainer" >
                         <label for="trainer">
                             <i class="fas fa-chalkboard-teacher"></i>
                             <h3>Trainer</h3>
@@ -505,7 +507,7 @@
                     </div>
                         
                     <div class="role-option">
-                        <input type="radio" id="consultant" name="role" value="consultant" >
+                        <input type="checkbox" id="consultant" name="roles" value="consultant" >
                         <label for="consultant">
                             <i class="fas fa-chart-line"></i>
                             <h3>Consultant</h3>
@@ -514,7 +516,7 @@
                     </div>
                         
                     <div class="role-option">
-                        <input type="radio" id="volunteer" name="role" value="volunteer" >
+                        <input type="checkbox" id="volunteer" name="roles" value="volunteer" >
                         <label for="volunteer">
                             <i class="fas fa-heart"></i>
                             <h3>Volunteer</h3>
@@ -523,7 +525,7 @@
                     </div>
                         
                     <div class="role-option">
-                        <input type="radio" id="intern" name="role" value="intern" >
+                        <input type="checkbox" id="intern" name="roles" value="intern" >
                         <label for="intern">
                                 <i class="fas fa-user-graduate"></i>
                             <h3>Intern</h3>
@@ -532,7 +534,7 @@
                     </div>
                         
                     <div class="role-option">
-                        <input type="radio" id="community" name="role" value="community" >
+                        <input type="checkbox" id="community" name="roles" value="community" >
                         <label for="community">
                             <i class="fas fa-users"></i>
                                 <h3>Community</h3>
@@ -541,7 +543,7 @@
                     </div>
                         
                     <div class="role-option">
-                        <input type="radio" id="university" name="role" value="university" >
+                        <input type="checkbox" id="university" name="roles" value="university" >
                         <label for="university">
                             <i class="fas fa-university"></i>
                                 <h3>University</h3>
@@ -1047,15 +1049,13 @@
         // Google Sheets Integration
         const REGISTRATION_FORM_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxSKL04akfo3W_XiUfQJQg0dg3ded6EwsbEEg6VsW1SD5eVoEDV-3EoxH-IgZy-ccEMsQ/exec';
 
-        // Role selection and dynamic field display
+        // Role selection and dynamic field display - MULTIPLE SELECTION SUPPORT
         document.addEventListener('DOMContentLoaded', function() {
-            const roleInputs = document.querySelectorAll('input[name="role"]');
+            const roleInputs = document.querySelectorAll('input[name="roles"]');
             const selectedRoleDisplay = document.getElementById('selectedRoleDisplay');
-            const selectedRoleText = selectedRoleDisplay.querySelector('.selected-role-text strong');
-            const selectedRoleIcon = selectedRoleDisplay.querySelector('.selected-role-icon');
             
             // Check if all required elements exist
-            if (!roleInputs.length || !selectedRoleDisplay || !selectedRoleText || !selectedRoleIcon) {
+            if (!roleInputs.length || !selectedRoleDisplay) {
                 console.error('Missing required DOM elements for role selection');
                 return;
             }
@@ -1086,35 +1086,69 @@
                 'university': 'University'
         };
         
-        roleInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                    const selectedRole = this.value;
+        // Function to update display based on selected roles
+        function updateSelectedRoles() {
+            const selectedRoles = Array.from(roleInputs)
+                .filter(input => input.checked)
+                .map(input => input.value);
+            
+            if (selectedRoles.length > 0) {
+                // Show selected roles display
+                selectedRoleDisplay.style.display = 'block';
                 
-                // Show selected role display
-                    selectedRoleDisplay.style.display = 'block';
-                    selectedRoleText.textContent = roleLabels[selectedRole];
-                    selectedRoleIcon.className = selectedRoleIcon.className.split(' ')[0] + ' ' + roleIcons[selectedRole];
-                    
-                    // Hide all role-specific fields
-                    const allRoleFields = document.querySelectorAll('.role-specific-fields');
-                    allRoleFields.forEach(field => {
-                        field.style.display = 'none';
-                    });
-                    
-                    // Show relevant fields based on selected role
-                    const relevantFields = document.getElementById(selectedRole + 'Fields');
-                    if (relevantFields) {
-                        relevantFields.style.display = 'block';
+                // Create multiple role cards
+                const roleCards = selectedRoles.map(role => {
+                    return `
+                        <div class="selected-role-card" style="display: inline-flex; margin: 5px;">
+                            <i class="${roleIcons[role]}" style="margin-right: 8px;"></i>
+                            <span>${roleLabels[role]}</span>
+                        </div>
+                    `;
+                }).join('');
+                
+                selectedRoleDisplay.innerHTML = `
+                    <div style="margin-bottom: 10px; font-weight: 600; color: #667eea;">
+                        ✓ Selected Roles (${selectedRoles.length}):
+                    </div>
+                    ${roleCards}
+                `;
+                
+                // Hide all role-specific fields first
+                const allRoleFields = document.querySelectorAll('.role-specific-fields');
+                allRoleFields.forEach(field => {
+                    field.style.display = 'none';
+                });
+                
+                // Show fields for ALL selected roles
+                selectedRoles.forEach(role => {
+                    const roleFields = document.getElementById(role + 'Fields');
+                    if (roleFields) {
+                        roleFields.style.display = 'block';
                         
-                        // Remove required attribute from all role-specific fields
-                        const allRoleFields = relevantFields.querySelectorAll('input, select, textarea');
-                        allRoleFields.forEach(field => {
+                        // Remove required attribute from role-specific fields
+                        const fields = roleFields.querySelectorAll('input, select, textarea');
+                        fields.forEach(field => {
                             field.removeAttribute('required');
                         });
                     } else {
-                        console.error('No fields found for role:', selectedRole);
+                        console.error('No fields found for role:', role);
                     }
-            });
+                });
+            } else {
+                // No roles selected - hide display
+                selectedRoleDisplay.style.display = 'none';
+                
+                // Hide all role-specific fields
+                const allRoleFields = document.querySelectorAll('.role-specific-fields');
+                allRoleFields.forEach(field => {
+                    field.style.display = 'none';
+                });
+            }
+        }
+        
+        // Add change listener to all role checkboxes
+        roleInputs.forEach(input => {
+            input.addEventListener('change', updateSelectedRoles);
         });
         
         // Form submission
@@ -1135,9 +1169,29 @@
                 const formData = new FormData(this);
                 const data = Object.fromEntries(formData.entries());
                 
+                // Handle multiple roles selection
+                const selectedRoles = Array.from(roleInputs)
+                    .filter(input => input.checked)
+                    .map(input => input.value);
+                
+                if (selectedRoles.length === 0) {
+                    showErrorMessage('Please select at least one role');
+                    btnText.style.display = 'block';
+                    btnLoading.style.display = 'none';
+                    submitButton.disabled = false;
+                    return;
+                }
+                
+                // Store roles as comma-separated string for Google Sheets
+                data.roles = selectedRoles.join(', ');
+                data.roleCount = selectedRoles.length;
+                
                 // Add timestamp
                 data.timestamp = new Date().toISOString();
                 data.type = 'registration';
+                
+                console.log('Selected roles:', selectedRoles);
+                console.log('Form data with roles:', data);
                 
                 // Send to Google Sheets
                 sendToGoogleSheets(data)
