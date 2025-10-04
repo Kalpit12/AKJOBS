@@ -75,6 +75,11 @@ class LiveVisitorTracker {
         
         // Set up live count updates every 30 seconds
         this.setupLiveCountUpdates();
+        
+        // Update display immediately
+        setTimeout(() => {
+            this.updateLiveCountDisplay();
+        }, 1000);
     }
     
     checkIfNewVisitor() {
@@ -456,10 +461,15 @@ class LiveVisitorTracker {
         );
         const liveVisitors = new Set(recentVisits.map(visit => visit.sessionId)).size;
         
-        // Update the display
-        this.displayLiveCount(liveVisitors, storedVisits.length, uniqueVisitorsToday);
+        // Ensure at least 1 live visitor (current user) is shown
+        const displayLiveVisitors = Math.max(liveVisitors, 1);
+        const displayTotalVisitors = Math.max(storedVisits.length, 1);
+        const displayNewToday = Math.max(uniqueVisitorsToday, 1);
         
-        console.log(`📊 Live Count Update: ${liveVisitors} live, ${storedVisits.length} total, ${uniqueVisitorsToday} new today`);
+        // Update the display
+        this.displayLiveCount(displayLiveVisitors, displayTotalVisitors, displayNewToday);
+        
+        console.log(`📊 Live Count Update: ${displayLiveVisitors} live, ${displayTotalVisitors} total, ${displayNewToday} new today`);
     }
     
     displayLiveCount(liveCount, totalVisitors, newVisitorsToday) {
@@ -468,14 +478,34 @@ class LiveVisitorTracker {
         const totalVisitorsElement = document.getElementById('totalVisitorsCount');
         const newVisitorsElement = document.getElementById('newVisitorsTodayCount');
         
+        console.log('🎯 Updating live counter elements:', {
+            liveElement: !!liveVisitorsElement,
+            totalElement: !!totalVisitorsElement,
+            newElement: !!newVisitorsElement,
+            liveCount,
+            totalVisitors,
+            newVisitorsToday
+        });
+        
         if (liveVisitorsElement) {
             liveVisitorsElement.textContent = liveCount;
+            console.log('✅ Updated live visitors count:', liveCount);
+        } else {
+            console.warn('⚠️ Live visitors element not found');
         }
+        
         if (totalVisitorsElement) {
             totalVisitorsElement.textContent = totalVisitors;
+            console.log('✅ Updated total visitors count:', totalVisitors);
+        } else {
+            console.warn('⚠️ Total visitors element not found');
         }
+        
         if (newVisitorsElement) {
             newVisitorsElement.textContent = newVisitorsToday;
+            console.log('✅ Updated new visitors today count:', newVisitorsToday);
+        } else {
+            console.warn('⚠️ New visitors element not found');
         }
         
         // Find or create the live counter element (floating counter)
