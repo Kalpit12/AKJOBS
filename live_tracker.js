@@ -5,7 +5,7 @@
 
 class LiveVisitorTracker {
     constructor() {
-        this.apiUrl = 'https://script.google.com/macros/s/AKfycbzz_UfgCiRRU1j2hD3pX-72j-z-YzaG_wHu-ADwX3s50tCx28MtRVlcHWkvfKMDckH9PA/exec';
+        this.apiUrl = 'https://script.google.com/macros/s/AKfycbxSKL04akfo3W_XiUfQJQg0dg3ded6EwsbEEg6VsW1SD5eVoEDV-3EoxH-IgZy-ccEMsQ/exec';
         this.sheetName = 'Live_Visitor_Tracking';
         this.visitorId = this.generateVisitorId();
         this.sessionId = this.generateSessionId();
