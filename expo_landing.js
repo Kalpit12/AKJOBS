@@ -288,7 +288,7 @@ async function sendContactEmail(data) {
 }
 
 // Google Sheets integration via Google Apps Script (KEPT AS BACKUP/FALLBACK)
-const REGISTRATION_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwtF6j5_WsWQHMpz2CnMOXX6_hzR_-WObtJjOpWPKbZRlCiiq9xX3GyTVKVrZ-HszLCoQ/exec';
+const REGISTRATION_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxSKL04akfo3W_XiUfQJQg0dg3ded6EwsbEEg6VsW1SD5eVoEDV-3EoxH-IgZy-ccEMsQ/exec';
 
 // Helper: persist a local backup so nothing is lost at expo
 function saveRegistrationLocalBackup(reg) {
@@ -1185,7 +1185,7 @@ function updateModalStats() {
 }
 
 // Google Sheets integration for referrals
-const REFERRAL_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwtF6j5_WsWQHMpz2CnMOXX6_hzR_-WObtJjOpWPKbZRlCiiq9xX3GyTVKVrZ-HszLCoQ/exec';
+const REFERRAL_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxSKL04akfo3W_XiUfQJQg0dg3ded6EwsbEEg6VsW1SD5eVoEDV-3EoxH-IgZy-ccEMsQ/exec';
 
 // Track last action to prevent duplicates
 let lastReferralAction = null;
