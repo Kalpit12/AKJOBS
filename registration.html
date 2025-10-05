@@ -1219,6 +1219,7 @@
                 console.log('✅ Selected roles:', selectedRoles);
                 console.log('✅ Complete form data:', data);
                 console.log('✅ URL will include:', Object.keys(data));
+                console.log('✅ Data being sent:', JSON.stringify(data, null, 2));
                 
                 // Send to Google Sheets
                 sendToGoogleSheets(data)
@@ -1271,21 +1272,27 @@
         async function sendToGoogleSheets(data) {
             return new Promise((resolve, reject) => {
                 try {
-                    console.log('Sending registration data to Google Sheets:', data);
+                    console.log('📤 Sending registration data to Google Sheets:', data);
+                    console.log('📋 Full data object:', JSON.stringify(data, null, 2));
                     
                     const params = new URLSearchParams(data);
                     const url = `${REGISTRATION_FORM_WEBHOOK_URL}?${params.toString()}`;
                     
-                    console.log('Webhook URL:', url);
+                    console.log('🔗 Webhook URL:', url);
+                    console.log('📊 URL Parameters:', params.toString());
                     
                     // Try to fetch with CORS to get response
                     fetch(url, {
                         method: 'GET',
                         mode: 'cors'
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        console.log('📨 Response status:', response.status, response.statusText);
+                        return response.json();
+                    })
                     .then(result => {
-                        console.log('Registration response:', result);
+                        console.log('✅ Registration response:', result);
+                        console.log('✅ Response details:', JSON.stringify(result, null, 2));
                         
                         // Check for duplicate error
                         if (result.error && result.duplicate) {
@@ -1421,7 +1428,9 @@
         // Function to process referral registration (award +1 coin to referrer)
         function processReferralRegistration(referrerEmail, newUserData) {
             try {
-                console.log('Sending referral bonus to Google Sheets');
+                console.log('🎁 Sending referral bonus to Google Sheets');
+                console.log('🎁 Referrer email:', referrerEmail);
+                console.log('🎁 New user data:', newUserData);
                 
                 // Prepare referral bonus data
                 const referralData = {
@@ -1438,14 +1447,16 @@
                     source: 'registration_page'
                 };
                 
-                console.log('Referral data being sent:', referralData);
-                console.log('CRITICAL - referredEmail:', referralData.referredEmail);
+                console.log('🎁 Referral data being sent:', referralData);
+                console.log('🎁 CRITICAL - referredEmail:', referralData.referredEmail);
+                console.log('🎁 Full referral data:', JSON.stringify(referralData, null, 2));
                 
                 // Send to Google Sheets via GET request
                 const params = new URLSearchParams(referralData);
                 const url = `${REGISTRATION_FORM_WEBHOOK_URL}?${params.toString()}`;
                 
-                console.log('Referral bonus URL:', url);
+                console.log('🎁 Referral bonus URL:', url);
+                console.log('🎁 URL Parameters:', params.toString());
                 
                 // Use hidden iframe to send data
                 const iframe = document.createElement('iframe');
