@@ -1086,6 +1086,23 @@
                 'university': 'University'
         };
         
+        // Helper function to convert role value to field ID
+        function getRoleFieldId(role) {
+            // Convert 'job_seeker' to 'jobSeekerFields', 'recruiter' to 'recruiterFields', etc.
+            const roleMap = {
+                'job_seeker': 'jobSeekerFields',
+                'recruiter': 'recruiterFields',
+                'mentor': 'mentorFields',
+                'trainer': 'trainerFields',
+                'consultant': 'consultantFields',
+                'volunteer': 'volunteerFields',
+                'intern': 'internFields',
+                'community': 'communityFields',
+                'university': 'universityFields'
+            };
+            return roleMap[role] || role + 'Fields';
+        }
+        
         // Function to update display based on selected roles
         function updateSelectedRoles() {
             const selectedRoles = Array.from(roleInputs)
@@ -1121,7 +1138,8 @@
                 
                 // Show fields for ALL selected roles
                 selectedRoles.forEach(role => {
-                    const roleFields = document.getElementById(role + 'Fields');
+                    const fieldId = getRoleFieldId(role);
+                    const roleFields = document.getElementById(fieldId);
                     if (roleFields) {
                         roleFields.style.display = 'block';
                         
@@ -1131,7 +1149,7 @@
                             field.removeAttribute('required');
                         });
                     } else {
-                        console.error('No fields found for role:', role);
+                        console.error('No fields found for role:', role, 'with ID:', fieldId);
                     }
                 });
             } else {
