@@ -130,6 +130,69 @@
             color: #10b981 !important;
         }
         
+        .free-worldwide-badge {
+            display: inline-block;
+            font-size: 1.8rem !important;
+            font-weight: 800 !important;
+            letter-spacing: 4px !important;
+            background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 24px !important;
+            padding: 8px 24px;
+            border-radius: 50px;
+            position: relative;
+            animation: goldShine 3s ease-in-out infinite, pulse 2s ease-in-out infinite;
+            text-shadow: none !important;
+            font-family: 'Montserrat', sans-serif !important;
+        }
+        
+        .free-worldwide-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700);
+            border-radius: 50px;
+            filter: blur(20px);
+            opacity: 0.6;
+            z-index: -1;
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes goldShine {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        
+        @keyframes glow {
+            0%, 100% {
+                opacity: 0.6;
+                filter: blur(20px);
+            }
+            50% {
+                opacity: 0.9;
+                filter: blur(25px);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
         .hero-subtitle {
             font-size: 1.3rem !important;
             line-height: 1.6 !important;
@@ -292,7 +355,14 @@
             .hero-title {
                 font-size: 2rem !important;
                 line-height: 1.2 !important;
-                margin-bottom: 24px !important;
+                margin-bottom: 16px !important;
+            }
+            
+            .free-worldwide-badge {
+                font-size: 1.2rem !important;
+                letter-spacing: 2px !important;
+                padding: 6px 16px !important;
+                margin-bottom: 16px !important;
             }
             
             .hero-subtitle {
@@ -650,6 +720,13 @@
         @media (min-width: 481px) and (max-width: 768px) {
             .hero-title {
                 font-size: 2.8rem !important;
+            }
+            
+            .free-worldwide-badge {
+                font-size: 1.5rem !important;
+                letter-spacing: 3px !important;
+                padding: 7px 20px !important;
+                margin-bottom: 20px !important;
             }
             
             .hero-subtitle {
@@ -1333,6 +1410,9 @@
                 <h1 class="hero-title">
                    Free AI-Powered Job Network
                 </h1>
+                <div class="free-worldwide-badge">
+                    FREE WORLDWIDE
+                </div>
                 <p class="hero-subtitle">
                     Revolutionizing recruitment with advanced AI, multilingual support, and cultural intelligence 
                     designed specifically for the global market. Find the perfect match in minutes, not months.
