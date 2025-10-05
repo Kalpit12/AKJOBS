@@ -1185,9 +1185,8 @@
             
                 // Get form data
                 const formData = new FormData(this);
-                const data = Object.fromEntries(formData.entries());
                 
-                // Handle multiple roles selection
+                // Handle multiple roles selection BEFORE converting to object
                 const selectedRoles = Array.from(roleInputs)
                     .filter(input => input.checked)
                     .map(input => input.value);
@@ -1200,7 +1199,16 @@
                     return;
                 }
                 
-                // Store roles as comma-separated string for Google Sheets
+                // Convert form data to object (this will skip checkboxes with same name)
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    // Skip the 'roles' checkboxes as we handle them separately
+                    if (key !== 'roles') {
+                        data[key] = value;
+                    }
+                }
+                
+                // Add roles as comma-separated string for Google Sheets
                 data.roles = selectedRoles.join(', ');
                 data.roleCount = selectedRoles.length;
                 
@@ -1208,8 +1216,9 @@
                 data.timestamp = new Date().toISOString();
                 data.type = 'registration';
                 
-                console.log('Selected roles:', selectedRoles);
-                console.log('Form data with roles:', data);
+                console.log('✅ Selected roles:', selectedRoles);
+                console.log('✅ Complete form data:', data);
+                console.log('✅ URL will include:', Object.keys(data));
                 
                 // Send to Google Sheets
                 sendToGoogleSheets(data)
