@@ -1851,41 +1851,30 @@
                         }
                     }
                 } catch (fetchError) {
-                    console.warn('CORS error checking Google Sheets (expected):', fetchError);
-                    // CORS blocks response, but let's assume user is registered if they know their email
+                    console.warn('CORS error checking Google Sheets:', fetchError);
                 }
                 
-                // Step 3: CORS blocks us from verifying, but allow login anyway
-                // If user knows their email from registration, let them in
-                console.log('⚠️ Cannot verify via Google Sheets (CORS), but allowing login');
-                console.log('Creating fresh account for:', email);
+                // Step 3: User not found - require registration
+                console.log('❌ User not found in our records');
+                errorMessage.innerHTML = `
+                    <div style="text-align: center;">
+                        <strong style="display: block; margin-bottom: 8px; font-size: 16px;">📧 Email Not Registered</strong>
+                        <p style="margin-bottom: 12px;">This email hasn't been registered yet.</p>
+                        <a href="registration.html" 
+                           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                  color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; 
+                                  font-weight: 600; margin-top: 8px;">
+                            Complete Registration →
+                        </a>
+                    </div>
+                `;
+                errorDiv.style.display = 'flex';
                 
-                // Create fresh user data (will sync from Google Sheets after login)
-                const userData = {
-                    email: email,
-                    fullName: email.split('@')[0], // Use part before @ as name
-                    phone: '',
-                    role: 'unknown',
-                    aksharCoins: 0
-                };
-                
-                setCurrentUser(email);
-                saveUserData(userData);
-                
-                // Initialize fresh referral data (will sync from Google Sheets)
-                saveReferralData({
-                    totalShares: 0,
-                    totalReferrals: 0,
-                    totalCoinsEarned: 0
-                });
-                
-                // Login and sync
-                loginUser(email);
-                
-                // Show info that data will sync
-                setTimeout(() => {
-                    showNotification('Syncing your data from Google Sheets...', 'info');
-                }, 1000);
+                // Reset button state
+                btnText.style.display = 'block';
+                btnLoading.style.display = 'none';
+                loginBtn.disabled = false;
+                return;
                 
             } catch (error) {
                 console.error('Login error:', error);
