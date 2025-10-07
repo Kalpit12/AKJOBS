@@ -248,6 +248,43 @@
             background: white;
         }
         
+        /* Country code selector styling */
+        #regCountryCode {
+            font-size: 0.9rem;
+            padding: 12px 8px 12px 12px;
+            background-color: #f8fafc;
+            font-weight: 500;
+        }
+        
+        #regCountryCode:focus {
+            background-color: white;
+        }
+        
+        /* Multiple select styling */
+        select[multiple] {
+            min-height: 120px !important;
+            padding: 8px 12px !important;
+        }
+        
+        select[multiple] option {
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 2px 0;
+        }
+        
+        select[multiple] option:checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .multi-select-hint {
+            display: block;
+            font-size: 0.8rem;
+            color: #667eea;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+        
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
@@ -345,6 +382,10 @@
                 font-size: 2rem;
             }
             
+            .registration-header p {
+                font-size: 1rem;
+            }
+            
             .role-selection {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
@@ -370,6 +411,21 @@
                 height: 35px;
                 font-size: 1rem;
             }
+            
+            /* Mobile multiple select styling */
+            select[multiple] {
+                min-height: 150px !important;
+                font-size: 0.95rem;
+            }
+            
+            .multi-select-hint {
+                font-size: 0.75rem;
+            }
+            
+            #regCountryCode {
+                width: 120px;
+                font-size: 0.85rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -383,7 +439,17 @@
             }
 
             .registration-header p {
-                font-size: 1rem;
+                font-size: 0.95rem;
+            }
+            
+            select[multiple] {
+                min-height: 180px !important;
+            }
+            
+            #regCountryCode {
+                width: 110px;
+                font-size: 0.8rem;
+                padding: 12px 4px 12px 8px;
             }
         }
         
@@ -575,7 +641,82 @@
                         
                     <div class="form-group">
                             <label for="regPhone">Phone Number</label>
-                            <input type="tel" id="regPhone" name="phone" placeholder="Enter your phone number" required>
+                            <div style="display: flex; gap: 8px;">
+                                <select id="regCountryCode" name="countryCode" style="width: 140px; flex-shrink: 0;" required>
+                                    <option value="+254">🇰🇪 +254 (Kenya)</option>
+                                    <option value="+1">🇺🇸 +1 (USA)</option>
+                                    <option value="+44">🇬🇧 +44 (UK)</option>
+                                    <option value="+91">🇮🇳 +91 (India)</option>
+                                    <option value="+971">🇦🇪 +971 (UAE)</option>
+                                    <option value="+966">🇸🇦 +966 (Saudi Arabia)</option>
+                                    <option value="+27">🇿🇦 +27 (South Africa)</option>
+                                    <option value="+234">🇳🇬 +234 (Nigeria)</option>
+                                    <option value="+255">🇹🇿 +255 (Tanzania)</option>
+                                    <option value="+256">🇺🇬 +256 (Uganda)</option>
+                                    <option value="+260">🇿🇲 +260 (Zambia)</option>
+                                    <option value="+263">🇿🇼 +263 (Zimbabwe)</option>
+                                    <option value="+233">🇬🇭 +233 (Ghana)</option>
+                                    <option value="+20">🇪🇬 +20 (Egypt)</option>
+                                    <option value="+212">🇲🇦 +212 (Morocco)</option>
+                                    <option value="+213">🇩🇿 +213 (Algeria)</option>
+                                    <option value="+216">🇹🇳 +216 (Tunisia)</option>
+                                    <option value="+251">🇪🇹 +251 (Ethiopia)</option>
+                                    <option value="+250">🇷🇼 +250 (Rwanda)</option>
+                                    <option value="+61">🇦🇺 +61 (Australia)</option>
+                                    <option value="+86">🇨🇳 +86 (China)</option>
+                                    <option value="+81">🇯🇵 +81 (Japan)</option>
+                                    <option value="+82">🇰🇷 +82 (South Korea)</option>
+                                    <option value="+65">🇸🇬 +65 (Singapore)</option>
+                                    <option value="+60">🇲🇾 +60 (Malaysia)</option>
+                                    <option value="+63">🇵🇭 +63 (Philippines)</option>
+                                    <option value="+66">🇹🇭 +66 (Thailand)</option>
+                                    <option value="+84">🇻🇳 +84 (Vietnam)</option>
+                                    <option value="+62">🇮🇩 +62 (Indonesia)</option>
+                                    <option value="+92">🇵🇰 +92 (Pakistan)</option>
+                                    <option value="+880">🇧🇩 +880 (Bangladesh)</option>
+                                    <option value="+94">🇱🇰 +94 (Sri Lanka)</option>
+                                    <option value="+977">🇳🇵 +977 (Nepal)</option>
+                                    <option value="+93">🇦🇫 +93 (Afghanistan)</option>
+                                    <option value="+98">🇮🇷 +98 (Iran)</option>
+                                    <option value="+964">🇮🇶 +964 (Iraq)</option>
+                                    <option value="+962">🇯🇴 +962 (Jordan)</option>
+                                    <option value="+965">🇰🇼 +965 (Kuwait)</option>
+                                    <option value="+961">🇱🇧 +961 (Lebanon)</option>
+                                    <option value="+968">🇴🇲 +968 (Oman)</option>
+                                    <option value="+974">🇶🇦 +974 (Qatar)</option>
+                                    <option value="+963">🇸🇾 +963 (Syria)</option>
+                                    <option value="+90">🇹🇷 +90 (Turkey)</option>
+                                    <option value="+967">🇾🇪 +967 (Yemen)</option>
+                                    <option value="+972">🇮🇱 +972 (Israel)</option>
+                                    <option value="+49">🇩🇪 +49 (Germany)</option>
+                                    <option value="+33">🇫🇷 +33 (France)</option>
+                                    <option value="+39">🇮🇹 +39 (Italy)</option>
+                                    <option value="+34">🇪🇸 +34 (Spain)</option>
+                                    <option value="+31">🇳🇱 +31 (Netherlands)</option>
+                                    <option value="+32">🇧🇪 +32 (Belgium)</option>
+                                    <option value="+41">🇨🇭 +41 (Switzerland)</option>
+                                    <option value="+43">🇦🇹 +43 (Austria)</option>
+                                    <option value="+45">🇩🇰 +45 (Denmark)</option>
+                                    <option value="+46">🇸🇪 +46 (Sweden)</option>
+                                    <option value="+47">🇳🇴 +47 (Norway)</option>
+                                    <option value="+358">🇫🇮 +358 (Finland)</option>
+                                    <option value="+351">🇵🇹 +351 (Portugal)</option>
+                                    <option value="+30">🇬🇷 +30 (Greece)</option>
+                                    <option value="+48">🇵🇱 +48 (Poland)</option>
+                                    <option value="+7">🇷🇺 +7 (Russia)</option>
+                                    <option value="+55">🇧🇷 +55 (Brazil)</option>
+                                    <option value="+52">🇲🇽 +52 (Mexico)</option>
+                                    <option value="+54">🇦🇷 +54 (Argentina)</option>
+                                    <option value="+56">🇨🇱 +56 (Chile)</option>
+                                    <option value="+57">🇨🇴 +57 (Colombia)</option>
+                                    <option value="+51">🇵🇪 +51 (Peru)</option>
+                                    <option value="+58">🇻🇪 +58 (Venezuela)</option>
+                                    <option value="+353">🇮🇪 +353 (Ireland)</option>
+                                    <option value="+64">🇳🇿 +64 (New Zealand)</option>
+                                </select>
+                                <input type="tel" id="regPhone" name="phoneNumber" placeholder="712345678" required style="flex: 1;">
+                            </div>
+                            <small style="color: #64748b; font-size: 0.85rem; margin-top: 4px; display: block;">Enter phone number without country code or leading zero</small>
                     </div>
                     
                         <!-- Role-specific fields will be dynamically shown here -->
@@ -596,11 +737,13 @@
                                 <input type="text" id="regSkills" name="skills" placeholder="Key Skills (comma separated)" >
                         </div>
                         <div class="form-group">
-                                <label for="regLocation">Preferred Location</label>
-                                <select id="regLocation" name="location" >
-                                    <option value="">Select preferred location</option>
-                                <option value="remote">Remote</option>
+                                <label for="regLocation">Preferred Locations (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regLocation" name="location" multiple>
+                                    <option value="remote">Remote</option>
                                     <option value="hybrid">Hybrid</option>
+                                    <option value="nairobi">Nairobi</option>
+                                    <option value="mombasa">Mombasa</option>
+                                    <option value="kisumu">Kisumu</option>
                                     <option value="mumbai">Mumbai</option>
                                     <option value="delhi">Delhi</option>
                                     <option value="bangalore">Bangalore</option>
@@ -608,24 +751,29 @@
                                     <option value="pune">Pune</option>
                                     <option value="hyderabad">Hyderabad</option>
                                     <option value="kolkata">Kolkata</option>
+                                    <option value="dubai">Dubai</option>
+                                    <option value="london">London</option>
+                                    <option value="new-york">New York</option>
                                     <option value="other">Other</option>
                                 </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                             </div>
                             <div class="form-group">
-                                <label for="regJobType">Preferred Job Type</label>
-                                <select id="regJobType" name="jobType" >
-                                    <option value="">Select job type</option>
+                                <label for="regJobType">Preferred Job Types (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regJobType" name="jobType" multiple>
                                     <option value="full-time">Full-time</option>
                                     <option value="part-time">Part-time</option>
                                     <option value="contract">Contract</option>
                                     <option value="freelance">Freelance</option>
                                     <option value="internship">Internship</option>
+                                    <option value="remote">Remote Only</option>
+                                    <option value="hybrid">Hybrid</option>
                                 </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                             </div>
                             <div class="form-group">
-                                <label for="regIndustry">Industry Interest</label>
-                                <select id="regIndustry" name="industry">
-                                    <option value="">Select industry (optional)</option>
+                                <label for="regIndustry">Industry Interests (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regIndustry" name="industry" multiple>
                                     <option value="technology">Technology</option>
                                     <option value="finance">Finance</option>
                                     <option value="healthcare">Healthcare</option>
@@ -633,8 +781,15 @@
                                     <option value="retail">Retail</option>
                                     <option value="manufacturing">Manufacturing</option>
                                     <option value="consulting">Consulting</option>
+                                    <option value="hospitality">Hospitality</option>
+                                    <option value="real-estate">Real Estate</option>
+                                    <option value="telecommunications">Telecommunications</option>
+                                    <option value="media">Media & Entertainment</option>
+                                    <option value="agriculture">Agriculture</option>
+                                    <option value="logistics">Logistics & Transportation</option>
                                 <option value="other">Other</option>
                             </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                         </div>
                     </div>
                     
@@ -648,9 +803,8 @@
                                 <input type="text" id="regPosition" name="position" placeholder="Your Position" >
                         </div>
                         <div class="form-group">
-                                <label for="regIndustry">Industry</label>
-                                <select id="regIndustry" name="industry" >
-                                    <option value="">Select industry</option>
+                                <label for="regRecruiterIndustry">Industries (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regRecruiterIndustry" name="recruiterIndustry" multiple>
                                 <option value="technology">Technology</option>
                                 <option value="finance">Finance</option>
                                 <option value="healthcare">Healthcare</option>
@@ -658,8 +812,15 @@
                                     <option value="retail">Retail</option>
                                 <option value="manufacturing">Manufacturing</option>
                                     <option value="consulting">Consulting</option>
+                                    <option value="hospitality">Hospitality</option>
+                                    <option value="real-estate">Real Estate</option>
+                                    <option value="telecommunications">Telecommunications</option>
+                                    <option value="media">Media & Entertainment</option>
+                                    <option value="agriculture">Agriculture</option>
+                                    <option value="logistics">Logistics & Transportation</option>
                                 <option value="other">Other</option>
                             </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                         </div>
                             <div class="form-group">
                                 <label for="regCompanySize">Company Size</label>
@@ -687,9 +848,8 @@
                     
                         <div class="role-specific-fields" id="mentorFields" style="display: none;">
                         <div class="form-group">
-                                <label for="regExpertise">Area of Expertise</label>
-                                <select id="regExpertise" name="expertise" >
-                                    <option value="">Select area of expertise</option>
+                                <label for="regExpertise">Areas of Expertise (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regExpertise" name="expertise" multiple>
                                     <option value="technology">Technology</option>
                                     <option value="business">Business</option>
                                     <option value="career-development">Career Development</option>
@@ -698,8 +858,13 @@
                                     <option value="finance">Finance</option>
                                     <option value="marketing">Marketing</option>
                                     <option value="sales">Sales</option>
+                                    <option value="product-management">Product Management</option>
+                                    <option value="data-science">Data Science</option>
+                                    <option value="design">Design & UX</option>
+                                    <option value="engineering">Engineering</option>
                                     <option value="other">Other</option>
                                 </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                         </div>
                         <div class="form-group">
                                 <label for="regExperience">Years of Experience</label>
@@ -712,15 +877,18 @@
                                 </select>
                         </div>
                         <div class="form-group">
-                                <label for="regMentorshipType">Type of Mentorship</label>
-                                <select id="regMentorshipType" name="mentorshipType">
-                                    <option value="">Select mentorship type (optional)</option>
+                                <label for="regMentorshipType">Types of Mentorship (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regMentorshipType" name="mentorshipType" multiple>
                                     <option value="career-guidance">Career Guidance</option>
                                     <option value="skill-development">Skill Development</option>
                                     <option value="leadership-coaching">Leadership Coaching</option>
                                     <option value="entrepreneurship">Entrepreneurship</option>
                                     <option value="industry-insights">Industry Insights</option>
+                                    <option value="interview-prep">Interview Preparation</option>
+                                    <option value="resume-review">Resume Review</option>
+                                    <option value="networking">Networking & Connections</option>
                                 </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                             </div>
                             <div class="form-group">
                                 <label for="regBio">Brief Bio</label>
@@ -730,9 +898,8 @@
                     
                         <div class="role-specific-fields" id="trainerFields" style="display: none;">
                         <div class="form-group">
-                                <label for="regSpecialization">Training Specialization</label>
-                                <select id="regSpecialization" name="specialization" >
-                                    <option value="">Select specialization</option>
+                                <label for="regSpecialization">Training Specializations (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regSpecialization" name="specialization" multiple>
                                     <option value="technical-skills">Technical Skills</option>
                                     <option value="soft-skills">Soft Skills</option>
                                     <option value="leadership">Leadership</option>
@@ -740,19 +907,27 @@
                                     <option value="project-management">Project Management</option>
                                     <option value="sales-training">Sales Training</option>
                                     <option value="customer-service">Customer Service</option>
+                                    <option value="data-analysis">Data Analysis</option>
+                                    <option value="digital-marketing">Digital Marketing</option>
+                                    <option value="programming">Programming</option>
+                                    <option value="design-thinking">Design Thinking</option>
                                     <option value="other">Other</option>
                                 </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                         </div>
                         <div class="form-group">
-                                <label for="regTrainingFormat">Preferred Training Format</label>
-                                <select id="regTrainingFormat" name="trainingFormat" >
-                                    <option value="">Select training format</option>
+                                <label for="regTrainingFormat">Preferred Training Formats (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regTrainingFormat" name="trainingFormat" multiple>
                                     <option value="online">Online</option>
                                     <option value="in-person">In-person</option>
                                     <option value="hybrid">Hybrid</option>
                                     <option value="workshop">Workshop</option>
                                     <option value="bootcamp">Bootcamp</option>
+                                    <option value="webinar">Webinar</option>
+                                    <option value="one-on-one">One-on-One</option>
+                                    <option value="group-training">Group Training</option>
                                 </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                         </div>
                         <div class="form-group">
                                 <label for="regExperience">Years of Training Experience</label>
@@ -772,9 +947,8 @@
                     
                         <div class="role-specific-fields" id="consultantFields" style="display: none;">
                         <div class="form-group">
-                                <label for="regConsultantSpecialization">Consulting Specialization</label>
-                                <select id="regConsultantSpecialization" name="consultantSpecialization" >
-                                    <option value="">Select specialization</option>
+                                <label for="regConsultantSpecialization">Consulting Specializations (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regConsultantSpecialization" name="consultantSpecialization" multiple>
                                     <option value="strategy">Strategy</option>
                                     <option value="operations">Operations</option>
                                     <option value="technology">Technology</option>
@@ -782,8 +956,13 @@
                                     <option value="hr">Human Resources</option>
                                     <option value="marketing">Marketing</option>
                                     <option value="digital-transformation">Digital Transformation</option>
+                                    <option value="change-management">Change Management</option>
+                                    <option value="business-development">Business Development</option>
+                                    <option value="process-improvement">Process Improvement</option>
+                                    <option value="risk-management">Risk Management</option>
                                     <option value="other">Other</option>
                                 </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                         </div>
                         <div class="form-group">
                                 <label for="regConsultantExperience">Years of Consulting Experience</label>
@@ -806,25 +985,29 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="regIndustryFocus">Primary Industry Focus</label>
-                                <select id="regIndustryFocus" name="industryFocus">
-                                    <option value="">Select industry focus (optional)</option>
+                                <label for="regIndustryFocus">Industry Focus (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regIndustryFocus" name="industryFocus" multiple>
                                     <option value="technology">Technology</option>
                                     <option value="finance">Finance</option>
                                     <option value="healthcare">Healthcare</option>
                                     <option value="education">Education</option>
                                     <option value="retail">Retail</option>
                                     <option value="manufacturing">Manufacturing</option>
+                                    <option value="hospitality">Hospitality</option>
+                                    <option value="real-estate">Real Estate</option>
+                                    <option value="telecommunications">Telecommunications</option>
+                                    <option value="agriculture">Agriculture</option>
+                                    <option value="logistics">Logistics & Transportation</option>
                                     <option value="other">Other</option>
                             </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                         </div>
                     </div>
                     
                         <div class="role-specific-fields" id="volunteerFields" style="display: none;">
                         <div class="form-group">
-                                <label for="regVolunteerInterests">Volunteer Interests</label>
-                                <select id="regVolunteerInterests" name="volunteerInterests" >
-                                    <option value="">Select volunteer interests</option>
+                                <label for="regVolunteerInterests">Volunteer Interests (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regVolunteerInterests" name="volunteerInterests" multiple>
                                     <option value="community-outreach">Community Outreach</option>
                                     <option value="education">Education</option>
                                     <option value="environment">Environment</option>
@@ -832,8 +1015,12 @@
                                     <option value="social-justice">Social Justice</option>
                                     <option value="technology">Technology</option>
                                     <option value="event-management">Event Management</option>
+                                    <option value="youth-development">Youth Development</option>
+                                    <option value="animal-welfare">Animal Welfare</option>
+                                    <option value="disaster-relief">Disaster Relief</option>
                                     <option value="other">Other</option>
                                 </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                         </div>
                         <div class="form-group">
                                 <label for="regVolunteerAvailability">Availability</label>
@@ -872,15 +1059,18 @@
                                 </select>
                         </div>
                         <div class="form-group">
-                                <label for="regInternshipType">Type of Internship</label>
-                                <select id="regInternshipType" name="internshipType" >
-                                    <option value="">Select internship type</option>
+                                <label for="regInternshipType">Types of Internship (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regInternshipType" name="internshipType" multiple>
                                 <option value="summer">Summer Internship</option>
                                     <option value="semester">Semester Internship</option>
                                     <option value="year-long">Year-long Internship</option>
                                     <option value="part-time">Part-time Internship</option>
                                     <option value="remote">Remote Internship</option>
+                                    <option value="full-time">Full-time Internship</option>
+                                    <option value="paid">Paid Internship</option>
+                                    <option value="unpaid">Unpaid/Volunteer</option>
                                 </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                             </div>
                             <div class="form-group">
                                 <label for="regGraduationYear">Expected Graduation Year</label>
@@ -927,9 +1117,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                                <label for="regCommunityInterests">Community Interests</label>
-                                <select id="regCommunityInterests" name="communityInterests" >
-                                    <option value="">Select community interests</option>
+                                <label for="regCommunityInterests">Community Interests (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regCommunityInterests" name="communityInterests" multiple>
                                     <option value="networking">Professional Networking</option>
                                     <option value="skill-sharing">Skill Sharing</option>
                                     <option value="mentorship">Mentorship</option>
@@ -942,11 +1131,11 @@
                                     <option value="business-development">Business Development</option>
                                     <option value="other">Other</option>
                                 </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                         </div>
                         <div class="form-group">
-                                <label for="regCommunityRole">Preferred Community Role</label>
-                                <select id="regCommunityRole" name="communityRole" >
-                                    <option value="">Select preferred role</option>
+                                <label for="regCommunityRole">Preferred Community Roles (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="regCommunityRole" name="communityRole" multiple>
                                     <option value="active-member">Active Member</option>
                                 <option value="contributor">Contributor</option>
                                 <option value="moderator">Moderator</option>
@@ -956,6 +1145,7 @@
                                     <option value="mentor">Mentor</option>
                                     <option value="leader">Community Leader</option>
                             </select>
+                                <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
                         </div>
                             <div class="form-group">
                                 <label for="regCommunityExperience">Community Experience</label>
@@ -1208,6 +1398,35 @@
                     }
                 }
                 
+                // Combine country code and phone number into a single field
+                const countryCode = formData.get('countryCode') || '+254';
+                const phoneNumber = formData.get('phoneNumber') || '';
+                data.phone = `${countryCode} ${phoneNumber}`.trim();
+                
+                // Remove the separate fields to avoid duplication
+                delete data.countryCode;
+                delete data.phoneNumber;
+                
+                // Handle multiple select fields - convert arrays to comma-separated strings
+                const multiSelectFields = [
+                    'location', 'jobType', 'industry', 'recruiterIndustry',
+                    'expertise', 'mentorshipType', 'specialization', 'trainingFormat',
+                    'consultantSpecialization', 'industryFocus', 'volunteerInterests',
+                    'internshipType', 'communityInterests', 'communityRole'
+                ];
+                
+                multiSelectFields.forEach(fieldName => {
+                    const selectElement = document.querySelector(`select[name="${fieldName}"]`);
+                    if (selectElement && selectElement.multiple) {
+                        const selectedOptions = Array.from(selectElement.selectedOptions).map(opt => opt.value);
+                        if (selectedOptions.length > 0) {
+                            data[fieldName] = selectedOptions.join(', ');
+                        } else {
+                            data[fieldName] = '';
+                        }
+                    }
+                });
+                
                 // Add roles as comma-separated string for Google Sheets
                 data.roles = selectedRoles.join(', ');
                 data.roleCount = selectedRoles.length;
@@ -1220,6 +1439,13 @@
                 console.log('✅ Complete form data:', data);
                 console.log('✅ URL will include:', Object.keys(data));
                 console.log('✅ Data being sent:', JSON.stringify(data, null, 2));
+                console.log('📞 Phone number:', data.phone);
+                console.log('📋 Multiple select fields processed:');
+                multiSelectFields.forEach(field => {
+                    if (data[field]) {
+                        console.log(`   - ${field}: ${data[field]}`);
+                    }
+                });
                 
                 // Send to Google Sheets
                 sendToGoogleSheets(data)
@@ -1483,11 +1709,13 @@
             // Fill form with test data
             const fullNameField = document.getElementById('regFullName');
             const emailField = document.getElementById('regEmail');
+            const countryCodeField = document.getElementById('regCountryCode');
             const phoneField = document.getElementById('regPhone');
             
             if (fullNameField) fullNameField.value = 'Test User';
             if (emailField) emailField.value = 'test@example.com';
-            if (phoneField) phoneField.value = '+254 700 000 000';
+            if (countryCodeField) countryCodeField.value = '+254';
+            if (phoneField) phoneField.value = '712345678';
             
             // Select a role
             const jobSeekerRadio = document.querySelector('input[value="job_seeker"]');
@@ -1505,9 +1733,24 @@
                     
                     if (experienceField) experienceField.value = '2-3';
                     if (skillsField) skillsField.value = 'JavaScript, React, Node.js';
-                    if (locationField) locationField.value = 'remote';
-                    if (jobTypeField) jobTypeField.value = 'full-time';
-                    if (industryField) industryField.value = 'technology';
+                    
+                    // Handle multiple select fields
+                    if (locationField && locationField.multiple) {
+                        // Select multiple options
+                        const options = locationField.options;
+                        options[0].selected = true; // remote
+                        options[2].selected = true; // nairobi
+                    }
+                    
+                    if (jobTypeField && jobTypeField.multiple) {
+                        const options = jobTypeField.options;
+                        options[0].selected = true; // full-time
+                    }
+                    
+                    if (industryField && industryField.multiple) {
+                        const options = industryField.options;
+                        options[0].selected = true; // technology
+                    }
                     
                     console.log('Test data filled. Try submitting the form now.');
                 }, 500);
