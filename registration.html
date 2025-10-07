@@ -285,6 +285,34 @@
             font-weight: 500;
         }
         
+        /* Other text input styling */
+        .other-text-input {
+            display: none;
+            margin-top: 10px;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .other-text-input.show {
+            display: block;
+        }
+        
+        .other-text-input input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .other-text-input label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
@@ -739,24 +767,103 @@
                         <div class="form-group">
                                 <label for="regLocation">Preferred Locations (Hold Ctrl/Cmd to select multiple)</label>
                                 <select id="regLocation" name="location" multiple>
-                                    <option value="remote">Remote</option>
-                                    <option value="hybrid">Hybrid</option>
-                                    <option value="nairobi">Nairobi</option>
-                                    <option value="mombasa">Mombasa</option>
-                                    <option value="kisumu">Kisumu</option>
-                                    <option value="mumbai">Mumbai</option>
-                                    <option value="delhi">Delhi</option>
-                                    <option value="bangalore">Bangalore</option>
-                                    <option value="chennai">Chennai</option>
-                                    <option value="pune">Pune</option>
-                                    <option value="hyderabad">Hyderabad</option>
-                                    <option value="kolkata">Kolkata</option>
-                                    <option value="dubai">Dubai</option>
-                                    <option value="london">London</option>
-                                    <option value="new-york">New York</option>
-                                    <option value="other">Other</option>
+                                    <option value="remote">🌍 Remote (Worldwide)</option>
+                                    <option value="hybrid">🏢 Hybrid</option>
+                                    <optgroup label="🌍 Africa">
+                                        <option value="kenya">Kenya</option>
+                                        <option value="tanzania">Tanzania</option>
+                                        <option value="uganda">Uganda</option>
+                                        <option value="rwanda">Rwanda</option>
+                                        <option value="ethiopia">Ethiopia</option>
+                                        <option value="south-africa">South Africa</option>
+                                        <option value="nigeria">Nigeria</option>
+                                        <option value="ghana">Ghana</option>
+                                        <option value="egypt">Egypt</option>
+                                        <option value="morocco">Morocco</option>
+                                        <option value="algeria">Algeria</option>
+                                        <option value="tunisia">Tunisia</option>
+                                        <option value="zambia">Zambia</option>
+                                        <option value="zimbabwe">Zimbabwe</option>
+                                        <option value="botswana">Botswana</option>
+                                        <option value="namibia">Namibia</option>
+                                    </optgroup>
+                                    <optgroup label="🌏 Asia">
+                                        <option value="india">India</option>
+                                        <option value="uae">UAE (Dubai, Abu Dhabi)</option>
+                                        <option value="saudi-arabia">Saudi Arabia</option>
+                                        <option value="qatar">Qatar</option>
+                                        <option value="kuwait">Kuwait</option>
+                                        <option value="oman">Oman</option>
+                                        <option value="bahrain">Bahrain</option>
+                                        <option value="china">China</option>
+                                        <option value="japan">Japan</option>
+                                        <option value="south-korea">South Korea</option>
+                                        <option value="singapore">Singapore</option>
+                                        <option value="malaysia">Malaysia</option>
+                                        <option value="thailand">Thailand</option>
+                                        <option value="vietnam">Vietnam</option>
+                                        <option value="indonesia">Indonesia</option>
+                                        <option value="philippines">Philippines</option>
+                                        <option value="pakistan">Pakistan</option>
+                                        <option value="bangladesh">Bangladesh</option>
+                                        <option value="sri-lanka">Sri Lanka</option>
+                                        <option value="nepal">Nepal</option>
+                                        <option value="afghanistan">Afghanistan</option>
+                                        <option value="iran">Iran</option>
+                                        <option value="iraq">Iraq</option>
+                                        <option value="jordan">Jordan</option>
+                                        <option value="lebanon">Lebanon</option>
+                                        <option value="syria">Syria</option>
+                                        <option value="turkey">Turkey</option>
+                                        <option value="israel">Israel</option>
+                                    </optgroup>
+                                    <optgroup label="🇪🇺 Europe">
+                                        <option value="united-kingdom">United Kingdom</option>
+                                        <option value="germany">Germany</option>
+                                        <option value="france">France</option>
+                                        <option value="italy">Italy</option>
+                                        <option value="spain">Spain</option>
+                                        <option value="netherlands">Netherlands</option>
+                                        <option value="belgium">Belgium</option>
+                                        <option value="switzerland">Switzerland</option>
+                                        <option value="austria">Austria</option>
+                                        <option value="sweden">Sweden</option>
+                                        <option value="norway">Norway</option>
+                                        <option value="denmark">Denmark</option>
+                                        <option value="finland">Finland</option>
+                                        <option value="ireland">Ireland</option>
+                                        <option value="portugal">Portugal</option>
+                                        <option value="greece">Greece</option>
+                                        <option value="poland">Poland</option>
+                                        <option value="czech-republic">Czech Republic</option>
+                                        <option value="russia">Russia</option>
+                                        <option value="ukraine">Ukraine</option>
+                                    </optgroup>
+                                    <optgroup label="🌎 North America">
+                                        <option value="united-states">United States</option>
+                                        <option value="canada">Canada</option>
+                                        <option value="mexico">Mexico</option>
+                                    </optgroup>
+                                    <optgroup label="🌎 South America">
+                                        <option value="brazil">Brazil</option>
+                                        <option value="argentina">Argentina</option>
+                                        <option value="chile">Chile</option>
+                                        <option value="colombia">Colombia</option>
+                                        <option value="peru">Peru</option>
+                                        <option value="venezuela">Venezuela</option>
+                                        <option value="ecuador">Ecuador</option>
+                                    </optgroup>
+                                    <optgroup label="🌏 Oceania">
+                                        <option value="australia">Australia</option>
+                                        <option value="new-zealand">New Zealand</option>
+                                    </optgroup>
+                                    <option value="other">🌐 Other (Please specify)</option>
                                 </select>
                                 <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
+                                <div class="other-text-input" id="locationOtherInput">
+                                    <label for="locationOtherText">Please specify location:</label>
+                                    <input type="text" id="locationOtherText" name="locationOther" placeholder="Enter your preferred location">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="regJobType">Preferred Job Types (Hold Ctrl/Cmd to select multiple)</label>
@@ -787,9 +894,13 @@
                                     <option value="media">Media & Entertainment</option>
                                     <option value="agriculture">Agriculture</option>
                                     <option value="logistics">Logistics & Transportation</option>
-                                <option value="other">Other</option>
+                                <option value="other">Other (Please specify)</option>
                             </select>
                                 <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
+                                <div class="other-text-input" id="industryOtherInput">
+                                    <label for="industryOtherText">Please specify industry:</label>
+                                    <input type="text" id="industryOtherText" name="industryOther" placeholder="Enter industry name">
+                                </div>
                         </div>
                     </div>
                     
@@ -818,9 +929,13 @@
                                     <option value="media">Media & Entertainment</option>
                                     <option value="agriculture">Agriculture</option>
                                     <option value="logistics">Logistics & Transportation</option>
-                                <option value="other">Other</option>
+                                <option value="other">Other (Please specify)</option>
                             </select>
                                 <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
+                                <div class="other-text-input" id="recruiterIndustryOtherInput">
+                                    <label for="recruiterIndustryOtherText">Please specify industry:</label>
+                                    <input type="text" id="recruiterIndustryOtherText" name="recruiterIndustryOther" placeholder="Enter industry name">
+                                </div>
                         </div>
                             <div class="form-group">
                                 <label for="regCompanySize">Company Size</label>
@@ -862,9 +977,13 @@
                                     <option value="data-science">Data Science</option>
                                     <option value="design">Design & UX</option>
                                     <option value="engineering">Engineering</option>
-                                    <option value="other">Other</option>
+                                    <option value="other">Other (Please specify)</option>
                                 </select>
                                 <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
+                                <div class="other-text-input" id="expertiseOtherInput">
+                                    <label for="expertiseOtherText">Please specify expertise:</label>
+                                    <input type="text" id="expertiseOtherText" name="expertiseOther" placeholder="Enter your area of expertise">
+                                </div>
                         </div>
                         <div class="form-group">
                                 <label for="regExperience">Years of Experience</label>
@@ -911,9 +1030,13 @@
                                     <option value="digital-marketing">Digital Marketing</option>
                                     <option value="programming">Programming</option>
                                     <option value="design-thinking">Design Thinking</option>
-                                    <option value="other">Other</option>
+                                    <option value="other">Other (Please specify)</option>
                                 </select>
                                 <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
+                                <div class="other-text-input" id="specializationOtherInput">
+                                    <label for="specializationOtherText">Please specify specialization:</label>
+                                    <input type="text" id="specializationOtherText" name="specializationOther" placeholder="Enter your training specialization">
+                                </div>
                         </div>
                         <div class="form-group">
                                 <label for="regTrainingFormat">Preferred Training Formats (Hold Ctrl/Cmd to select multiple)</label>
@@ -960,9 +1083,13 @@
                                     <option value="business-development">Business Development</option>
                                     <option value="process-improvement">Process Improvement</option>
                                     <option value="risk-management">Risk Management</option>
-                                    <option value="other">Other</option>
+                                    <option value="other">Other (Please specify)</option>
                                 </select>
                                 <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
+                                <div class="other-text-input" id="consultantSpecializationOtherInput">
+                                    <label for="consultantSpecializationOtherText">Please specify specialization:</label>
+                                    <input type="text" id="consultantSpecializationOtherText" name="consultantSpecializationOther" placeholder="Enter your consulting specialization">
+                                </div>
                         </div>
                         <div class="form-group">
                                 <label for="regConsultantExperience">Years of Consulting Experience</label>
@@ -998,9 +1125,13 @@
                                     <option value="telecommunications">Telecommunications</option>
                                     <option value="agriculture">Agriculture</option>
                                     <option value="logistics">Logistics & Transportation</option>
-                                    <option value="other">Other</option>
+                                    <option value="other">Other (Please specify)</option>
                             </select>
                                 <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
+                                <div class="other-text-input" id="industryFocusOtherInput">
+                                    <label for="industryFocusOtherText">Please specify industry:</label>
+                                    <input type="text" id="industryFocusOtherText" name="industryFocusOther" placeholder="Enter industry name">
+                                </div>
                         </div>
                     </div>
                     
@@ -1018,9 +1149,13 @@
                                     <option value="youth-development">Youth Development</option>
                                     <option value="animal-welfare">Animal Welfare</option>
                                     <option value="disaster-relief">Disaster Relief</option>
-                                    <option value="other">Other</option>
+                                    <option value="other">Other (Please specify)</option>
                                 </select>
                                 <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
+                                <div class="other-text-input" id="volunteerInterestsOtherInput">
+                                    <label for="volunteerInterestsOtherText">Please specify interests:</label>
+                                    <input type="text" id="volunteerInterestsOtherText" name="volunteerInterestsOther" placeholder="Enter your volunteer interests">
+                                </div>
                         </div>
                         <div class="form-group">
                                 <label for="regVolunteerAvailability">Availability</label>
@@ -1055,8 +1190,12 @@
                                     <option value="finance">Finance</option>
                                     <option value="design">Design</option>
                                     <option value="data-science">Data Science</option>
-                                    <option value="other">Other</option>
+                                    <option value="other">Other (Please specify)</option>
                                 </select>
+                                <div class="other-text-input" id="fieldOtherInput">
+                                    <label for="fieldOtherText">Please specify field of study:</label>
+                                    <input type="text" id="fieldOtherText" name="fieldOther" placeholder="Enter your field of study">
+                                </div>
                         </div>
                         <div class="form-group">
                                 <label for="regInternshipType">Types of Internship (Hold Ctrl/Cmd to select multiple)</label>
@@ -1113,8 +1252,12 @@
                                     <option value="religious-community">Religious Community</option>
                                     <option value="social-club">Social Club</option>
                                     <option value="volunteer-group">Volunteer Group</option>
-                                    <option value="other">Other Community Organization</option>
+                                    <option value="other">Other Community Organization (Please specify)</option>
                             </select>
+                                <div class="other-text-input" id="communityOrganizationOtherInput">
+                                    <label for="communityOrganizationOtherText">Please specify organization:</label>
+                                    <input type="text" id="communityOrganizationOtherText" name="communityOrganizationOther" placeholder="Enter your community organization name">
+                                </div>
                         </div>
                         <div class="form-group">
                                 <label for="regCommunityInterests">Community Interests (Hold Ctrl/Cmd to select multiple)</label>
@@ -1129,9 +1272,13 @@
                                     <option value="religious-activities">Religious Activities</option>
                                     <option value="social-service">Social Service</option>
                                     <option value="business-development">Business Development</option>
-                                    <option value="other">Other</option>
+                                    <option value="other">Other (Please specify)</option>
                                 </select>
                                 <small class="multi-select-hint">💡 Hold Ctrl (Windows) or Cmd (Mac) and click to select multiple</small>
+                                <div class="other-text-input" id="communityInterestsOtherInput">
+                                    <label for="communityInterestsOtherText">Please specify interests:</label>
+                                    <input type="text" id="communityInterestsOtherText" name="communityInterestsOther" placeholder="Enter your community interests">
+                                </div>
                         </div>
                         <div class="form-group">
                                 <label for="regCommunityRole">Preferred Community Roles (Hold Ctrl/Cmd to select multiple)</label>
@@ -1359,6 +1506,48 @@
             input.addEventListener('change', updateSelectedRoles);
         });
         
+        // Handle "Other" text inputs show/hide functionality
+        const otherFieldMapping = [
+            { selectId: 'regLocation', otherId: 'locationOtherInput', otherValue: 'other' },
+            { selectId: 'regIndustry', otherId: 'industryOtherInput', otherValue: 'other' },
+            { selectId: 'regRecruiterIndustry', otherId: 'recruiterIndustryOtherInput', otherValue: 'other' },
+            { selectId: 'regExpertise', otherId: 'expertiseOtherInput', otherValue: 'other' },
+            { selectId: 'regSpecialization', otherId: 'specializationOtherInput', otherValue: 'other' },
+            { selectId: 'regConsultantSpecialization', otherId: 'consultantSpecializationOtherInput', otherValue: 'other' },
+            { selectId: 'regIndustryFocus', otherId: 'industryFocusOtherInput', otherValue: 'other' },
+            { selectId: 'regVolunteerInterests', otherId: 'volunteerInterestsOtherInput', otherValue: 'other' },
+            { selectId: 'regField', otherId: 'fieldOtherInput', otherValue: 'other' },
+            { selectId: 'regCommunityOrganization', otherId: 'communityOrganizationOtherInput', otherValue: 'other' },
+            { selectId: 'regCommunityInterests', otherId: 'communityInterestsOtherInput', otherValue: 'other' }
+        ];
+        
+        otherFieldMapping.forEach(mapping => {
+            const selectElement = document.getElementById(mapping.selectId);
+            const otherInput = document.getElementById(mapping.otherId);
+            
+            if (selectElement && otherInput) {
+                selectElement.addEventListener('change', function() {
+                    // For multiple select
+                    if (selectElement.multiple) {
+                        const selectedValues = Array.from(selectElement.selectedOptions).map(opt => opt.value);
+                        if (selectedValues.includes(mapping.otherValue)) {
+                            otherInput.classList.add('show');
+                        } else {
+                            otherInput.classList.remove('show');
+                        }
+                    } 
+                    // For single select
+                    else {
+                        if (selectElement.value === mapping.otherValue) {
+                            otherInput.classList.add('show');
+                        } else {
+                            otherInput.classList.remove('show');
+                        }
+                    }
+                });
+            }
+        });
+        
         // Form submission
             const registrationForm = document.getElementById('registrationForm');
             registrationForm.addEventListener('submit', function(e) {
@@ -1421,10 +1610,40 @@
                         const selectedOptions = Array.from(selectElement.selectedOptions).map(opt => opt.value);
                         if (selectedOptions.length > 0) {
                             data[fieldName] = selectedOptions.join(', ');
+                            
+                            // Append "Other" text if "other" was selected
+                            if (selectedOptions.includes('other')) {
+                                const otherText = formData.get(`${fieldName}Other`);
+                                if (otherText) {
+                                    data[fieldName] = data[fieldName].replace('other', `other: ${otherText}`);
+                                }
+                            }
                         } else {
                             data[fieldName] = '';
                         }
                     }
+                });
+                
+                // Handle single select "Other" fields
+                const singleSelectOtherFields = ['field', 'communityOrganization'];
+                singleSelectOtherFields.forEach(fieldName => {
+                    if (data[fieldName] === 'other') {
+                        const otherText = formData.get(`${fieldName}Other`);
+                        if (otherText) {
+                            data[fieldName] = `other: ${otherText}`;
+                        }
+                    }
+                });
+                
+                // Remove individual "Other" text fields from data (they're now included inline)
+                const otherTextFields = [
+                    'locationOther', 'industryOther', 'recruiterIndustryOther',
+                    'expertiseOther', 'specializationOther', 'consultantSpecializationOther',
+                    'industryFocusOther', 'volunteerInterestsOther', 'fieldOther',
+                    'communityOrganizationOther', 'communityInterestsOther'
+                ];
+                otherTextFields.forEach(field => {
+                    delete data[field];
                 });
                 
                 // Add roles as comma-separated string for Google Sheets
