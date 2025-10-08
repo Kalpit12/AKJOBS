@@ -1215,12 +1215,74 @@ function markPlatformAsShared(platform) {
     localStorage.setItem('aksharShareHistory', JSON.stringify(shareHistory));
 }
 
-// OLD FUNCTION - DEPRECATED
-// This function is no longer used directly
-// Coins are now only awarded after verification in showShareConfirmationDialog
+// Enhanced referral share tracking with Google Sheets sync
 function trackReferralShare(platform) {
-    console.log('⚠️ trackReferralShare called - this should not happen with new validation system');
-    showNotification('⚠️ Please use the share buttons to earn coins properly', 'warning');
+    console.log('📊 Tracking referral share:', platform);
+    
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    
+    if (!userData.email) {
+        console.log('❌ No user data found for referral tracking');
+        return;
+    }
+    
+    // Update local referral data
+    const referralData = JSON.parse(localStorage.getItem('aksharReferralData') || '{}');
+    referralData.totalShares = (referralData.totalShares || 0) + 1;
+    referralData[platform + 'Shares'] = (referralData[platform + 'Shares'] || 0) + 1;
+    localStorage.setItem('aksharReferralData', JSON.stringify(referralData));
+    
+    // Update user coins
+    const coinsEarned = 3; // 3 coins per share
+    userData.aksharCoins = (userData.aksharCoins || 0) + coinsEarned;
+    localStorage.setItem('aksharUserData', JSON.stringify(userData));
+    
+    // Sync with Google Sheets
+    syncReferralShareWithGoogleSheets(userData, platform, coinsEarned, referralData);
+    
+    // Update UI
+    updateStats();
+    
+    console.log('✅ Referral share tracked locally:', { platform, coinsEarned, totalShares: referralData.totalShares });
+}
+
+// Sync referral share with Google Sheets
+async function syncReferralShareWithGoogleSheets(userData, platform, coinsEarned, referralData) {
+    if (!REFERRAL_WEBHOOK_URL || REFERRAL_WEBHOOK_URL === 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec') {
+        console.log('Referral webhook not configured, skipping Google Sheets sync');
+        return;
+    }
+    
+    try {
+        const shareData = {
+            type: 'referral_share',
+            referrerEmail: userData.email,
+            referrerName: userData.name || userData.fullName,
+            platform: platform,
+            coinsEarned: coinsEarned,
+            totalShares: referralData.totalShares,
+            shareCount: referralData[platform + 'Shares'] || 1,
+            timestamp: new Date().toISOString()
+        };
+        
+        const syncUrl = `${REFERRAL_WEBHOOK_URL}?${Object.keys(shareData).map(key => `${key}=${encodeURIComponent(shareData[key])}`).join('&')}`;
+        console.log('🔄 Syncing referral share with Google Sheets:', syncUrl);
+        
+        // Use iframe method for sync (non-blocking)
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = syncUrl;
+        document.body.appendChild(iframe);
+        
+        setTimeout(() => {
+            if (iframe.parentNode) {
+                iframe.parentNode.removeChild(iframe);
+            }
+        }, 2000);
+        
+    } catch (error) {
+        console.log('⚠️ Referral share sync failed (non-critical):', error);
+    }
 }
 
 // Share confirmation dialog to ensure user actually shares
