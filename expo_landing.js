@@ -2267,6 +2267,33 @@ function testReferralSystem() {
 // GOOGLE SHEETS INTEGRATION
 // ========================================
 
+// Sync user login with Google Sheets
+async function syncUserLoginWithGoogleSheets(userData) {
+    if (!REGISTRATION_WEBHOOK_URL || REGISTRATION_WEBHOOK_URL === 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec') {
+        return;
+    }
+    
+    try {
+        const syncUrl = `${REGISTRATION_WEBHOOK_URL}?type=update_login&email=${encodeURIComponent(userData.email)}&timestamp=${new Date().toISOString()}`;
+        console.log('🔄 Syncing login with Google Sheets:', syncUrl);
+        
+        // Use iframe method for sync (non-blocking)
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = syncUrl;
+        document.body.appendChild(iframe);
+        
+        setTimeout(() => {
+            if (iframe.parentNode) {
+                iframe.parentNode.removeChild(iframe);
+            }
+        }, 2000);
+        
+    } catch (error) {
+        console.log('⚠️ Login sync failed (non-critical):', error);
+    }
+}
+
 // Enhanced Google Sheets registration check
 async function checkGoogleSheetsRegistration(email) {
     if (!REGISTRATION_WEBHOOK_URL || REGISTRATION_WEBHOOK_URL === 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec') {
@@ -2392,6 +2419,9 @@ async function handleLogin(event) {
             // Save login session
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('aksharUserData', JSON.stringify(userData));
+            
+            // Sync with Google Sheets (update last login time)
+            syncUserLoginWithGoogleSheets(userData);
             
             // Show success message
             successDiv.textContent = '✅ Login successful! Redirecting...';
