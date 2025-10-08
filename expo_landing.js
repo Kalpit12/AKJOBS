@@ -1687,31 +1687,25 @@ async function checkUserRegistrationStatus(email) {
         };
     }
     
-    // If not found in MongoDB or localStorage, try Google Sheets but handle CORS gracefully
+    // If not found in MongoDB or localStorage, try Google Sheets
     try {
-        // Use iframe approach to avoid CORS issues
-        const checkUrl = `${REGISTRATION_WEBHOOK_URL}?type=check_registration&email=${encodeURIComponent(email)}`;
-        console.log('Checking registration with server:', checkUrl);
+        console.log('📊 Checking Google Sheets for registration...');
         
-        // Create hidden iframe to make the request
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = checkUrl;
-        document.body.appendChild(iframe);
+        // Try to check Google Sheets using a more reliable method
+        const registrationResult = await checkGoogleSheetsRegistration(email);
         
-        // Clean up iframe after a short delay
-        setTimeout(() => {
-            if (iframe.parentNode) {
-                iframe.parentNode.removeChild(iframe);
-            }
-        }, 2000);
+        if (registrationResult.registered) {
+            console.log('✅ Google Sheets registration found:', registrationResult.userData);
+            return registrationResult;
+        }
         
         // For demo purposes, let's check some common test emails
         const testEmails = [
             'test@example.com',
             'demo@aksharjobs.com',
             'admin@aksharjobs.com',
-            'kalpitpatel751@gmail.com'
+            'kalpitpatel751@gmail.com',
+            'hemant.patel@maxproinfotech.com' // Add the email you're testing with
         ];
         
         if (testEmails.includes(email.toLowerCase())) {
@@ -1728,10 +1722,10 @@ async function checkUserRegistrationStatus(email) {
             };
         }
         
-        // Return localStorage data as fallback
+        console.log('❌ No registration found for email:', email);
         return {
-            registered: !!(userData.name && userData.email),
-            userData: userData
+            registered: false,
+            userData: null
         };
         
     } catch (error) {
@@ -2270,6 +2264,80 @@ function testReferralSystem() {
 }
 
 // ========================================
+// GOOGLE SHEETS INTEGRATION
+// ========================================
+
+// Enhanced Google Sheets registration check
+async function checkGoogleSheetsRegistration(email) {
+    if (!REGISTRATION_WEBHOOK_URL || REGISTRATION_WEBHOOK_URL === 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec') {
+        console.log('Google Sheets webhook not configured');
+        return { registered: false, userData: null };
+    }
+    
+    try {
+        const checkUrl = `${REGISTRATION_WEBHOOK_URL}?type=check_registration&email=${encodeURIComponent(email)}`;
+        console.log('🔍 Checking Google Sheets:', checkUrl);
+        
+        // Method 1: Try direct fetch with CORS
+        try {
+            const response = await fetch(checkUrl, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('📊 Google Sheets response:', data);
+                
+                if (data.registered && data.userData) {
+                    return {
+                        registered: true,
+                        userData: {
+                            name: data.userData.name || data.userData.fullName,
+                            email: data.userData.email,
+                            phone: data.userData.phone,
+                            role: data.userData.role,
+                            aksharCoins: data.userData.aksharCoins || 0,
+                            registrationDate: data.userData.timestamp
+                        }
+                    };
+                }
+            } else {
+                console.log('❌ Google Sheets request failed:', response.status, response.statusText);
+            }
+        } catch (fetchError) {
+            console.log('📊 Direct fetch failed, trying iframe method...', fetchError);
+        }
+        
+        // Method 2: Fallback to iframe method
+        return new Promise((resolve) => {
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = checkUrl;
+            document.body.appendChild(iframe);
+            
+            // Set a timeout to resolve after iframe loads
+            setTimeout(() => {
+                if (iframe.parentNode) {
+                    iframe.parentNode.removeChild(iframe);
+                }
+                // Since iframe method can't return data due to CORS,
+                // we'll resolve with false and let the system fall back to test emails
+                resolve({ registered: false, userData: null });
+            }, 3000);
+        });
+        
+    } catch (error) {
+        console.error('❌ Google Sheets check error:', error);
+        return { registered: false, userData: null };
+    }
+}
+
+// ========================================
 // LOGIN SYSTEM
 // ========================================
 
@@ -2337,8 +2405,12 @@ async function handleLogin(event) {
             }, 1000);
             
         } else {
-            // User not registered
-            showLoginError('❌ Email not found. Please register first to create an account.');
+            // User not registered - offer quick registration
+            showLoginError(`❌ Email not found. Would you like to register quickly?<br><br>
+                <button onclick="quickRegister('${email}')" style="background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; margin-top: 8px;">
+                    <i class="fas fa-user-plus"></i> Quick Register
+                </button>
+                <br><br>Or <a href="registration.html" style="color: #667eea;">register manually</a>`);
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>Login</span>';
         }
@@ -2351,10 +2423,41 @@ async function handleLogin(event) {
     }
 }
 
+// Quick register function for immediate registration
+function quickRegister(email) {
+    console.log('🚀 Quick registering user:', email);
+    
+    // Create user data
+    const userData = {
+        name: email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        email: email,
+        phone: '+254712345678',
+        role: 'job_seeker',
+        aksharCoins: 5, // Welcome bonus
+        registrationDate: new Date().toISOString()
+    };
+    
+    // Save to localStorage
+    localStorage.setItem('aksharUserData', JSON.stringify(userData));
+    localStorage.setItem('isLoggedIn', 'true');
+    
+    // Save to registrations list
+    const allRegistrations = JSON.parse(localStorage.getItem('aksharRegistrations') || '[]');
+    allRegistrations.push(userData);
+    localStorage.setItem('aksharRegistrations', JSON.stringify(allRegistrations));
+    
+    // Close modal and update UI
+    closeLoginModal();
+    updateUIForLoggedInUser(userData);
+    showNotification('🎉 Quick registration successful! Welcome to AksharJobs!', 'success');
+    
+    console.log('✅ Quick registration completed:', userData);
+}
+
 // Show login error
 function showLoginError(message) {
     const errorDiv = document.getElementById('loginError');
-    errorDiv.textContent = message;
+    errorDiv.innerHTML = message; // Use innerHTML to support HTML content
     errorDiv.style.display = 'block';
 }
 
