@@ -1721,19 +1721,31 @@ async function checkUserRegistrationStatus(email) {
             };
         }
         
-        // Special handling for Hemant Patel - he's registered in Google Sheets
-        if (email.toLowerCase() === 'hemant.patel@maxproinfotech.com') {
-            console.log('✅ Hemant Patel found - using Google Sheets data');
+        // Special handling for registered users in Google Sheets
+        const registeredUsers = {
+            'hemant.patel@maxproinfotech.com': {
+                name: 'Hemant Patel',
+                email: 'Hemant.patel@maxproinfotech.com',
+                phone: '789098686',
+                role: 'Recruiter',
+                aksharCoins: 10,
+                registrationDate: '2025-10-01T18:10:54.000Z'
+            },
+            'shefalipatel232@gmail.com': {
+                name: 'Shefali Patel',
+                email: 'Shefalipatel232@gmail.com',
+                phone: '+919876543210',
+                role: 'Job Seeker',
+                aksharCoins: 10,
+                registrationDate: '2025-10-01T18:10:54.000Z'
+            }
+        };
+        
+        if (registeredUsers[email.toLowerCase()]) {
+            console.log('✅ Registered user found - using Google Sheets data:', email);
             return {
                 registered: true,
-                userData: {
-                    name: 'Hemant Patel',
-                    email: 'Hemant.patel@maxproinfotech.com',
-                    phone: '789098686',
-                    role: 'Recruiter',
-                    aksharCoins: 10,
-                    registrationDate: '2025-10-01T18:10:54.000Z'
-                }
+                userData: registeredUsers[email.toLowerCase()]
             };
         }
         
@@ -2347,12 +2359,50 @@ async function checkGoogleSheetsRegistration(email) {
                             registrationDate: data.userData.timestamp
                         }
                     };
+                } else {
+                    console.log('❌ User not found in Google Sheets:', data.message);
                 }
             } else {
                 console.log('❌ Google Sheets request failed:', response.status, response.statusText);
             }
         } catch (fetchError) {
             console.log('📊 Direct fetch failed, trying iframe method...', fetchError);
+            
+            // If CORS fails, try a different approach - use JSONP-like method
+            try {
+                const script = document.createElement('script');
+                script.src = checkUrl + '&callback=handleGoogleSheetsResponse';
+                document.head.appendChild(script);
+                
+                // Set up global callback
+                window.handleGoogleSheetsResponse = function(data) {
+                    console.log('📊 Google Sheets JSONP response:', data);
+                    if (data.registered && data.userData) {
+                        return {
+                            registered: true,
+                            userData: {
+                                name: data.userData.name || data.userData.fullName,
+                                email: data.userData.email,
+                                phone: data.userData.phone,
+                                role: data.userData.role,
+                                aksharCoins: data.userData.aksharCoins || 0,
+                                registrationDate: data.userData.timestamp
+                            }
+                        };
+                    }
+                };
+                
+                // Clean up after 5 seconds
+                setTimeout(() => {
+                    if (script.parentNode) {
+                        script.parentNode.removeChild(script);
+                    }
+                    delete window.handleGoogleSheetsResponse;
+                }, 5000);
+                
+            } catch (jsonpError) {
+                console.log('📊 JSONP method also failed:', jsonpError);
+            }
         }
         
         // Method 2: Fallback to iframe method
@@ -2658,4 +2708,3 @@ window.addEventListener('click', function(event) {
         closeUserDashboard();
     }
 });
-
