@@ -2246,3 +2246,227 @@ function testReferralSystem() {
     
     console.log('Referral system test completed!');
 }
+
+// ========================================
+// LOGIN SYSTEM
+// ========================================
+
+// Open Login Modal
+function openLoginModal() {
+    document.getElementById('loginModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    
+    // Clear any previous errors
+    document.getElementById('loginError').style.display = 'none';
+    document.getElementById('loginSuccess').style.display = 'none';
+    document.getElementById('loginEmail').value = '';
+}
+
+// Close Login Modal
+function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Handle Login Form Submission
+async function handleLogin(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('loginEmail').value.trim();
+    const submitBtn = document.getElementById('loginSubmitBtn');
+    const errorDiv = document.getElementById('loginError');
+    const successDiv = document.getElementById('loginSuccess');
+    
+    // Hide previous messages
+    errorDiv.style.display = 'none';
+    successDiv.style.display = 'none';
+    
+    // Validate email
+    if (!email) {
+        showLoginError('Please enter your email address');
+        return;
+    }
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Verifying...</span>';
+    
+    try {
+        // Check registration status
+        const registrationStatus = await checkUserRegistrationStatus(email);
+        
+        if (registrationStatus.registered && registrationStatus.userData) {
+            // User is registered - login successful
+            const userData = registrationStatus.userData;
+            
+            // Save login session
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('aksharUserData', JSON.stringify(userData));
+            
+            // Show success message
+            successDiv.textContent = '✅ Login successful! Redirecting...';
+            successDiv.style.display = 'block';
+            
+            // Update UI
+            setTimeout(() => {
+                closeLoginModal();
+                updateUIForLoggedInUser(userData);
+                showNotification('🎉 Welcome back! You can now share referrals and earn coins.', 'success');
+            }, 1000);
+            
+        } else {
+            // User not registered
+            showLoginError('❌ Email not found. Please register first to create an account.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>Login</span>';
+        }
+        
+    } catch (error) {
+        console.error('Login error:', error);
+        showLoginError('An error occurred during login. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>Login</span>';
+    }
+}
+
+// Show login error
+function showLoginError(message) {
+    const errorDiv = document.getElementById('loginError');
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+}
+
+// Update UI for logged in user
+function updateUIForLoggedInUser(userData) {
+    const loginBtn = document.getElementById('loginBtn');
+    
+    if (loginBtn) {
+        // Replace login button with user profile button
+        const userProfileBtn = document.createElement('button');
+        userProfileBtn.className = 'nav-user-profile';
+        userProfileBtn.onclick = openUserDashboard;
+        
+        const initials = getInitials(userData.name || userData.fullName || userData.email);
+        
+        userProfileBtn.innerHTML = `
+            <div class="user-avatar">${initials}</div>
+            <span>${(userData.name || userData.fullName || 'User').split(' ')[0]}</span>
+        `;
+        
+        loginBtn.parentNode.replaceChild(userProfileBtn, loginBtn);
+    }
+    
+    // Update stats display if visible
+    updateStats();
+}
+
+// Get user initials
+function getInitials(name) {
+    if (!name) return '?';
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name[0].toUpperCase();
+}
+
+// Open User Dashboard
+function openUserDashboard() {
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    
+    if (!userData.email) {
+        openLoginModal();
+        return;
+    }
+    
+    // Update dashboard with user data
+    document.getElementById('userFullName').textContent = userData.name || userData.fullName || 'User';
+    document.getElementById('userEmail').textContent = userData.email || '';
+    document.getElementById('userInitials').textContent = getInitials(userData.name || userData.fullName || userData.email);
+    document.getElementById('userCoins').textContent = userData.aksharCoins || 0;
+    document.getElementById('welcomeUserText').textContent = `Welcome back, ${(userData.name || userData.fullName || 'User').split(' ')[0]}!`;
+    
+    // Get referral data
+    const referralData = JSON.parse(localStorage.getItem('aksharReferralData') || '{}');
+    document.getElementById('userReferrals').textContent = referralData.totalReferrals || 0;
+    document.getElementById('userShares').textContent = referralData.totalShares || 0;
+    
+    // Show dashboard
+    document.getElementById('userDashboardModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+// Close User Dashboard
+function closeUserDashboard() {
+    document.getElementById('userDashboardModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Handle Logout
+function handleLogout() {
+    // Confirm logout
+    if (confirm('Are you sure you want to logout?')) {
+        // Clear session
+        localStorage.removeItem('isLoggedIn');
+        // Keep user data for auto-login next time, but clear session flag
+        
+        // Close dashboard
+        closeUserDashboard();
+        
+        // Reload page to reset UI
+        window.location.reload();
+    }
+}
+
+// Check if user is already logged in on page load
+function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    
+    if (isLoggedIn === 'true' && userData.email) {
+        updateUIForLoggedInUser(userData);
+        console.log('✅ User is logged in:', userData.email);
+    }
+}
+
+// Load user data and stats on page load
+function loadUserData() {
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    
+    if (userData.email) {
+        // Update any coin displays on the page
+        updateAksharCoinsDisplay();
+    }
+}
+
+// Update stats display
+function updateStats() {
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    const referralData = JSON.parse(localStorage.getItem('aksharReferralData') || '{}');
+    
+    // Update all coin displays
+    const coinDisplays = document.querySelectorAll('.akshar-coins-display');
+    coinDisplays.forEach(display => {
+        display.textContent = userData.aksharCoins || 0;
+    });
+}
+
+// Initialize login system on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔐 Initializing login system...');
+    checkLoginStatus();
+    loadUserData();
+});
+
+// Close modals when clicking outside
+window.addEventListener('click', function(event) {
+    const loginModal = document.getElementById('loginModal');
+    const dashboardModal = document.getElementById('userDashboardModal');
+    
+    if (event.target === loginModal) {
+        closeLoginModal();
+    }
+    if (event.target === dashboardModal) {
+        closeUserDashboard();
+    }
+});
