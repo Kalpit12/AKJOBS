@@ -2365,6 +2365,24 @@ async function checkGoogleSheetsRegistration(email) {
 }
 
 // ========================================
+// REFERRAL SYSTEM
+// ========================================
+
+// Go to referral page
+function goToReferralPage() {
+    const userData = JSON.parse(localStorage.getItem('aksharUserData') || '{}');
+    
+    if (!userData.email) {
+        // User not logged in - show login modal
+        openLoginModal();
+        return;
+    }
+    
+    // User is logged in - redirect to referral page
+    window.location.href = 'referral.html';
+}
+
+// ========================================
 // LOGIN SYSTEM
 // ========================================
 
